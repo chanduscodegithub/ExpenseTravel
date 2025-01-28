@@ -1,0 +1,47 @@
+<template>
+	<article class="slds-card">
+		<div class="container">
+			<div class="slds-card__header">
+				<!-- First Row -->
+				<div class="slds-grid slds-gutters slds-text-align_center">
+					<div class="slds-col slds-size_1-of-4">
+						<p class="employee-heading">Employee Name</p>
+						<p>{empDetails.Name}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-4">
+						<p class="employee-heading">Current Designation</p>
+						<p>{designation}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-4">
+						<p class="employee-heading">Corporate Level </p>
+						<p>{empDetails.Grade__c}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-4">
+						<p class="employee-heading">Corporate Band</p>
+						<p>{empDetails.Corporate_Band__c}</p>
+					</div>
+				</div>
+
+				<!-- Second Row -->
+				<div class="slds-grid slds-gutters slds-text-align_center">
+					<div class="slds-col slds-size_1-of-4">
+						<p class="employee-heading">Business Function</p>
+						<p> {empDetails.Business_Function__c}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-4">
+						<p class="employee-heading">Employee location</p>
+						<p>{empDetails.Country__c}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-4">
+						<p class="employee-heading">Reporting Manager</p>
+						<p>{empreportManager}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-4">
+						<p class="employee-heading">Cost Center Manager</p>
+						<p>{ccm}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</article><br />
+</template>

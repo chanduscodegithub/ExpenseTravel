@@ -1,0 +1,72 @@
+<template>
+	<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+		aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+		<div class="slds-modal__container ">
+			<!-- modal header start if:true={isLoaded} -->
+			<div if:true={isLoaded}>
+				<lightning-spinner alternative-text="Loading....." variant="brand" size="medium" class="loaderContainer">
+				</lightning-spinner>
+			</div>
+
+			<header class="slds-modal__header">
+				<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                <lightning-icon icon-name="utility:close"
+                   alternative-text="close"
+                   variant="inverse"
+                   size="small" onclick={hideModalBox}></lightning-icon>
+                <span class="slds-assistive-text">Close</span>
+             </button>
+
+				<div
+					class="slds-box slds-box_x-small slds-align_absolute-center bgColor slds-text-heading_small slds-m-right_x-large">
+					<ul>
+						<li>
+							<div class="slds-text-heading_medium">Edit {empName} KRA Weightage</div>
+						</li><br/>
+						<li><span class={textColor}><b>Total Weightage :&nbsp;{totalWeightage}%</b></span></li>
+					</ul>
+				</div>
+			</header>
+			<div class="slds-modal__content slds-p-around_medium slds-scrollable" id="modal-content-id-1">
+				<table
+					class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped slds-border_left slds-border_right"
+					aria-label="Example table of Opportunities with striped rows">
+					<thead>
+						<tr class="slds-line-height_reset">
+							<th class="" scope="col">
+								<div class="" title="KRA Name">KRA</div>
+							</th>
+							<th class="" scope="col">
+								<div class="" title="Opportunity Name">KRA Weightage</div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<template for:each={allKRA} for:item="data" for:index="index">
+							<tr class="slds-hint-parent" key={data.Id}>
+								<td data-label="Account Name">
+									<div class="" title="">
+										{data.goalRespository.Name}
+									</div>
+								</td>
+								<td data-label="Account Name">
+									<div class="" title="">
+										<lightning-input name="kraWieghtage" data-index={index} type="number"
+											value={data.MaximunKRAWieghtage} onchange={handleChangeHandler} class=""
+											onkeypress={handleKeyPress}>
+										</lightning-input>
+									</div>
+								</td>
+							</tr>
+						</template>
+					</tbody>
+				</table>
+			</div>
+			<footer class="slds-modal__footer">
+				<button class="slds-button slds-button_neutral" onclick={hideModalBox}>Cancel</button>
+				<button class="slds-button slds-button_neutral" onclick={handleSubmit}>Submit</button>
+			</footer>
+		</div>
+	</section>
+	<div class="slds-backdrop slds-backdrop_open"></div>
+</template>

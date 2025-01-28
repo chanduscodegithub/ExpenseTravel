@@ -1,0 +1,454 @@
+.THIS {
+    font-family: 'Zoho';
+}
+
+:host {
+    --fontszoom: 0px;
+    /* Default zoom level */
+    --fontSz14: calc(14px + var(--fontszoom));
+    /* Adjust font size dynamically */
+
+}
+
+:host .footer {
+    color: initial !important; /* Reset the color */
+    font-size: inherit !important; /* Reset the font size */
+    text-align: inherit !important; /* Reset the text alignment */
+    margin: 0px !important; /* Reset the margin */
+}
+
+
+.custom-table tbody tr:hover {
+    background-color: #d7d2d2;
+    cursor: pointer;
+}
+
+@font-face {
+    font-family: 'Zoho';
+    src: url(/resource/ZohoFonts);
+}
+
+
+.slds-text-color_success {
+    color: #4caf50;
+}
+.slds-text-color_error {
+    color: #f44336;
+}
+
+/* Custom Table Styling */
+.custom-table-container {
+    overflow-x: auto;
+    max-width: 100%;
+    max-height: 79vh;
+    display: flex;
+    justify-content: center;
+}
+
+.custom-table {
+    width: 98%;
+    border-collapse: collapse;
+    text-align: left;
+    white-space: nowrap;
+    /* Prevents text wrapping */
+    table-layout: fixed;
+    height: 95%;
+}
+
+.custom-table th,
+.custom-table td {
+    text-align: left;
+    border: 1px solid #dcdcdc;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
+    vertical-align: middle;
+    word-wrap: break-word;
+    /* Ensures text wraps inside the cell */
+    overflow: hidden;
+    /* Prevents text from overflowing the cell */
+    text-overflow: ellipsis;
+    /* Adds ellipsis for truncated text */
+    white-space: nowrap;
+}
+
+.lastCol{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.lastCol2{
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+}
+
+.custom-table td {
+    background-color: white;
+    height: 63px;
+}
+
+.custom-table-container::-webkit-scrollbar {
+    height: 8px;
+    /* Customize horizontal scrollbar height */
+}
+
+.custom-table-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    /* Scrollbar color */
+    border-radius: 4px;
+}
+
+.custom-table th {
+    background-color: #e5e5f0;
+    font-weight: bold;
+    color: #8b919b;
+    height: 40px;
+}
+
+.custom-tabs {
+    margin: 1rem 0rem;
+    height: 94.5vh;
+    font-size: var(--fontSz14);
+    /* Dynamic font size */
+    -webkit-font-variant-ligatures: no-contextual;
+    background-color: #edf0f4;
+}
+
+.UploadFileContainer{
+    margin: 1rem 0rem 0rem 0rem;
+    padding: 0.2rem 0rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.UploadFileContainer:hover{
+    background:#f3fbf3;
+    cursor: pointer;
+    transform: scale(1.2); /* Enlarge the image 1.5 times */
+}
+
+.custom-table th:nth-child(3),
+.custom-table td:nth-child(3) {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 200px;
+    /* Sets a maximum width for the content */
+}
+
+.custom-table td:nth-child(1) {
+    display: grid;
+    grid-template-columns: 0.2fr 2fr;
+    justify-content: center;
+    align-items: center;
+    /* Sets a maximum width for the content */
+}
+/* Responsive Styling */
+@media (max-width: 768px) {
+
+    .custom-table th,
+    .custom-table td {
+        font-size: 0.875rem;
+    }
+}
+
+.table-row {
+    transition: background-color 0.3s;
+}
+.tab {
+    padding: 10px 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.tab:hover {
+    background-color: #e0e0e0;
+}
+
+.slds-truncate {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.custom-modal .custom-modal-container {
+    width: 65%; /* Increase width to 90% of the viewport */
+    max-width: 1200px; /* Set a maximum width */
+    /* height: 90vh;  Use 80% of the viewport height
+    max-height: 90vh; Prevent overflow beyond the viewport */
+    overflow: auto; /* Add scrolling for content overflow */
+}
+
+.custom-modal iframe {
+    width: 100%;
+    /* height: 90vh; */
+    display: flex
+}
+.imageContainer{
+    display: flex;
+    justify-content: center;
+}
+.name-column {
+    max-width: 400px; /* Set a larger width for the Name column */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.custom-green {
+    color: green !important;
+}
+
+.custom-red {
+    color: red !important;
+}
+.childContainer{
+    display: flex;
+    justify-content: center;
+    background: black;
+    flex-direction: column;
+}
+
+
+
+
+/* Align tabs and search bar */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px 1.6rem;
+}
+
+/* Tab styling */
+.tab-container {
+    display: flex;
+    gap: 10px;
+}
+
+.tab {
+    background-color: #f4f4f4;
+    border: 1px solid #dcdcdc;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tab:hover {
+    background-color: #e6e6e6;
+}
+
+.tab.active {
+    background-color: #0070d2;
+    color: white;
+    border: none;
+}
+
+/* Search bar positioning */
+.search-container {
+    flex-shrink: 0;
+    width: 50%;
+    display: grid;
+    grid-template-columns: 1fr 3.5fr;
+    justify-content: center;
+    align-items: center;
+}
+
+.headerContainer {
+    background-color: #f6b204;
+    color: black;
+    position: -webkit-sticky;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0rem;
+    border-radius: 4px;
+    border-bottom: 1px solid black;
+    z-index: 1080;
+}
+
+.comment{
+    border-radius: 5px;
+    min-height: 80px;
+    padding: 0.5rem;
+
+}
+
+.uploadInput{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.uploadNewFile{
+    width: 100%;
+    height: 100%;
+}
+
+.confirmationContainer{
+    height: 25%;
+    padding: 1rem;
+    max-height: calc(100vh-42rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #ffffff;
+}
+
+.commentContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* padding: 1rem; */
+    gap: 0.5rem;
+}
+
+/* Targeting the lightning-spinner to ensure no background */
+.pendingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent; /* Ensures the entire container has a transparent background */
+    z-index: 9999; /* Ensure it appears on top */
+}
+
+.uploadMessage {
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
+    background-color: transparent; /* Make sure the message has no background */
+}
+
+/* Remove background from the lightning-spinner */
+.spinnerContainer lightning-spinner {
+    background-color: transparent !important; /* This ensures that the spinner background is transparent */
+    top: 8%;
+}
+
+.uploadContainer{
+    height: 40%;
+    max-height: calc(100vh-42rem);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #ffffff;
+}
+
+.buttonContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: end;
+}
+
+.search-input {
+    width: 200px; /* Adjust size of the search bar */
+    margin: 0; /* Remove default margins */
+}
+
+
+.flag-icon {
+    width: 30px;
+    height: auto;
+    vertical-align: middle;
+}
+
+.forceAccess .footer{
+    margin:0px !important;
+}
+
+.row-icon{
+    height: auto;
+    vertical-align: middle;
+    transition: transform 0.3s ease; /* Smooth animation */
+}
+
+.upload-icon{
+    width: 30%;
+    height: auto;
+    vertical-align: middle;
+    transition: transform 0.3s ease; /* Smooth animation */
+}
+
+.row-icon:hover {
+    transform: scale(1.2); /* Enlarge the image 1.5 times */
+    cursor: pointer; /* Show pointer cursor on hover */
+}
+
+
+.searchContainer {
+    position: relative; /* Position relative to align the dropdown below the input */
+}
+
+.search-input {
+    width: 100%; /* Ensure input takes up the full width of its parent container */
+}
+
+.results-dropdown {
+    position: absolute; /* Position the dropdown below the search input */
+    width: 100%;
+    background-color: white; /* Dropdown background color */
+    border: 1px solid #ccc; /* Border for the dropdown */
+    border-top: none; /* Remove the top border */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    max-height: 300px; /* Set a max height for the dropdown */
+    overflow-y: auto; /* Enable vertical scrolling */
+    z-index: 10; /* Ensure the dropdown appears above other elements */
+}
+
+.results-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.result-item {
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 0.1fr 1fr;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid dimgray;
+    align-items: center;
+}
+
+.result-item:hover {
+    background-color: #f1f1f1; /* Highlight the item on hover */
+}
+
+.result-item:active {
+    background-color: #ddd; /* Slightly darker on click */
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+    font-size: 14px; /* Ensure visibility */
+}
+
+
+
+.no-results-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}

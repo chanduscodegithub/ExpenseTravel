@@ -1,0 +1,10 @@
+.spinHolder{
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+
+.borderbottom {
+	border-bottom: 1px solid rgb(204, 204, 204);
+}

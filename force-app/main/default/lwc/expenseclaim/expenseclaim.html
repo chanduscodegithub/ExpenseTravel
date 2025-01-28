@@ -1,0 +1,204 @@
+<template>
+    <div class="custom-tabs" if:false={detailView}>
+        <div class="tab-header">
+            <button class="tab-button active" data-tab="Myexpenseclaims" onclick={switchTab}>
+                    My Expense Claims
+                </button>
+            <button class="tab-button" data-tab="Myteamexpenseclaims" onclick={switchTab}>
+                  My Team's Expense Claims 
+                </button>
+        </div>
+        <div class="tab-content">
+            <div class="tab-panel active" data-tab="Myexpenseclaims">
+                <div class="custom-tabs">
+                    <div class="header-actions slds-p-around_medium">
+                        <lightning-button label="Add Record" variant="brand" onclick={openModal}
+                            class="slds-m-left_xx-small" if:false={showRecord}></lightning-button>
+                    </div>
+                    <div class="custom-table-container" lwc:if={showList}>
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:38px;">
+                                        <input type="checkbox" onclick={handleSelectAll}></input>
+                                    </th>
+                                    <th style="width:170px;">Status</th>
+                                    <th style="width:270px;">Approver</th>
+                                    <th style="width:150px;">Approver Time</th>
+                                    <th style="width:270px;">Employee Name</th>
+                                    <th style="width:210px;">Expense Category</th>
+                                    <th style="width:150px;">Expense Requesting Date</th>
+                                    <th style="width:100px;">Currency </th>
+                                    <th style="width:150px;">Bill Amount</th>
+                                    <th style="width:150px;">Bill Number</th>
+                                    <th style="width:210px;">Employee Comments</th>
+                                    <th style="width:110px;">Department</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={accounts} for:item="accounts" lwc:if={accounts.length}>
+                                    <tr key={accounts.Id} data-id={accounts.Id} onclick={handleRowAction}
+                                        data-expense-requesting-date={accounts.Expense_Requesting_Date__c}
+                                        data-expense-category={accounts.Expense_Category__c}
+                                        data-employee-name={accounts.Employee_Name} data-currency={accounts.Currency__c}
+                                        data-employee-comments={accounts.Employee_Comments__c}
+                                        data-department={accounts.Department__c}
+                                        data-bill-amount={accounts.Bill_Amount__c} data-status={accounts.Status__c}
+                                        class="table-row">
+                                        <td>
+                                            <input type="checkbox"  onchange={handleRowSelection}></input>
+                                        </td>
+                                        <td>
+                                            <svg class="status-icon" fill="#0ebc6b" viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                style="width: 25px; height: 25px;background-color:white;">
+                                                <path
+                                                    d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm5.676,8.237-6,5.5a1,1,0,0,1-1.383-.03l-3-3a1,1,0,1,1,1.414-1.414l2.323,2.323,5.294-4.853a1,1,0,1,1,1.352,1.474Z">
+                                                </path>
+                                            </svg>
+                                        </td>
+                                        <td>Vineet Kishore</td>
+                                        <td>27th Jan 2024, 10:11 PM</td>
+                                        <td>{accounts.Employee_Name}</td>
+                                        <td>{accounts.Expense_Category__c}</td>
+                                        <td>{accounts.Expense_Requesting_Date__c}</td>
+                                        <td>{accounts.Currency__c}</td>
+                                        <td>{accounts.Bill_Amount__c}</td>
+                                        <td>13213213123123(BIll NUmber)</td>
+                                        <td>Employee COmments</td>
+                                        <td>{accounts.Department__c}</td>
+                                    </tr>
+                                </template>
+                                <template lwc:else>
+                                    No Records Found
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <template if:true={detailView}>
+        <c-expense-details category={categry} department={depatment} employee-name={empname}
+            total-bill-amount={tbillamount} expense-date={expdate} currency={curre} employee-comments={empcomments}
+            bills={billsdata} itemlist={itemList} workitemid={selectedWorkItemId} lwc:if={showRecord}
+            onclosedetail={closeDetail} showbuttons=false>
+        </c-expense-details>
+    </template>
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon> 
+                        <span class="slds-assistive-text">Close</span> 
+                    </button>
+                    <h2 class="slds-text-heading_medium">Expense Claim Details</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-record-edit-form object-api-name="Expense_Claim__c" record-id={recordId}
+                        onsuccess={handleSuccess}>
+                        <lightning-messages></lightning-messages>
+                        <div class="slds-grid slds-wrap">
+                            <template for:each={fields} for:item="field">
+                                <div class="slds-col slds-size_6-of-12" key={field}>
+                                    <lightning-input-field field-name={field.name} value={field.value} name={field.name}
+                                        required={field.label} disabled={field.readonly} onchange={handleEmailChange}>
+                                    </lightning-input-field>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="slds-box slds-box_xx-small"
+                            style="background-color: #f3f3f3; padding: 0.4rem; border-radius: 0.25rem;text-align: center;">
+                            <p style="font-weight: bold; font-size: 1.05rem;">Supporting Documentation</p>
+                        </div>
+                        <template for:each={itemList} for:item="item" for:index="index">
+                            <div key={item.id}>
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_2-of-8">
+                                        <template if:false={item.status}>
+                                            <lightning-input type="file"
+                                                accept=".xlsx, .xls, .csv, .png, .doc, .docx, .pdf" label="Attach bills"
+                                                onchange={openfileUpload} data-index={index}>
+                                            </lightning-input>
+                                            <div style="margin-top: 0.5rem; font-size: 0.85rem; color: green;">
+                                                {item.filename} </div>
+                                            <!--<lightning-icon icon-name="action:check" size="small"></lightning-icon>-->
+                                        </template>
+                                        <template if:true={item.status}>
+                                            <label >File Link</label>
+                                            <br/>
+                                            <div style="margin-top: 0.5rem; font-size: 0.85rem; color: green;">
+
+                                                <a href={item.url} target="_blank">{item.filename}</a>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div class="slds-col slds-size_2-of-8">
+                                        <lightning-input label="Comments" type="text" name="comments" data-index={index}
+                                            value={item.comments} variant="label-stacked" onchange={handleChange}
+                                            disabled={item.status}>
+                                        </lightning-input>
+
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-8">
+
+                                        <lightning-input class="dateVal" label="Amount Spend date" type="date"
+                                            name="Amount Spend date" data-index={index} value={item.amtsptdate}
+                                            variant="label-stacked" onchange={handleChange} disabled={item.status}>
+                                        </lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-8">
+
+                                        <lightning-input label="Bill Amount" type="number" name="billamount"
+                                            data-index={index} value={item.billamount} variant="label-stacked"
+                                            onchange={handleChange} disabled={item.status}></lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-8">
+
+                                        <lightning-input label="Bill Number" type="text" name="Billnumber"
+                                            data-index={index} value={item.billnumber} variant="label-stacked"
+                                            onchange={handleChange} disabled={item.status}></lightning-input>
+                                    </div>
+                                    <div class="slds-col .slds-size_1-of-8">
+                                        <div class="slds-p-top_medium slds-float_right">
+
+                                            <lightning-icon icon-name="action:new" access-key={item.id} id={index}
+                                                alternative-text="Add Row" size="small" title="Add Row"
+                                                onclick={addRow}>
+                                            </lightning-icon>
+                                            &nbsp; &nbsp;
+                                            <lightning-icon icon-name="action:delete" access-key={item.id} id={index}
+                                                alternative-text="Delete Row" size="small" title="Delete Row"
+                                                onclick={removeRow}>
+                                            </lightning-icon>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <footer class="slds-m-top_large slds-grid slds-grid_align-center slds-align--absolute-center">
+                            <lightning-button variant="brand" label="Save as Draft" type="Submit" onclick={handlenext}
+                                name="Draft">
+                            </lightning-button>
+                            &nbsp;&nbsp;
+                            <lightning-button variant="brand" type="Submit" name="Submit" label="Submit"
+                                onclick={handlenext}>
+                            </lightning-button>
+                            &nbsp;&nbsp;
+                            <lightning-button variant="brand" label="Cancel" type="button" onclick={closeModal}>
+                            </lightning-button>
+                        </footer>
+                    </lightning-record-edit-form>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <div class="tab-panel slds-hide" data-tab="Myteamexpenseclaims">
+        <c-my-team-expenseclaimview> </c-my-team-expenseclaimview>
+    </div>
+</template>

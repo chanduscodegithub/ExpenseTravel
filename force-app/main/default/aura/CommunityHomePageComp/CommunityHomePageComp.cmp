@@ -1,0 +1,30 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <lightning:card variant="Narrow" title="" >
+        <p class="slds-p-horizontal_small">
+            <lightning:accordion allowMultipleSectionsOpen="true"
+                                 activeSectionName="Project will close in 15 days" >
+                <lightning:accordionSection name="Project will close in 15 days" label="Project will close in Next 15 days">
+                    <c:ProjectwillcloseinNext7days/>
+                </lightning:accordionSection>
+            </lightning:accordion>
+             <lightning:accordion allowMultipleSectionsOpen="true"
+                                 activeSectionName="team allocation" >
+                <lightning:accordionSection name="team allocation" label="team allocation will close in Next 15 days">
+                      <c:TAwillendinNext15daysCmp/>
+                </lightning:accordionSection>
+            </lightning:accordion>
+             <lightning:accordion allowMultipleSectionsOpen="true"
+                                 activeSectionName="Support Request Pending" >
+                <lightning:accordionSection name="Support Request Pending" label="Support Request Pending">
+                    <c:SupportRequestComp/>
+                </lightning:accordionSection>
+            </lightning:accordion>
+            <lightning:accordion allowMultipleSectionsOpen="true"
+                                 activeSectionName="Team Allocation without KPI's" >
+                <lightning:accordionSection name="Team Allocation without KPI's" label="Team Allocation without KPI's">
+                    <c:TAwithoutKPIsComp/>
+                </lightning:accordionSection>
+            </lightning:accordion>
+        </p>
+    </lightning:card>
+</aura:component>

@@ -1,0 +1,127 @@
+<template>
+
+    <div class="resignation-container">
+        <div class="resignation-details">
+            <div class="header">
+                <h2>My Travel Request Details</h2>
+                <div class="header-button slds-p-around_medium">
+                    <lightning-button label="Approve" variant="brand" onclick={handleApprove} ></lightning-button>
+             <lightning-button label="Reject" variant="destructive" onclick={handleReject} ></lightning-button>
+                </div>
+               
+               
+            </div>
+            
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Destination</span>
+                        <span class="detail-value">{destination}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Purpose of Visit</span>
+                        <span class="detail-value">{purposeofvisit}</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Date of Departure</span>
+                        <span class="detail-value">{dateofdeparture}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Date of return</span>
+                        <span class="detail-value">{dateofreturn}</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Travel type</span>
+                        <span class="detail-value">{traveltype}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Mode of Transport</span>
+                        <span class="detail-value">{modeoftransport}</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Billed to customer</span>
+                        <span class="detail-value">{billedtocustomer}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Customer</span>
+                        <span class="detail-value">{customer}</span>
+                    </div>
+                   
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Department</span>
+                        <span class="detail-value">{department}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Description</span>
+                        <span class="detail-value">{description}</span>
+                    </div>
+                   
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Currency</span>
+                        <span class="detail-value">{currencu}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Requested amount</span>
+                        <span class="detail-value">{requestedamount}</span>
+                    </div>
+                   
+                </div>
+                 <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Do you have existind travel card</span>
+                        <span class="detail-value">{existingcard}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Travel card number</span>
+                        <span class="detail-value">{cardnumber}</span>
+                    </div>
+                 </div>
+                    <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Employee</span>
+                        <span class="detail-value">{employee}</span>
+                    </div>
+                   
+                </div>
+              
+            
+              <template if:true={bills}>
+            <div class="slds-box slds-theme_default">
+                <div class="section-title">Travel Request Bills</div>
+                <table class="slds-table slds-table_bordered slds-table_striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"><span class="slds-text-title_caps">Bills</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={itemlist} for:item="bill">
+                            <tr key={bill.id}>
+                                <td><a href={bill.url} target="_blank">{bill.filename}</a></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+            <footer class="slds-card__footer">
+                <lightning-button label="Close" onclick={handleCloseCard} variant="brand"></lightning-button>
+            </footer>
+        </div>
+    </div>
+
+    
+   
+        <!-- Bills Section -->
+      
+    
+</template>

@@ -1,0 +1,72 @@
+<template>
+
+    <template if:true={isDataLoaded}>
+        <!-- <c-training-and-enablement-plan oncallparentconnect={connectedCallback}></c-training-and-enablement-plan> -->
+        <lightning-card variant="narrow" title="" icon-name="standard:opportunity">
+            <div class="slds-text-heading_medium" slot="title">Avishkaar-DreamDrive360-<i><span class="logo">"Discover a realm where dreams unfurl and possibilities awaken"</span></i></div>
+            <div class="slds-text-heading_small"> &nbsp; &nbsp;&nbsp;Career Development and Enablement</div>
+        </lightning-card>
+
+        <section class="slds-card">
+            <div class="container">
+                <div class="slds-card__header">
+                    <!-- First Row -->
+                    <div class="slds-grid slds-gutters slds-text-align_center">
+                        <div class="slds-col slds-size_1-of-4">
+                            <p class="employee-heading">Employee Name</p>
+                            <p>{employeeDetails.Name}</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-4">
+                            <p class="employee-heading">Current Designation</p>
+                            <p>{employeeDetails.Designation__r.Name}</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-4">
+                            <p class="employee-heading">Corporate Level</p>
+                            <p>{employeeDetails.Grade__c}</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-4">
+                            <p class="employee-heading">Corporate Band</p>
+                            <p>{employeeDetails.Corporate_Band__c}</p>
+                        </div>
+                    </div>
+
+                    <!-- Second Row -->
+                    <div class="slds-grid slds-gutters slds-text-align_center">
+                        <div class="slds-col slds-size_1-of-4">
+                            <p class="employee-heading">Employee ID</p>
+                            <p>{employeeDetails.EmployeeID__c}</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-4">
+                            <p class="employee-heading">Employee Location</p>
+                            <p>{employeeDetails.Country__c}</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-4">
+                            <p class="employee-heading">Reporting Manager</p>
+                            <p>{employeeReportingManagerName}</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-4">
+                            <p class="employee-heading">Cost Center Manager</p>
+                            <p>{employeeCCMName}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <lightning-tabset>
+                    <lightning-tab label="Career Development">
+                        <c-career-development-plan-comp cdp-complete-details={cdpCompleteDetails} emp-id={empId} is-editable={isEditableCareer} oncallparentconnect={refreshData} fromgoalsetting={isFromGoalSetting} oncallcancel={handleCancelGS}></c-career-development-plan-comp>
+                    </lightning-tab>
+                    <lightning-tab label="Training & Enablement Plans">
+                        <c-training-and-enablement-plan cdep-complete-details={cdepCompleteDetails} emp-id={empId} is-editable={isEditableTraining} oncallparentconnect={refreshData} fromgoalsetting={isFromGoalSetting} oncallcancel={handleCancelGS}></c-training-and-enablement-plan>
+                    </lightning-tab>
+                </lightning-tabset>
+            </div>
+        </section>
+
+    </template>
+
+    <template if:false={isDataLoaded}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+
+</template>

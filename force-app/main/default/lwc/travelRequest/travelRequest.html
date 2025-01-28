@@ -1,0 +1,20 @@
+<template>
+        <div class="custom-tabs">
+            <div class="tab-header">
+                <button class="tab-button active" data-tab="Mytravelrequests" onclick={switchTab}>
+                    My Travel Requests
+                </button>
+                <button class="tab-button" data-tab="Myteamtravelrequests" onclick={switchTab}>
+                  My Team's  Travel Requests 
+                </button>
+            </div>
+            <div class="tab-content">
+                <div class="tab-panel active" data-tab="Mytravelrequests">
+                    <c-mytravelrequestview></c-mytravelrequestview>
+                </div>
+                <div class="tab-panel slds-hide" data-tab="Myteamtravelrequests">
+                    <c-myteamtravelrequestview> </c-myteamtravelrequestview>
+                </div>
+            </div>
+        </div>
+    </template>

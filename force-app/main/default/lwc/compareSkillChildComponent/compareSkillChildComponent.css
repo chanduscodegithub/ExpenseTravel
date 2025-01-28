@@ -1,0 +1,6 @@
+p {
+    font-weight: var(--lwc-fontWeightBold);
+}
+li {
+    color: red;
+}

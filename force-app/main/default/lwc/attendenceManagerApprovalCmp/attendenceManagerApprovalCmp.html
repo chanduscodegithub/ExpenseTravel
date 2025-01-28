@@ -1,0 +1,117 @@
+<template>
+	<template if:false={isShowModalParent}>
+		<article class="slds-card slds-m-top_small">
+			<div class="slds-card__header slds-grid">
+				<header class="slds-media slds-media_center slds-has-flexi-truncate">
+					<div class="slds-media__figure">
+					</div>
+					<div class="slds-media__body">
+
+					</div>
+					<div class="slds-no-flex">
+						<button class="slds-button slds-button_success color-icon slds-text-title_bold" onclick={handleRegularizationCall}>Manager Regularization Approval</button>
+					</div>
+				</header>
+			</div>
+		</article>
+	</template>
+	<template if:true={isShowModalParent}>
+		<div class="slds-m-top_small">
+		<lightning-card title="Manager Regularization Component">
+			<lightning-tabset>
+				<lightning-tab label="Waiting for Approval" title="Waiting for Approval">
+					<template if:true={wfaEmpResults}>
+						<lightning-datatable data={wfaEmpResults} columns={wfaColumn} key-field="atdId"
+							sorted-by={sortBy} sorted-direction={sortDirection} onsort={doSorting}>
+
+						</lightning-datatable>
+						<!--class="slds-p-top_small slds-float_right"-->
+						<footer class="slds-modal__footer">
+							<lightning-button variant="brand" name="approve" label="Approve"
+								title="Click approve the regularization" onclick={showPopUp}
+								class="slds-m-left_x-small">
+							</lightning-button>
+							<lightning-button variant="brand" name="reject" label="Reject"
+								title="Click reject the regularization" onclick={showPopUp} class="slds-m-left_x-small">
+							</lightning-button>
+							<lightning-button variant="brand" name="cancel" label="Cancel"
+								title="Click here go back to list" onclick={hideModalBoxParent}
+								class="slds-m-left_x-small">
+							</lightning-button>
+
+						</footer>
+					</template>
+				</lightning-tab>
+				<lightning-tab label="Approved List" title="Approved List">
+					<template if:true={apprEmpResults}>
+						<lightning-datatable data={apprEmpResults} columns={appdColumn} key-field="atdId"
+							hide-checkbox-column>
+						</lightning-datatable>
+					</template>
+				</lightning-tab>
+				<lightning-tab label="Rejected List" title="Rejected List">
+					<template if:true={rejectedDetails}>
+						<lightning-datatable data={rejectedDetails} columns={rejectesColumn} key-field="atdId"
+							hide-checkbox-column>
+						</lightning-datatable>
+					</template>
+				</lightning-tab>
+			</lightning-tabset>
+		</lightning-card>
+
+		<!--<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true"
+			aria-describedby="modal-content-id-02" class="slds-modal slds-fade-in-open">
+			<div class="slds-modal__container">
+				<header class="slds-modal__header">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                <lightning-icon icon-name="utility:close"
+                   alternative-text="close"
+                   variant="inverse"
+                   size="small" onclick={hideModalBoxParent} class="color-icon"></lightning-icon>
+                <span class="slds-assistive-text">Close</span>
+             </button>
+					<h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Manager Regularization
+						Approval</h2>
+				</header>
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+
+				</div>
+				<footer class="slds-modal__footer">
+					<button class="slds-button slds-button_neutral" onclick={hideModalBoxParent}>Cancel</button>
+				</footer>
+			</div>
+		</section>-->
+		</div>
+	</template>
+
+
+
+	<template if:true={isShowModal}>
+		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+			aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+			<div class="slds-modal__container">
+				<header class="slds-modal__header">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                <lightning-icon icon-name="utility:close"
+                   alternative-text="close"
+                   variant="inverse"
+                   size="small" onclick={hideModalBox} ></lightning-icon>
+                <span class="slds-assistive-text">Close</span>
+             </button>
+					<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate"></h2>
+				</header>
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+					<lightning-textarea name="Comments" label="Manager Commnets"
+						placeholder="Please Enter If you Have any comments" value={ManagerCommnets}
+						onchange={handleManagerCmt}></lightning-textarea>
+				</div>
+				<footer class="slds-modal__footer">
+					<button class="slds-button slds-button_neutral" onclick={approveOrReject}>{buttonLable}</button>
+					<button class="slds-button slds-button_neutral" onclick={hideModalBox}>Cancel</button>
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</template>
+
+</template>

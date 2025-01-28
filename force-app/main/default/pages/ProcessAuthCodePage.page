@@ -1,0 +1,10 @@
+<apex:page showHeader="false" sidebar="false" controller="ProcessAuthCodeController">
+    <script>
+        if (parent) {
+            parent.postMessage({ authCode: '{!authCode}' }, '*');
+            window.close();
+        } else {
+            alert('Authorization code: {!authCode}');
+        }
+    </script>
+</apex:page>

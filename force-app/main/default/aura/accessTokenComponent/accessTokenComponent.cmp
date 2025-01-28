@@ -1,0 +1,68 @@
+<aura:component controller="googleAuthService" implements="lightning:isUrlAddressable,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+      <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="accessToken" type="String" />
+    <aura:attribute name="access" type="String" />
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    <aura:attribute name="title" type="String" default="Purge Timesheet Approval Files"/>
+    <aura:attribute name="progress" type="Integer" default="0"/>
+    <aura:attribute name="apexJob" type="AsyncApexJob"/>
+    <aura:attribute name="spinner" type="boolean" default="FALSE"/>
+
+    <lightning:card>
+        <aura:set attribute="title">
+            <lightning:icon iconName="doctype:folder" size="small"/>&nbsp;
+            {! v.title }
+        </aura:set>'
+        <div class="buttons">
+          
+         <p class="margin-bottom"> 1. Sign In with Configured Google Account and Authorize Google Drive API </p>
+         
+        <lightning:button variant="brand" label="Authorize" title="Access Button" onclick="{! c.openSmallWindow }" class="auth-button"/>
+                <p>
+                    {!access}
+                </p>
+            <br/>
+         <p class="margin-bottom"> 2. Authorize initially and then Click to upload files to the GDrive and delete from SF</p>
+           
+        <lightning:button variant="brand" label="Purge Script" title="Purge Script" onclick="{!c.executeBatch}" class="purge-button"/>  
+           
+        </div>
+    </lightning:card>
+    <aura:if isTrue="{!v.isModalOpen}">
+             
+            <!-- Modal/Popup Box starts here-->
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- Modal/Popup Box Header Starts here-->
+                    <header class="slds-modal__header">
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Purging Scripts</h2>
+                    </header>
+                    <!--Modal/Popup Box Body Starts here-->
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                      
+        <aura:if isTrue="{!v.apexJob != null}">
+            <aura:if isTrue="{!v.apexJob.JobItemsProcessed != v.apexJob.TotalJobItems}">
+                Processing {!v.apexJob.JobItemsProcessed} of {!v.apexJob.TotalJobItems}
+                <lightning:progressBar value="{!v.progress}" size="large" variant="circular"/>
+            </aura:if>
+            <aura:if isTrue="{!v.apexJob.Status == 'Completed'}">
+                <h2>Completed with {!v.apexJob.NumberOfErrors} errors.</h2>
+            </aura:if>
+            
+        </aura:if>  
+                    </div>
+                    <!--Modal/Popup Box Footer Starts here-->
+                    <aura:if isTrue="{!v.apexJob.Status == 'Completed'}">
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"
+                                          label="Close"
+                                          title="Close"
+                                          onclick="{! c.closeModal }"/>
+                        
+                    </footer>
+                    </aura:if>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+</aura:component>

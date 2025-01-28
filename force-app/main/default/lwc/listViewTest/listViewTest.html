@@ -1,0 +1,320 @@
+<template>
+    <div class="exampleHolder" if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </div>
+
+
+    <!-- <lightning-card style="margin-top: 0%;"> -->
+        <template if:false={isLoading}>
+        <div class="slds-page-header slds-page-header_object-home" style="background-color: white;">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-account">
+                                <lightning-icon icon-name="custom:custom90" size="medium"></lightning-icon>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <p class=" slds-line-height_reset">
+                                Timesheet Approvals</p>
+                                    
+                                       <div class="slds-grid">
+                                        <div class="triggerLinkTextAndIconWrapper slds-page-header__name slds-col">
+                                            <div class="slds-page-header__name-title">
+                                                <h1>
+                                                    <span class="triggerLinkText selectedListView slds-page-header__title">
+                                                        <lightning-combobox 
+                                                            class="custom-combobox-container"
+                                                            variant="label-hidden" 
+                                                            value={selectedValue}
+                                                            options={options} 
+                                                            onchange={handleChange}>
+                                                        </lightning-combobox>
+                                                    </span>
+                                                </h1>
+                                            </div>
+                                        </div>
+                                      
+                                     
+                                    </div>
+                              </div>  
+                              </div>     
+                                        <div class="slds-col slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-var-p-vertical_xx-small">
+                                            <p class="slds-col">{totalApprovals} items • Updated {minutesSinceLastUpdate} </p>
+                                            <div class="slds-col slds-grid slds-grid_align-space slds-grid_vertical-align-center slds-gutters_direct-xx-small">
+                                                <lightning-input
+                                                type="search"
+                                                placeholder="Search this list..."
+                                                name="search-list-input"
+                                                aria-controls="listview-01"
+                                                aria-label="Search List"
+                                                label="Search List"
+                                                variant="label-hidden"
+                                                class="slds-col"
+                                                onchange={handleSearchKeyChange}
+                                              ></lightning-input>
+                                                                        
+                                            
+                                                
+                                           
+                                        </div>
+                                        
+                                   </div>     
+                       
+                    
+                </div>
+            </div>
+        </div>
+    
+      
+
+        <!-- <div class="mainTab"> -->
+           
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer css-serial ">
+                
+                <thead>
+                    
+                    <tr>
+                        
+                        <th scope="col" >
+                            <div class="slds-truncate"></div>
+                        </th>
+                        <th scope="col" class="slds-resizable" data-id="Name" value="Name" onclick={sortRecs} onmouseover={handleHoverIn} onmouseout={handleHoverOut}>
+                            <a class="slds-th__action slds-text-link_reset" role="button" tabindex="0" >
+                            <div class="slds-truncate" title="Timesheet Approver Name">Timesheet Approval Name</div>
+                            <!-- <div class="sortable"> -->
+                            <lightning-icon icon-name="utility:arrowup"  size="x-small"  if:true={nameUpBool}></lightning-icon>
+
+                            <lightning-icon icon-name="utility:arrowdown"  size="x-small"  if:true={nameDWBool}></lightning-icon>
+                            <!-- </div> -->
+                        </a>
+                            
+                            <input type="range" min="60" max="3840" class="slds-resizable__input slds-assistive-text keyboardMode--skipArrowNavigation keyboardMode--pauseOnFocus" aria-label="Timesheet Approver Name Column Width" />
+                            <span class="slds-resizable__handle"><span class="slds-resizable__divider"></span></span>
+                        </th>
+                        <th scope="col" class="slds-resizable" data-id="Week_Start_Date__c" onclick={sortRecs} onmouseover={handleHoverIn} onmouseout={handleHoverOut}>
+                            <a class="slds-th__action slds-text-link_reset "  role="button" tabindex="0">
+                                <div class="slds-truncate" title="Week Start Date">Week Start Date</div>
+                                <!-- <div class="sortable"> -->
+                                <lightning-icon icon-name="utility:arrowup"   size="x-small" if:true={weekUpBool}></lightning-icon>
+                                <lightning-icon icon-name="utility:arrowdown" size="x-small" if:true={weekDWBool}></lightning-icon>
+                                    <!-- </div> -->
+                                    
+                                    
+                            </a>
+                           
+                            
+                            <input type="range" min="60" max="3840" class="slds-resizable__input slds-assistive-text keyboardMode--skipArrowNavigation keyboardMode--pauseOnFocus" aria-label="Week Start Column Width" />
+                            <span class="slds-resizable__handle"><span class="slds-resizable__divider"></span></span>
+                        </th>
+                        
+                        <th scope="col" class="slds-resizable" data-id="Employee__r.Name" onclick={sortRecs}  onmouseover={handleHoverIn} onmouseout={handleHoverOut}>
+                            <a class="slds-th__action slds-text-link_reset"  role="button" tabindex="0">
+                                <div class="slds-truncate" title="Employee">Employee</div>
+                                <lightning-icon icon-name="utility:arrowup" size="x-small" if:true={empUpBool}></lightning-icon>
+                                <lightning-icon icon-name="utility:arrowdown" size="x-small" if:true={empDWBool}></lightning-icon>
+                            </a>
+                            
+                            <input type="range" min="60" max="3840" class="slds-resizable__input slds-assistive-text keyboardMode--skipArrowNavigation keyboardMode--pauseOnFocus" aria-label="Employee  Column Width" />
+                            <span class="slds-resizable__handle"><span class="slds-resizable__divider"></span></span>
+                        </th>
+                        <th scope="col" class="slds-resizable" data-id="Approval_Status__c" onclick={sortRecs}  onmouseover={handleHoverIn} onmouseout={handleHoverOut}>
+                            <a class="slds-th__action slds-text-link_reset"  role="button" tabindex="0">
+                                <div class="slds-truncate" title="Approval Status">Approval Status</div>
+                                <lightning-icon icon-name="utility:arrowup" size="x-small" if:true={statusUpBool}></lightning-icon>
+                                <lightning-icon icon-name="utility:arrowdown" size="x-small" if:true={statusDWBool}></lightning-icon>
+                            </a>
+                            
+                            <input type="range" min="60" max="3840" class="slds-resizable__input slds-assistive-text keyboardMode--skipArrowNavigation keyboardMode--pauseOnFocus" aria-label="Approval Status Column Width" />
+                            <span class="slds-resizable__handle"><span class="slds-resizable__divider"></span></span>
+                        </th>
+                        <th scope="col" class="slds-resizable" data-id="Customer_Engagement__r.Name" onclick={sortRecs} onmouseover={handleHoverIn} onmouseout={handleHoverOut}>
+                            <a class="slds-th__action slds-text-link_reset" role="button" tabindex="0">
+                                <div class="slds-truncate" title="Customer Engagement">Customer Engagement</div>
+                                <lightning-icon icon-name="utility:arrowup" size="x-small" if:true={custEnUpBool}></lightning-icon>
+                                <lightning-icon icon-name="utility:arrowdown" size="x-small" if:true={custEnDWBool}></lightning-icon>
+                            </a>
+                            
+                            <input type="range" min="60" max="3840" class="slds-resizable__input slds-assistive-text keyboardMode--skipArrowNavigation keyboardMode--pauseOnFocus" aria-label="Customer Engagement Column Width" />
+                            <span class="slds-resizable__handle"><span class="slds-resizable__divider"></span></span>
+                        </th>
+                        <th scope="col" class="slds-resizable" data-id="Total_Hours__c" onclick={sortRecs}  onmouseover={handleHoverIn} onmouseout={handleHoverOut}>
+                            <a class="slds-th__action slds-text-link_reset"  role="button" tabindex="0">
+                                <div class="slds-truncate" title="Total Hours">Total Hours</div>
+                                <lightning-icon icon-name="utility:arrowup" size="x-small" if:true={hoursUpBool}></lightning-icon>
+                                <lightning-icon icon-name="utility:arrowdown" size="x-small" if:true={hoursDWBool}></lightning-icon>
+                            </a>
+                           
+                            <input type="range" min="60" max="3840" class="slds-resizable__input slds-assistive-text keyboardMode--skipArrowNavigation keyboardMode--pauseOnFocus" aria-label="Total Hours Column Width" />
+                            <span class="slds-resizable__handle"><span class="slds-resizable__divider"></span></span>
+                            </th>
+                        <th scope="col" class="slds-resizable" data-id="Approver__r.Name" onclick={sortRecs}  onmouseover={handleHoverIn} onmouseout={handleHoverOut}>
+                            <a class="slds-th__action slds-text-link_reset" role="button" tabindex="0">
+                                <div class="slds-truncate" title="Approver">Approver</div>
+                                <lightning-icon icon-name="utility:arrowup" size="x-small" if:true={approUpBool}></lightning-icon>
+                                <lightning-icon icon-name="utility:arrowdown" size="x-small" if:true={approDWBool}></lightning-icon>
+                            </a>
+                            
+                            <input type="range" min="60" max="3840" class="slds-resizable__input slds-assistive-text keyboardMode--skipArrowNavigation keyboardMode--pauseOnFocus" aria-label="Approver Column Width" />
+                            <span class="slds-resizable__handle"><span class="slds-resizable__divider"></span></span>
+                            </th>
+                            
+                                <th scope="col" class="slds-resizable">
+                                    <div class="slds-truncate" title="Action">Action</div>
+                                    <input type="range" min="60" max="3840" class="slds-resizable__input slds-assistive-text keyboardMode--skipArrowNavigation keyboardMode--pauseOnFocus" aria-label="Action Column Width" />
+                                    <span class="slds-resizable__handle"><span class="slds-resizable__divider"></span></span>
+                                    </th>
+                            </tr>
+                            </thead>
+                            <tbody class="slds-scrollable_y">
+                            <template for:each={approvals} for:item="approval" for:index="index">
+                            <tr key={approval.Id}>
+                                <td  class="slds-truncate" style="width: 50px;">
+                                 </td>
+                                <td data-label="Timesheet Approver Name" class="slds-truncate" title={approval.Name}> <a href={approval.url} target="_blank">{approval.Name}</a></td>
+                             
+                                <td data-label="Week Start Date" class="slds-truncate" title={approval.Week_Start_Date__c}><lightning-formatted-date-time
+                                    value={approval.Week_Start_Date__c}
+                                    format-style="short"
+                                    format-pattern="d MMM yyyy"
+                                     >
+                                </lightning-formatted-date-time></td>
+                                <td data-label="Employee" class="slds-truncate" title={approval.Employee__r.Name}><a href={approval.eurl} target="_blank">{approval.Employee__r.Name}</a></td>
+
+                            <td data-label="Approval Status" class="slds-truncate" title={approval.Approval_Status__c}>{approval.Approval_Status__c}</td>
+                            
+                            <td data-label="Customer Engagement" class="slds-truncate" title={approval.Customer_Engagement__r.Name}><a href={approval.ceurl} target="_blank">{approval.Customer_Engagement__r.Name}</a></td>
+                            <!-- <td data-label="Created Date" class="slds-truncate" title={approval.Timesheet__r.Name}><a href={approval.turl} target="_blank">{approval.Timesheet__r.Name}</a></td> -->
+                            <td data-label="Total Hours" class="slds-truncate" title={approval.Total_Hours__c}>{approval.Total_Hours__c}</td>
+                            <td data-label="Approver" class="slds-truncate" title={approval.Approver__r.Name}><a href={approval.aurl} target="_blank">{approval.Approver__r.Name}</a></td>
+                            
+                            <td data-label="Action" class="slds-truncate">
+                                <lightning-button label="Approve/Reject" onclick={openModal} variant="brand" data-recordid={approval.Id} data-app={approval.Approver__c}></lightning-button>
+                            </td>
+                            </tr>
+                            </template>
+                            </tbody>
+                        
+                            </table>
+                       
+                            <!-- </lightning-card> -->
+                            <template if:true={isModalOpen}>
+                                <!-- Modal/Popup Box LWC starts here -->
+                                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                   
+                                     <div key={timeapp.Id} class="slds-modal__container"> 
+                                        <!-- Modal/Popup Box LWC header here -->
+                                        <header class="slds-modal__header">
+                                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                                                <lightning-icon icon-name="utility:close"
+                                                    alternative-text="close"
+                                                    variant="inverse"
+                                                    size="small" ></lightning-icon>
+                                                <span class="slds-assistive-text">Close</span>
+                                            </button>
+                                            
+                                        
+                                                
+                                                  
+                                                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Timesheet Activity - {empname}</h2>
+                                                  
+                                               
+                                      
+                                                 
+                                        
+                                           
+                                        </header>
+                                        <!-- Modal/Popup Box LWC body starts here -->
+                                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                            <table class="slds-table slds-table_bordered">
+                                                <thead>
+                                                    <th>Date</th>
+                                                    <th>Day</th>
+                                                    <th>Category</th>
+                                                    <th>Sub Category</th>
+                                                    <th>Description</th>
+                                                    <th>Time in Hours</th>
+                                                    <!-- <th>Team Allocation</th>
+                                                    <th>Created Date</th> -->
+                                                </thead>
+                                                <tbody class="slds-wrap">
+                                                    <template for:each={timeapproval} for:item="timeapp" for:index="index">
+                                                        <tr  class="row"  key={timeapp.Id}>
+                                                            <td data-label="Created Date" class="slds-truncate" title={timeapp.Date__c}><lightning-formatted-date-time
+                                                                value={timeapp.Date__c}
+                                                                year="numeric"
+                                                                month="numeric"
+                                                                day="numeric"
+                                                                
+                                                               
+                                                            >
+                                                            </lightning-formatted-date-time></td>
+                                                            <td data-label="Day" class="slds-truncate">
+                                                                <lightning-formatted-date-time
+                                                                value={timeapp.Date__c}
+                                                                weekday="long"
+                                                                
+                                                               
+                                                            ></lightning-formatted-date-time>
+                                                            </td>
+                                                            <td data-label="Category" class="slds-truncate" title={timeapp.Category__c}>{timeapp.Category__c}</td>
+                                                            <td data-label="Sub Category" class="slds-truncate" title={timeapp.Sub_Category__c}>{timeapp.Sub_Category__c}</td>
+                                                          
+                                                            <td data-label="Description" class="slds-truncate slds-cell-wrap" style="word-wrap: break-word; max-width: 200px;" title={timeapp.Description__c}>{timeapp.Description__c}</td>
+                                                      
+                                                            <td data-label="Time in Hours" class="slds-truncate" title={timeapp.Time_in_Hours__c}>{timeapp.Time_in_Hours__c}</td>
+                                                            
+                                                        </tr>
+                                                   
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                          
+                                        </div>
+                                        <!-- Modal/Popup Box LWC footer starts here -->
+                                        <footer class="slds-modal__footer">
+                                            <p style="float:left;"><strong>Approval Status: </strong>{approvalStatus}</p>
+                                            <lightning-button variant="brand"  label="Review Attachment" disabled={reviewDisabled} style="float:left;" onclick={handleReviewAttachment} class="slds-m-left_x-small revatt"></lightning-button>
+                                            <template if:false={reviewDisabled}>
+                                            <p style="float:left;" class="slds-m-left_x-small">{fileTitle}</p> 
+                                            </template>
+                                            <button class="slds-button slds-button_brand" onclick={handleApproval} title="Approve" disabled={isDisabled}>Approve</button>
+                                            <button  class="slds-button slds-button_neutral" onclick={handleRejection} title="Reject" disabled={isDisabled}>Reject</button>
+                                            <button class="slds-button slds-button_brand" onclick={closeModal} title="Cancel">Cancel</button>
+                                        </footer>
+                                    </div>
+                               
+                                </section>
+                                <div class="slds-backdrop slds-backdrop_open"></div>
+                            </template>
+                            
+                            <template if:true={showApprovalBox}>
+                                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                    <div class="slds-modal__container">
+                                        <header class="slds-modal__header">
+                                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeApprovalBox}>
+                                                <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                                                <span class="slds-assistive-text">Close</span>
+                                            </button>
+                                            <h2 id="modal-heading-06" class="slds-text-heading_medium slds-hyphenate">{approvalBoxHeading}</h2>
+                                        </header>
+                                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-6">
+                                            <lightning-textarea type="text" name="Description" onchange={handleDescriptionInput} value={approvalDescription} placeholder={approvalBoxPlaceholder}></lightning-textarea>
+                                        </div>
+                                        <footer class="slds-modal__footer">
+                                            <template if:true={showCheckBox}> 
+                                                <lightning-input label="Delete Attachment" class="slds-p-left_xx-large" type="checkbox" onchange={handleCheckbox} style="float: left;">
+                                                </lightning-input>
+                            
+                                            </template>
+                                            <button class="slds-button slds-button_neutral" onclick={closeApprovalBox} title="Cancel">Cancel</button>
+                                            <button class="slds-button slds-button_brand" onclick={submitApproval} title="Submit">{approvalBoxLabel}</button>
+                                        </footer>
+                                    </div>
+                                </section>
+                                <div class="slds-backdrop slds-backdrop_open"></div>
+                            </template>
+                        </template> 
+                           
+                            </template>

@@ -1,0 +1,300 @@
+<template>
+	<div class="slds-m-top_small"></div>
+	<template if:true={hideHeader}>
+		<lightning-card variant="narrow" title="" icon-name="standard:opportunity" class="slds-m-top_small">
+			<!-- <div class="slds-text-heading_medium" slot="title"> Avishkaar - DreamDrive360 -</span><span class="logo"><i>"Discover a realm where dreams unfurl and possibilities awaken"</i></span> </div> -->
+
+			<div slot="title">
+				<span class="slds-text-heading_medium ">Avishkaar - DreamDrive360 -</span><span><i class="logo">"Discover a realm where dreams unfurl and possibilities awaken"</i></span>
+			</div>
+
+			<div class="slds-text-heading_small">
+				&nbsp;&nbsp;&nbsp;{title}
+				<div class="slds-float_right">
+
+				</div>
+			</div>
+		</lightning-card><br />
+	</template>
+
+		<template if:true={hideMyGoal}>
+			<c-display-employee-details-cmp emp-details={empRecords} designation={designation}
+				empreport-manager={empreportManager} ccm={ccm}>
+			</c-display-employee-details-cmp>
+
+			<lightning-card variant="Narrow" icon-name="standard:account">
+				<div slot="title">
+					<span>Set Your Goals For 2024 | </span><span class="colot-text"> Status - {employeeStatus}</span>
+				</div>
+				<lightning-button label="My Team Goals" class="bg-color" variant="brand" onclick={handleManagerView}
+					title="Redirect to Career and Training Plan" slot="actions">
+				</lightning-button>
+				<lightning-button class="slds-p-left_small bg-color" label={careerButtonLabel}
+					onclick={handleCareerEnablement} variant="brand" title="Redirect to Career and Training Plan"
+					slot="actions">
+				</lightning-button>
+				<template if:true={showRmGs}>
+					<lightning-button class="slds-p-left_small bg-color" label="My Manager's KRA/KPI" variant="brand"
+						slot="actions" onclick={showManagerGS}>
+					</lightning-button>
+				</template>
+				<div if:true={isLoaded} class="spinner">
+					<lightning-spinner alternative-text="Loading" variant="brand" size="large">
+					</lightning-spinner>
+				</div>
+				<lightning-tabset>
+					<template for:each={allKRA} for:item="data" for:index="outerindex">
+						<div key={data.id}>
+							<lightning-tab label={data.goalRespository.Name}>
+								<div class="slds-box slds-m-around_xx-small">
+									<div class="slds-text-heading_x-small">
+										<b>KRA weightage: </b>{data.KRAWieghtage}% &nbsp;(Total KPI weightage should be
+										{data.MaximunKRAWieghtage}%)&nbsp;
+										<template if:true={accessKRAWeightage}>
+											<template if:true={data.checkNoZeroKPISize}>
+												<template if:false={data.goalSetting.Is_KRA_Weightage_Edited__c}>
+													<lightning-button-icon icon-name="utility:edit" data-id={outerindex}
+														alternative-text="edit" name="kraweightage" title="edit"
+														onclick={handleEditView}>
+													</lightning-button-icon>
+												</template>
+											</template>
+											<template if:false={data.checkNoZeroKPISize}>
+												<lightning-button-icon icon-name="utility:edit" data-id={outerindex}
+													alternative-text="edit" name="kraweightage" title="edit"
+													onclick={handleEditView}>
+												</lightning-button-icon>
+											</template>
+										</template>
+									</div>
+									<br/>
+									<!-----*********KRA DISCRIPTION LOGIC STARTS**********---------------------->
+									<template if:false={data.editable}>
+										<template if:true={editKRA}>
+											<template if:false={data.checkNoZeroKPISize}>
+												<div class="slds-text-heading_x-small"><b>Description</b> :&nbsp;
+													<lightning-formatted-text
+														value={data.goalRespository.Description__c}>
+													</lightning-formatted-text>&nbsp;&nbsp;
+													<lightning-button-icon icon-name="utility:edit" data-id={outerindex}
+														alternative-text="edit" name="goalRespository" title="edit"
+														onclick={handleEditKraDiscription}>
+													</lightning-button-icon>
+												</div>
+											</template>
+											<template if:true={data.checkNoZeroKPISize}>
+												<template if:false={data.goalSetting.Is_KRA_Edited__c}>
+													<div class="slds-text-heading_x-small"><b>KRA Description</b>
+														:&nbsp;<br/>
+														<lightning-formatted-text
+															value={data.goalRespository.Description__c}>
+														</lightning-formatted-text>&nbsp;&nbsp;
+														<lightning-button-icon icon-name="utility:edit"
+															data-id={outerindex} alternative-text="edit"
+															name="goalRespository" title="edit"
+															onclick={handleEditKraDiscription}>
+														</lightning-button-icon>
+													</div>
+												</template>
+												<template if:true={data.goalSetting.Is_KRA_Edited__c}>
+													<template lwc:if={data.goalSetting.Is_KRA_Status_Is_Locked__c}>
+														<div class="slds-text-heading_x-small"><b>KRA Description</b>
+															:&nbsp;<br/>
+															<lightning-formatted-text
+																value={data.goalSetting.KRA_Discription__c}>
+															</lightning-formatted-text>
+														</div>
+													</template>
+													<template lwc:else>
+														<div class="slds-text-heading_x-small">
+															<b>KRA Description</b>:&nbsp;&nbsp;<br/>
+															<lightning-formatted-text
+																value={data.goalSetting.KRA_Discription__c}>
+															</lightning-formatted-text>&nbsp;&nbsp;
+															<lightning-button-icon icon-name="utility:edit"
+																alternative-text="edit" data-id={outerindex}
+																name="goalSetting" title="edit"
+																onclick={handleEditKraDiscription}>
+															</lightning-button-icon>
+														</div>
+													</template>
+												</template>
+											</template>
+										</template>
+										<template if:false={editKRA}>
+											<div class="slds-text-heading_x-small"><b>KRA Description</b> :&nbsp;<br/>
+												<template lwc:if={data.checkNoZeroKPISize}>
+													<template lwc:if={data.goalSetting.Is_KRA_Edited__c}>
+														<lightning-formatted-text
+															value={data.goalSetting.KRA_Discription__c}>
+														</lightning-formatted-text>
+													</template>
+													<template lwc:else>
+														<lightning-formatted-text
+															value={data.goalRespository.Description__c}>
+														</lightning-formatted-text>
+													</template>
+												</template>
+												<template lwc:else>
+													<lightning-formatted-text
+														value={data.goalRespository.Description__c}>
+													</lightning-formatted-text>
+												</template>
+											</div>
+										</template>
+									</template>
+
+									<template if:true={data.editable}>
+										<div class="slds-text-heading_x-small">
+											<template lwc:if={data.showGrKRADiscription}>
+												<lightning-textarea name="kraName" data-id={outerindex} type="text"
+													label="KRA Discription" value={data.goalRespository.Description__c}
+													onchange={handleKRADiscription} class="string-input setMaxHeight">
+												</lightning-textarea>
+											</template>
+											<template lwc:else>
+												<lightning-textarea name="kraName" data-id={outerindex} type="text"
+													label="KRA Discription" value={data.goalSetting.KRA_Discription__c}
+													onchange={handleKRADiscription} class="string-input setMaxHeight">
+												</lightning-textarea>
+											</template>
+										</div><br/>
+
+										<div class="slds-align_absolute-center">
+											<lightning-button label="Cancel" class="" variant="brand" slot="actions"
+												data-id={outerindex} onclick={cancelKRADisp}>
+											</lightning-button>
+											<lightning-button label="Save As Draft" class="slds-p-left_x-small"
+												variant="brand" slot="actions" data-id={outerindex}
+												onclick={saveAsDraftKRADisp}>
+											</lightning-button>
+											<lightning-button label="Submit" class="slds-p-left_x-small" variant="brand"
+												slot="actions" data-id={outerindex} onclick={confirmUpdateKRADisp}>
+											</lightning-button>
+										</div>
+									</template>
+								</div>
+								<!-----***********KRA DISCRIPTION LOGIC ENDS**********************---------------------->
+								<div class="slds-float_right">
+									<lightning-helptext content="Please note once your reporting manager's goals receive approval from their CCM, you are then able to add your own goals">
+									</lightning-helptext>
+									<lightning-button variant="brand" icon-name="utility:add"
+										class="slds-p-vertical_small slds-p-right_medium bg-color" slot="actions"
+										access-key={outerindex} label="Add Row" onclick={addRow} disabled={hidebutton}>
+									</lightning-button>
+								</div>
+								<table class="slds-table slds-table_bordered slds-table_cell-buffer">
+									<thead>
+										<tr class="slds-text-title_caps">
+											<th scope="col" style="width:70%;">
+												<div class="slds-truncate">
+													KPI<abbr class="slds-required" title="required">*</abbr>
+													<lightning-helptext
+														content="You can re order your KPI by drag and drop">
+													</lightning-helptext>
+												</div>
+											</th>
+											<th scope="col" style="width:20%;">
+												<div class="slds-truncate">KPI
+													weightage(%)<abbr class="slds-required" title="required">* </abbr>
+												</div>
+											</th>
+											<th scope="col" style="width:20%;">
+												<div class="slds-truncate"></div>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<template for:each={data.goalSettingArray} for:item="KRA" for:index="index">
+											<tr key={KRA.keyIndex} onchange={Change} draggable="true" ondrop={Drop}
+												ondragstart={DragStart} ondragover={DragOver} data-index={index}
+												data-id={outerindex}>
+												<!--Able to Update--->
+												<template if:false={hidebutton}>
+													<td>
+														<lightning-textarea name="kraName" data-index={index}
+															data-id={outerindex} type="text" value={KRA.KPI}
+															onchange={changeHandler} class="string-input">
+														</lightning-textarea>
+													</td>
+													<td>
+														<lightning-input name="kraWieghtage" data-index={index}
+															data-id={outerindex} type="number" value={KRA.KPIWieghtage}
+															onchange={changeHandler} class=""
+															onkeypress={handleKeyPress}>
+														</lightning-input>
+													</td>
+													<td>
+														<a onclick={removeRow} data-index={index} data-id={outerindex}>
+															<lightning-icon class="gentle-tilt-move-shake"
+																icon-name="utility:delete" size="small"
+																style="margin-top: -4px; margin-right: 0px;">
+															</lightning-icon>
+															<span class="slds-assistive-text">Delete</span>
+														</a>
+													</td>
+												</template>
+
+												<!--Not Able to Update--->
+												<template if:true={hidebutton}>
+													<td>
+														<lightning-formatted-text class="slds-cell-wrap" name="kraName"
+															value={KRA.KPI}>
+														</lightning-formatted-text>
+													</td>
+													<td>
+														<lightning-formatted-number name="kraName"
+															value={KRA.KPIWieghtage}>
+														</lightning-formatted-number>
+													</td>
+													<td>
+
+													</td>
+												</template>
+											</tr>
+										</template>
+									</tbody>
+								</table>
+							</lightning-tab>
+						</div>
+					</template>
+				</lightning-tabset>
+				<p slot="footer">
+					<button class="slds-button slds-button_brand bg-color" onclick={callcancel} >Cancel</button>
+					<!--<button class="slds-button slds-button_brand" onclick={testview}>Preview</button>-->
+					<button class={showOrHidereject} onclick={rejectByManagerOrCCM}>Reject</button>
+					<button class={showAndHidebuttoncss} onclick={saveAsDraftHandler} disabled={disableButton}>
+						Save As Draft
+						</button>
+					<button class={showAndHidebuttoncss} onclick={previewHandler} disabled={disableButton}>{submitTitle}</button>
+				</p>
+			</lightning-card>
+		</template>
+		<template if:true={previewPopUp}>
+			<c-preview-goal-setting-cmp all-k-r-a={allKRA} validate={checkCCMAndRM} onhidemodalbox={updateMessage}
+				onsubmitomanager={handleSaveHandler} emp-name={empRecords.Name} is-current-user={empId}>
+			</c-preview-goal-setting-cmp>
+		</template>
+		<template if:true={previewReportingManagerGS}>
+			<c-preview-manager-goal-setting manager-record-id={reportingManagerId}
+				onhidemodalbox={hideReportingManagerGS}>
+			</c-preview-manager-goal-setting>
+		</template>
+
+		<template if:true={showTeamAttendence}>
+			<c-manager-approval-goals default-accordian={defaultAccordian} oncallback={handleCallBack}
+				onshowreportee={handleDisplayReportee}> </c-manager-approval-goals>
+		</template>
+
+		<template if:true={carererAndEnablementPlan}>
+			<c-career-development-and-enablement emp-id={empRecords.Id} is-from-goal-setting="true"
+				oncallcancelagain={handleCancelCarrer}> </c-career-development-and-enablement>
+		</template>
+
+		<template if:true={editKRAWeightage}>
+			<c-pms-edit-k-r-a-percentage-preview all-k-r-aparent={allKRA} oncallparent={handleKRAWeightage}
+				user-id={userId} emp-id={empRecords.Id} emp-name={empRecords.Name}
+				appraisal-cycle-id={appraisalCycle.Id}>
+			</c-pms-edit-k-r-a-percentage-preview>
+		</template>
+	</template>

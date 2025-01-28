@@ -1,0 +1,16 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:handler name='init' value="{!this}" action='{!c.doInit}' />
+    <aura:attribute name="recordId" type="String" default="{!recordId}"/>
+    <lightning:card variant="Narrow" title="Employee Support Request" >
+        <p class="slds-p-horizontal_small">
+            <lightning:accordion aura:id="accordion" activeSectionName="B">
+        <lightning:accordionSection name="B" label="Support Request - Inprogress">
+            <c:EmployeeSupportRequestComp recordId="{!v.recordId}"/>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="C" label="Support Request - Complete">
+                <c:EmployeeSRCompleteComp recordId="{!v.recordId}"/>
+        </lightning:accordionSection>
+    </lightning:accordion>
+        </p>
+    </lightning:card>
+</aura:component>

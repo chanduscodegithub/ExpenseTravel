@@ -1,0 +1,84 @@
+.slds-truncate.catCol {
+    overflow: visible;
+    z-index: 1;
+}
+
+.fixed_headers thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    resize: horizontal;
+    overflow: auto;
+
+}
+
+:host {
+
+    /*rgb(27, 150, 255)*/
+    --slds-c-slider-track-color-background: rgb(27 150 255 / 72%);
+    --slds-c-slider-thumb-color-foreground: #0176d3;
+
+}
+
+.numStyle {
+    /* background-color: green; */
+    font-family: Gill Sans MT;
+    font-size: 15px;
+
+}
+
+.container {
+    max-width: 98vw;
+    margin: auto;
+}
+
+section {
+    margin-top: 20px;
+}
+
+.employee-heading {
+    letter-spacing: 1px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: underline var(--lwc-brandPrimary) solid 1px;
+    text-underline-position: under;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.slds-card__header p.employee-heading+p {
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.slds-grid:not(:first-child) {
+    padding-top: 15px;
+}
+
+.backgroundcolor {
+    background-color: rgb(173 173 173 / 14%);
+}
+
+.textareaheight {
+    --sds-c-textarea-sizing-min-height: 130px;
+}
+
+.logo {
+    font-weight: normal;
+    font-size: 15px;
+    margin-right: 2px;
+}
+.marginleft{
+margin-left: 29%;
+}
+.font{
+    font-size: 11px;
+}
+.textareaheight1 {
+  
+     /*padding-top: -5px; */
+    --sds-c-textarea-sizing-min-height: 130px;
+}
+.button-display{
+    display:flex;
+}

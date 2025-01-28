@@ -1,0 +1,24 @@
+/* yourComponent.css */
+
+:host .slds-modal__content{
+    overflow: initial;
+}
+
+.slds-col{
+    bottom: 100%;
+}
+.smallComboBox {
+    display:flex;
+    align-items: center;
+    width: 150px; /* Adjust the width as needed */
+    height: 24px; /* Adjust the height as needed */
+    font-size: 12px; /* Adjust the font size as needed */
+    /* Add any other styling properties as needed */
+    margin-bottom: 30px;
+}
+.slds-modal__container{
+    width: 110% !important;
+    max-width: 110% !important;
+    height:50%;
+    
+}

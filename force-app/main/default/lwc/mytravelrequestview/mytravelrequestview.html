@@ -1,0 +1,184 @@
+<template>
+    <div class="header-button slds-p-around_medium">
+        <lightning-button label="Add Record" variant="brand" onclick={openModal} class="slds-m-left_xx-small"
+            if:false={showRecord}></lightning-button>
+    </div>
+    <div class="custom-table-container" lwc:if={showList}>
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th style="width:270px;">Record ID</th>
+                    <th style="width:270px;">Employee</th>
+                    <th style="width:210px;">Date of departure</th>
+                    <th style="width:110px;">Date of return</th>
+                    <th style="width:110px;">Purpose of visit</th>
+                    <th style="width:50px;">Travel type</th>
+                    <th style="width:50px;">Mode of transport</th>
+                    <th style="width:50px;">Currency</th>
+                    <th style="width:50px;">Requested Amount</th>
+                    <th style="width:50px;">Billed to Customer</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={accounts} for:item="accounts" lwc:if={accounts.length}>
+                    <tr key={accounts.Id} data-id={accounts.Id} onclick={handleRowAction}
+                        data-destination={accounts.Destination__c} data-purpose-of-visit={accounts.Purpose_of_Visit1__c}
+                        data-date-of-departure={accounts.Date_of_Departure__c}
+                        data-date-of-return={accounts.Date_of_Return__c} data-travel-type={accounts.Travel_Type__c}
+                        data-mode-of-transport={accounts.Mode_of_Transport__c}
+                        data-billed-to-customer={accounts.Billed_to_Customer__c}
+                        data-requested-amount={accounts.Requested_Amount__c}>
+                        <td>{accounts.Name}</td>
+                        <td>{accounts.Employee_Name}</td>
+                        <td>{accounts.Date_of_Departure__c}</td>
+                        <td>{accounts.Date_of_Return__c}</td>
+                        <td>{accounts.Purpose_of_Visit1__c}</td>
+                        <td>{accounts.Travel_Type__c}</td>
+                        <td>{accounts.Mode_of_Transport__c}</td>
+                        <td>{accounts.CurrencyIsoCode}</td>
+                        <td>{accounts.Requested_Amount__c}</td>
+                        <td>{accounts.Billed_to_Customer__c}</td>
+
+
+
+                    </tr>
+                </template>
+                <template lwc:else>
+                    No Records Found
+                </template>
+            </tbody>
+        </table>
+    </div>
+
+    <c-traveldetails destination={dest} purpose-of-visit={purposevisit} date-of-departure={datedep}
+        date-of-return={datere} travel-type={traveltype1} mode-of-transport={modetr} billed-to-customer={billcus}
+        customer={cus} department={dep} description={des} currencu={curr} requestedamount={reqamo}
+        existingcard={existra} cardnumber={card} employee={empname} bills={billsdata} itemlist={itemList}
+        workitemid={selectedWorkItemId} lwc:if={showRecord} onclosedetail={closeDetail} showbuttons=false>
+
+    </c-traveldetails>
+
+    <template if:true={isModalOpen}>
+
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon> 
+                    <span class="slds-assistive-text">Close</span> 
+                </button>
+
+
+                    <h2 class="slds-text-heading_medium">Travel Request Details</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+
+
+
+
+
+
+                    <lightning-record-edit-form object-api-name="Travel_Request__c" record-id={recordId}
+                        onsuccess={handleSuccess}>
+                        <lightning-messages></lightning-messages>
+                        <div class="slds-grid slds-wrap">
+                            <template for:each={fields} for:item="field">
+                                <div class="slds-col slds-size_6-of-12" key={field}>
+                                    <lightning-input-field field-name={field.name} value={field.value} name={field.name}
+                                        required={field.label} disabled={field.readonly} onchange={handleChange}>
+                                    </lightning-input-field>
+                                </div>
+                            </template>
+                        </div>
+
+
+
+                        <div class="slds-box slds-box_xx-small"
+                            style="background-color: #f3f3f3; padding: 0.4rem; border-radius: 0.25rem;text-align: center;">
+                            <p style="font-weight: bold; font-size: 1.05rem;">Supporting Documentation</p>
+                        </div>
+                        <template for:each={itemList} for:item="item" for:index="index">
+                            <div key={item.id}>
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_2-of-8">
+                                        <template if:false={item.status}>
+                                            <lightning-input type="file"
+                                                accept=".xlsx, .xls, .csv, .png, .doc, .docx, .pdf" label="Attach bills"
+                                                onchange={openfileUpload} data-index={index}>
+                                            </lightning-input>
+                                            <div style="margin-top: 0.5rem; font-size: 0.85rem; color: blue;">
+                                                {item.filename} </div>
+                                            <!--<lightning-icon icon-name="action:check" size="small"></lightning-icon>-->
+                                        </template>
+                                        <template if:true={item.status}>
+                                            <label >File Link</label>
+                                            <br/>
+                                            <div style="margin-top: 0.5rem; font-size: 0.85rem; color: blue;">
+
+                                                <a href={item.url} target="_blank">{item.filename}</a>
+                                            </div>
+                                        </template>
+
+
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+
+                                    <div class="slds-col .slds-size_1-of-8">
+                                        <div class="slds-p-top_medium slds-float_right">
+
+                                            <lightning-icon icon-name="action:new" access-key={item.id} id={index}
+                                                alternative-text="Add Row" size="small" title="Add Row"
+                                                onclick={addRow}>
+                                            </lightning-icon>
+                                            &nbsp; &nbsp;
+                                            <lightning-icon icon-name="action:delete" access-key={item.id} id={index}
+                                                alternative-text="Delete Row" size="small" title="Delete Row"
+                                                onclick={removeRow}>
+                                            </lightning-icon>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </template>
+
+                        <footer class="slds-m-top_large slds-grid slds-grid_align-center slds-align--absolute-center">
+                            <lightning-button variant="brand" label="Save as Draft" type="Submit" onclick={handlenext}
+                                name="Draft">
+                            </lightning-button>
+                            &nbsp;&nbsp;
+                            <lightning-button variant="brand" type="Submit" name="Submit" label="Submit"
+                                onclick={handlenext}>
+
+                            </lightning-button>
+                            &nbsp;&nbsp;
+                            <lightning-button variant="brand" label="Cancel" type="button" onclick={closeModal}>
+                            </lightning-button>
+
+
+                        </footer>
+
+                    </lightning-record-edit-form>
+
+                </div>
+
+
+            </div>
+            </div>
+
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

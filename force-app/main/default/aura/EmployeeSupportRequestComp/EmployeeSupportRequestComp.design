@@ -1,0 +1,4 @@
+<design:component>
+	   <design:attribute name="recordId" label="recordId" description="Salesforce Id of the record" />
+
+</design:component>

@@ -1,0 +1,63 @@
+<template>
+    <div class="slds-size_1-of-1">
+        
+        <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small" if:true={showreviewer}><b>Reviewer Rating - {reviewerRating}</b></div>
+    </div>
+   
+
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout" role="grid" aria-label="Example table in a Card">
+                <thead>
+                    <tr class="slds-line-height_reset">
+
+                        <th class="" scope="col" style="width:25%">
+                            <div class="slds-truncate slds-align_absolute-center" title="Name">Quater</div>
+                        </th>
+                        <th scope="col" style="width:30%">
+                            <div class="slds-truncate slds-align_absolute-center" title="Title">Self Rating</div>
+                        </th>
+                        <th scope="col" style="width:30%">
+                            <div class="slds-truncate slds-align_absolute-center" title="Title">Manager Rating</div>
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={pmsData} for:item="kpiData" for:index="index">
+                        <tr key={kpiData.quater} style="font-family: sans-serif;" class="slds-hint-parent">
+
+
+                            <td data-label="Account Name">
+                                <div class="slds-truncate" title="Cloudhub">
+                    
+                                    <lightning-formatted-text class="slds-cell-wrap" value={kpiData.quater}></lightning-formatted-text>
+                                </div>
+                            </td>
+
+                            <td data-label="Account Name">
+                                <div class="slds-truncate slds-text-align_center" title="Cloudhub">
+                                    <lightning-formatted-text class="slds-cell-wrap" value={kpiData.srating}></lightning-formatted-text>
+                                </div>
+                            </td>
+                            <td data-label="Account Name">
+                                <div class="slds-truncate slds-text-align_center" title="Cloudhub">
+                                    
+                                    <lightning-formatted-text class="slds-cell-wrap" value={kpiData.mrating}></lightning-formatted-text>
+                                </div>
+                            </td>
+                        </tr>
+                       
+                    </template>
+
+
+                </tbody>
+    
+
+
+            </table>
+             <div class="slds-size_1-of-1">
+        <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small" if:true={showfinal}><b>Final Rating - {totalManagerScore}</b></div>
+    </div>
+        
+
+    
+</template>

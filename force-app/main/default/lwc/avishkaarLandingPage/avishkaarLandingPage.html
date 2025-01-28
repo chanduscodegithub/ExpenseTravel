@@ -1,0 +1,172 @@
+<template>
+	<template if:true={isSpinner}>
+		<lightning-spinner class="slds-is-fixed" alternative-text="Loading" size="medium" variant="brand">
+		</lightning-spinner>
+	</template>
+	<!-- <div if:true={showModal} class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">{modalHeader}</h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium">
+
+                <template if:true={isStepOne}>
+                    <p>You must accept the addendum to continue using this community.</p>
+                    <lightning-button label="Next" variant="brand" onclick={goToAddendum}></lightning-button>
+                </template>
+
+                <template if:true={isStepTwo}>
+                    <div style="height: 200px; overflow-y: auto;" onscroll={handleScroll} data-scrolled={scrolledToBottom}>
+                        <p style="height: 500px;">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                            Pellentesque a augue nec nunc tristique posuere. 
+                            Integer sodales elit sit amet nisl porttitor congue.
+                            <br /><br />
+                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                            Pellentesque a augue nec nunc tristique posuere. 
+                            Integer sodales elit sit amet nisl porttitor congue.
+							                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                            Pellentesque a augue nec nunc tristique posuere. 
+                            Integer sodales elit sit amet nisl porttitor congue.
+							                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                            Pellentesque a augue nec nunc tristique posuere. 
+                            Integer sodales elit sit amet nisl porttitor congue.
+							                            Integer sodales elit sit amet nisl porttitor congue.
+                            <br /><br />                            Integer sodales elit sit amet nisl porttitor congue.
+                            <br /><br />                            Integer sodales elit sit amet nisl porttitor congue.
+                            <br /><br />                            Integer sodales elit sit amet nisl porttitor congue.
+                            <br /><br />                            Integer sodales elit sit amet nisl porttitor congue.
+                            <br /><br />
+                        </p>
+                    </div>
+                    <lightning-button label="Accept" variant="success" onclick={handleAccept} disabled={disableButtons}></lightning-button>
+                    <lightning-button label="Reject" variant="destructive" onclick={handleReject} disabled={disableButtons}></lightning-button>
+                </template>
+            </div>
+        </div>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+    </div> -->
+	<section class="homeComponent">
+	
+		<div>
+			<c-attendence-timer-cmp></c-attendence-timer-cmp>
+		</div>
+		<div class="gridLayouts">
+			<div class="paatshala"> 
+				<template if:true={showProgramBtn}>
+					<div class="takshasila boxshadow overflowy borderRadius slds-m-left_large">
+						<div class="toolTipHeading">
+							<h2 class="slds-text-heading_medium boldFont">Paatshala</h2>
+							<span class="tooltip" onclick={toggleTooltip}>
+								<span class="i-icon">i</span>
+								<span class={tooltipClass}>Get a comprehensive 360-degree view of all learning and enablement programs—past, present, and upcoming. Just to note, 'Paatshala' translates to 'Classroom' in Hindi.</span>
+							</span>
+						</div>
+						<button class = "takUpcomingBtn" onclick={navigateToUpcomingSessions}> View Upcoming Sessions</button>
+					<!--	<button class = "takMyProgramsBtn" onclick={navigateToMyPrograms}> View My Programs</button>		-->
+						<button class="takBtn" onclick={navigateToAllPrograms}> View All Programs</button>
+						
+					</div>
+				</template>
+			</div>
+			<div
+				class="awards boxshadow maxheight350px minheight350px slds-p-around_medium overflowy borderRadius slds-m-left_large">
+				<h2 class="slds-text-heading_medium boldFont slds-m-bottom_medium">Rewards</h2>
+				<template for:each={AwardeArray} for:item="award">
+					<div key={award.Id}>
+						<div
+							class="calenderWrap slds-grid slds-wrap boxshadow slds-m-bottom_medium slds-p-around_xx-small">
+							<div
+								class="dateWrap awardImages slds-border_right slds-text-align_center slds-col slds-size_2-of-12">
+								<img src={award.imgsource} alt="Award">
+                            </div>
+								<div
+									class="specialDayInformation slds-col slds-size_10-of-12 slds-m-top_small slds-p-left_large">
+									<h1 class="slds-text-body_regular slds-m-bottom_x-small"><b>{award.Name}</b></h1>
+									<p class="slds-text-title"><b>Award By :</b> {award.AwardedBy}</p>
+									<p class="slds-text-title"><b>Awarded Status :</b> {award.Status}</p>
+									<p class="slds-text-title"><b>Awarded On :</b> &nbsp;<lightning-formatted-date-time
+											value={award.AwardDate} month="short" day="2-digit">
+										</lightning-formatted-date-time>
+									</p>
+								</div>
+							</div>
+						</div>
+				</template>
+			</div>
+			
+			<div class="holidayLists slds-box boxshadow borderRadius">
+				<h2 class="slds-text-heading_medium boldFont slds-m-bottom_medium">CRMIT Holidays</h2>
+				<div class="gw">
+					<lightning-combobox name="HolidayRegion" label="Holiday Region" value={selectedValue}
+						options={options} onchange={handleChangeRegion}></lightning-combobox><br/>
+					<div class="g one-whole tablet-one-third">
+						<div class="event-cards-container">
+							<template for:each={holidayArray} for:item="holiday">
+								<div key={holiday.Id}>
+									<div class="event event-card">
+										<div class="event-card-details slds-p-left_medium ">
+											<div class="event-title slds-text-heading_small slds-m-bottom_xx-small">
+												{holiday.Name}</div>
+											<div class="event-location slds-text-title"
+												if:true={holiday.Is_Restricted_Holiday__c}>
+												( Restricted Holiday )
+											</div>
+											<div class="event-location slds-text-title"
+												if:false={holiday.Is_Restricted_Holiday__c}>
+												( CRMIT Holiday )
+											</div>
+										</div>
+										<div class="event-card-date">
+											<div class="event-start">
+												<div class="event-start-date slds-text-heading_small">
+													<lightning-formatted-date-time value={holiday.Date__c} month="short"
+														day="2-digit"></lightning-formatted-date-time>
+												</div>
+												<div class="event-start-month  slds-m-bottom_xx-small">
+													<lightning-formatted-date-time value={holiday.Date__c}
+														weekday="long"></lightning-formatted-date-time>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</template>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div
+				class="rewards boxshadow maxheight350px slds-p-around_small overflowy borderRadius slds-m-left_large slds-m-bottom_large">
+				<h2 class="slds-text-heading_medium boldFont slds-m-bottom_medium">
+					<lightning-button  label="Send a Gold Star" title="Click here to give star awards" class="slds-m-left_x-small" onclick={handleClickStarAwards}></lightning-button>
+				</h2>
+				
+				<template for:each={rewardeArray} for:item="reward">
+					<div key={reward.Id}
+						class="slds-grid slds-grid_vertical-stretch boxshadow slds-m-bottom_medium slds-p-around_small starContainer">
+						<div class="slds-col height-100 slds-grow-none rewardImages slds-m-right_medium">
+							<lightning-icon size="large" icon-name='utility:favorite' title="plusIcon"
+								class={reward.Star_Type__c}>
+							</lightning-icon>
+						</div>
+						<div class="slds-col height-100">
+							<h1 class="slds-m-bottom_xx-small"><b>Star Award To :  {reward.To__r.Name}</b></h1>
+							<h1 class="slds-m-bottom_xx-small"><b>Star Award From :</b> {reward.CreatedBy.Name}</h1>							
+							<!-- <h1 class="slds-m-bottom_xx-small"><b>Star Award Type : </b> {reward.Star_Type__c}</h1> -->
+							<h1 class="slds-m-bottom_xx-small"><b>Star Award Date : </b>
+								<lightning-formatted-date-time value={reward.CreatedDate}>
+								</lightning-formatted-date-time>
+							</h1>
+							<h5><b>Comments : </b> {reward.Comment__c}</h5>
+						</div>
+					</div>
+				</template>
+			</div>
+			<!-- <div class="birthdayList">
+				<c-new-hire-component></c-new-hire-component>
+			</div> -->
+		</div>
+	</section>
+</template>

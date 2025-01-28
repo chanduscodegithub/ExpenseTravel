@@ -1,0 +1,43 @@
+@keyframes tilt-n-move-shaking {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(5px, 5px) rotate(5deg); }
+  50% { transform: translate(0, 0) rotate(0eg); }
+  75% { transform: translate(-5px, 5px) rotate(-5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.gentle-tilt-move-shake:hover {
+  animation: tilt-n-move-shaking 0.60s;
+}
+
+.marginleft{
+   margin-left: 71%;
+}
+
+.font{
+    font-size: 12px;
+}
+
+.setMaxHeight{
+    --sds-c-textarea-sizing-min-height: 85px;
+}
+
+.colot-text{
+  color: rgb(23, 23, 183);
+}
+
+.bg-color{
+  --sds-c-button-brand-color-background : #187718;
+}

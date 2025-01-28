@@ -1,0 +1,189 @@
+.weekBlock {
+    height: 30px;
+    transition: all 0.2s ease;
+}
+
+.weekBlock .slds-page-header__name-meta {
+    float: right;
+    padding-right: 1rem;
+}
+
+.weekBlock .slds-text-heading_medium {
+    padding-left: 0.75rem;
+}
+
+.downButtons {
+    text-align: right;
+    margin-top: 25px;
+}
+
+.fixedTopBar {
+    transition: all 0.2s ease-in-out;
+    height: 50px;
+    position: fixed;
+    top: 0px;
+    /* top: 124px;*/
+    padding: 12px;
+    left: 0;
+    /* background-color: #f3f3f3; */
+    background-color: #FEF2EB;
+    border-bottom: 1px solid #999;
+    z-index: 3;
+    width: 100vw;
+}
+
+.slds-button_brand,
+.slds-button_success {
+    color: #fff;
+    font-weight: bold;
+}
+
+.optionsCol lightning-button-group {
+    margin-right: 10px;
+}
+
+.coloredMsg {
+    color: #3c97dd;
+}
+
+.slds-button_icon-border-filled,
+.slds-button--icon-border-filled {
+    border: none;
+    background-color: #f3f3f3;
+}
+
+/*.cloneDetails lightning-icon {
+    margin: 0 50px;
+}
+
+.cloneDetails>span {
+    font-size: large;
+    font-weight: 500;
+}
+
+.cloneDetails p {
+    margin-top: 10px;
+}
+
+.projectCol {
+    width: 5vw;
+}
+
+.regionCol {
+    width: 3vw;
+}
+
+.managerCol {
+    width: 9vw;
+}
+
+.billingCol {
+    width: 6vw;
+}
+
+.hourCol {
+    width: 60px;
+}
+
+.dateCol {
+    /*width: 8vw;*/
+/*width: 120px;
+}
+
+
+.slds-table th {
+    padding: 0.15rem;
+}
+
+.optionsCol {
+    width: 220px;
+    margin-right: -3vw;
+}
+
+*/
+.descriptCol,
+.descriptCol [lightning-textarea_textarea-host] {
+    /*width: 15vw;*/
+    width: 30vw;
+    min-width: 60px;
+}
+
+.slds-truncate.catCol,
+.slds-truncate.subcatCol,
+.slds-truncate.hourCol {
+    overflow: visible;
+}
+
+.allDown {
+    position: relative;
+}
+
+.errorReportBtn {
+    position: absolute;
+    top: -5px;
+}
+
+.errorReportBtn a {
+    position: absolute;
+    width: max-content;
+    top: 15px;
+}
+
+.hourCol {
+    min-width: 55px;
+    max-width: 125px;
+}
+
+.clearFloat {
+    clear: both; /* Clear the floats above this element */
+}
+.fileName {
+    float: right;
+}
+.fileName {
+    float: right; /* Float the fileName div to the right */
+}
+.flex-container {
+    display: flex; /* Use Flexbox to control layout */
+    align-items: center; /* Vertically center the content */
+}
+
+.dateCol {
+    min-width: 115px;
+    max-width: 155px;
+}
+
+.custom-th th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.border-green {
+    border-left: 3px solid rgba(29, 160, 12, 0.96);
+    padding-left: 10px;
+}
+
+.text-green {
+    color: rgba(29, 160, 12, 0.96);
+}
+
+.border-orange {
+    border-left: 3px solid #cc6318;
+    padding-left: 10px;
+}
+
+.text-orange {
+    color: #cc6318;
+}
+
+.fixedTopBar {
+    border-bottom: 0;
+    background-color: #fff;
+    border-bottom: 0;
+    box-shadow: 0px 4px 2px rgb(0 0 0 / 10%)
+}
+
+.reportIconBtn button {
+    color: #cc6318;
+}

@@ -1,0 +1,26 @@
+.modalpopup table{
+    border-collapse: collapse;
+    font-family: inherit;
+    text-align: left;
+    margin: 0 auto;
+}
+.modalpopup th{
+    background-color: #e5e4e4;
+    color: #000000;
+    padding: 8px;
+    text-align: center;
+    font-weight: normal;
+}
+.modalpopup table>caption{
+    padding-inline-start: 10px;
+    margin-bottom: 20px;
+}
+.modalpopup td{
+    padding:4px;
+    text-align: center;
+    color: #11202C;
+    border-bottom: 1px solid #C5C7D3;
+}
+.colum{
+    padding : 4px;
+}

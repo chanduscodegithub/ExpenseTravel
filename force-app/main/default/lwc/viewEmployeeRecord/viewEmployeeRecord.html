@@ -1,0 +1,62 @@
+<template>
+	<lightning-card variant="Narrow" title="Employee" icon-name="standard:employee">
+		<div>
+			<lightning-record-view-form record-id={recordId} object-api-name="Employee__c">
+				<div class="slds-grid">
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-output-field field-name="Name"></lightning-output-field>
+
+						<div class="slds-form-element">
+							<label class="slds-form-element__label" for="text-input-id-47">Designation</label>
+							<div class="slds-form-element__control">
+								<lightning-formatted-text label="Designation" value={empdesignation} ></lightning-formatted-text>
+							</div>
+						</div>
+						<!--<lightning-output-field field-name="Designation__c"></lightning-output-field>-->
+						
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-output-field field-name="EmployeeID__c"></lightning-output-field>
+						<lightning-output-field field-name="Email_ID__c"></lightning-output-field>
+					</div>
+				</div>
+				<div class="slds-grid">
+					<div class="slds-col slds-size_1-of-2 custom-output-field">
+						<!--<lightning-output-field field-name="BU_Head__c"></lightning-output-field>
+						<lightning-output-field field-name="ReportingTo__c"></lightning-output-field>-->
+						<div class="slds-form-element">
+							<label class="slds-form-element__label" for="text-input-id-47">Cost Center Manager</label>
+							<div class="slds-form-element__control">
+								<lightning-formatted-text label="Cost Center Manager" value={costcentermanager}>
+								</lightning-formatted-text>
+							</div>
+						</div><br/>
+
+						<div class="slds-form-element">
+							<label class="slds-form-element__label" for="text-input-id-47">Reporting Manger</label>
+							<div class="slds-form-element__control">
+								<lightning-formatted-text label="Reporting Manger" value={reportingmanager}>
+								</lightning-formatted-text>
+							</div>
+						</div>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-output-field field-name="Country__c"></lightning-output-field>
+						<lightning-output-field field-name="City__c"></lightning-output-field>
+					</div>
+				</div>
+
+				<div class="slds-grid">
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-output-field field-name="Office_Location__c"></lightning-output-field>
+						<lightning-output-field field-name="Work_Mode__c"></lightning-output-field>
+
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-output-field field-name="Department__c"></lightning-output-field>
+					</div>
+				</div>
+			</lightning-record-view-form>
+		</div>
+	</lightning-card>
+</template>

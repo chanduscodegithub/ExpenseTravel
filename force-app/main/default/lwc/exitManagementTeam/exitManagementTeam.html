@@ -1,0 +1,43 @@
+<template>
+    <template lwc:if={loaded}>
+      <div class="custom-table-container" lwc:if={showList}>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width:38px;">#</th>
+              <th style="width:110px;">Resignation ID</th>
+              <th style="width:110px;">Employee ID</th>
+              <th style="width:210px;">Employee Name</th>
+              <th style="width:210px;">Designation</th>
+              <th style="width:270px;">Reason for Resignation </th>
+              <th style="width:270px;">Resignation Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template for:each={resignations} for:item="resignation" lwc:if={resignations.length}>
+              <tr key={resignation.Id} data-id={resignation.Id} onclick={handleRowClick}>
+                <td>{resignation.serialNumber}</td>
+                <td>{resignation.Name}</td>
+                <td>{resignation.Employee_ID__c}</td>
+                <td>{resignation.Employee_Name__r.Name}</td>
+                <td>{resignation.Title__c}</td>
+                <td>{resignation.Reason__c}</td>
+                <td>{resignation.Resignation_Status__c}</td>
+              </tr>
+            </template>
+            <template lwc:else>
+              No records found
+            </template>
+          </tbody>
+        </table>
+      </div>
+      <c-exit-management-approvals lwc:if={showRecord} onclosedetail={closeDetail} emp-data={empData} is-h-r={isHR} resignation={selectedRow}></c-exit-management-approvals>
+    </template>
+    <template lwc:elseif={loaded}>
+      <lightning-spinner 
+        alternative-text="Loading" 
+        size="xx-small"
+        variant="base"
+      ></lightning-spinner>
+    </template>
+</template>

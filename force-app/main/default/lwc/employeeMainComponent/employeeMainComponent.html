@@ -1,0 +1,24 @@
+<template>
+    <lightning-card  title={cardTitle} icon-name={cardIcon} >
+        <div class="slds-section">
+            <lightning-accordion  onsectiontoggle={handleToggleSection}
+                active-section-name="A">
+                <lightning-accordion-section name="A" label="Active Projects">
+                    <c-employee-active-project employeerecordid={recordId} whatprojects="myActiveProject" nodatamessage="No Active Projects assigned." >
+                    </c-employee-active-project>
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="B" label="Billable Projects - Last Two Years">
+                    <c-employee-active-project employeerecordid={recordId} whatprojects="myBillableProject"   nodatamessage="No Billable Projects assigned." >
+                    </c-employee-active-project>
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="C" label="Non Billable Projects - Last Two Years">
+                    <c-employee-active-project employeerecordid={recordId}  whatprojects="myNonBillableProject"  nodatamessage="No Non Bilable Projects assigned." >
+                    </c-employee-active-project>
+                </lightning-accordion-section>
+            </lightning-accordion>
+        </div>
+    </lightning-card>
+
+</template>

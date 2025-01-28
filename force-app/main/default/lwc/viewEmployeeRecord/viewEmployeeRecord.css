@@ -1,0 +1,14 @@
+.dummy{
+color : black;
+}
+
+.custom-output-field .slds-form-element__static {
+	display: flex;
+	align-items: center;
+}
+
+.custom-output-field .slds-form-element__static-text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

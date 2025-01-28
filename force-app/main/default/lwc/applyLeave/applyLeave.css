@@ -1,0 +1,187 @@
+div.container {
+  /* width: 90%; */
+  margin: 1em auto;
+  /* padding: 1em; */
+  /* border: 0.5px solid lightgrey; */
+  /* border-radius: .5em; */
+}
+
+div.container .leave__heading::after {
+  content: " ";
+  display: block;
+  width: calc(100% + 3px);
+  margin: 0.3em 0 0.4em -5px;
+  border-radius: 12px;
+  height: 5px;
+  background-color: #22683e;
+}
+
+div.container .container__header {
+  display: flex;
+  justify-content: space-between;
+}
+
+div.container header.leave__header {
+  font-size: large;
+  font-weight: bold;
+}
+
+.leaveapply__container header.leaveapply__header {
+  margin: 1em 0 .5em 0;
+  font-size: large;
+  font-weight: bold;
+}
+
+.leaveapply__container header.leaveapply__header::before {
+  content: " ";
+  display: block;
+  width: calc(100% + 3px);
+  margin: 0.3em 0 0.4em -5px;
+  border-radius: 12px;
+  height: 1px;
+  background-color: lightgray;
+}
+
+.leaveapply__container header.leaveapply__header::after {
+  content: " ";
+  display: block;
+  width: calc(100% + 3px);
+  margin: 0.3em 0 0.4em -5px;
+  border-radius: 12px;
+  height: 5px;
+  background-color: #22683e;
+}
+
+.leaveapply__container .leaveapply__body {
+  margin: 1em auto;
+}
+
+.leaveapply__container div.employee__details {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.leaveapply__body .employee__details .slds-form-element.grid__items {
+  min-width: 250px;
+  flex: 0 1 30%;
+}
+
+.leaveapply__employeebody {
+  width: 95%;
+  margin: 1em auto;
+}
+
+.leaveapply__employeebody table {
+  border-collapse: collapse;
+  font-family: inherit;
+  text-align: left;
+  margin: 0 auto;
+}
+
+.leaveapply__employeebody table>caption {
+  text-transform: uppercase;
+  font-weight: bolder;
+  padding-inline-start: 10px;
+}
+
+.leaveapply__employeebody th {
+  background-color: #cbcbcb;
+  color: #000000;
+  padding: 8px;
+  text-align: center;
+  font-weight: normal;
+
+}
+
+.leaveapply__employeebody tr:nth-child(even) {
+  background-color: #f4f2f2;
+}
+
+.leaveapply__employeebody td[data-style="bold"] {
+  font-weight: normal;
+  color: #11202C;
+  text-align: left;
+  border-left: 1px solid #C5C7D3;
+}
+
+.leaveapply__employeebody thead th:first-child {
+  border-top-left-radius: 1em;
+}
+
+.leaveapply__employeebody thead th:last-child {
+  border-top-right-radius: 1em;
+}
+
+.leaveapply__employeebody td {
+  padding: 12px;
+  text-align: center;
+  color: #11202C;
+  border-bottom: 1px solid #C5C7D3;
+  border-right: 1px solid #C5C7D3;
+}
+
+.leaveapply__employeebody tbody>tr:hover {
+  background-color: #e0dede;
+  /*color changed*/
+}
+
+.leaveapply__employeebody span.dateinp {
+  font-size: medium;
+  display: inline-block;
+  vertical-align: sub;
+}
+
+.leaveapply__employeebody tr[data-type="Conventional Vacation"] td.reason[data-style="bold"] {
+  background-color: #EEF5EB;
+  text-align: center;
+  font-weight: bold;
+}
+
+.leaveapply__employeebody tr[data-type="Restricted Holiday"] td.reason[data-style="bold"] {
+  background-color: #EEF5EB;
+  text-align: center;
+  font-weight: bold;
+}
+
+.leaveapply__employeebody tr[data-type="On Leave"] td.reason[data-style="bold"] {
+  background-color: #fcf2ec;
+  text-align: center;
+  font-weight: bold;
+}
+
+.leaveapply__employeebody__error {
+  margin: 1em auto;
+  padding: 1em 0 0 1.5em;
+  color: crimson;
+  font-size: larger;
+}
+
+.leaveapply__footer {
+  width: 95%;
+  margin: 1em auto;
+  padding: 0 1em;
+  text-align: center;
+}
+
+@media (min-width: 601px) and (max-width: 800px) {
+  div.container {
+    /* width: 90%; */
+  }
+}
+
+@media (max-width: 720px) {
+  .leaveapply__employeebody {
+    margin: 3em auto;
+  }
+
+  .leaveapply__employeebody__error {
+    margin: 3em auto;
+  }
+}
+
+@media (max-width: 600px) {
+  div.container {
+    width: 100%;
+  }
+}

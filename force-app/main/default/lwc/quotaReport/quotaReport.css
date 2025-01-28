@@ -1,0 +1,229 @@
+/* Adjustments for decreasing the size of the table contents */
+.slds-table th,
+.slds-table td {
+  font-size: 12px; /* Decrease the font size of table content */
+  padding: 6px; /* Adjust padding as needed */
+}
+
+.slds-table th {
+  font-size: 12px; /* Decrease the font size of table headers */
+  font-weight: bold; /* Make table headers bold */
+}
+
+.large-font {
+  font-size: 14px; /* Decrease the font size of large-font class */
+}
+
+/* Adjust spacing between table cells */
+.slds-table th,
+.slds-table td {
+  padding: 4px; /* Adjust padding as needed */
+}
+
+/* Additional styles from your original CSS */
+
+.larger5-font {
+  font-size: 12px;
+}
+
+
+.transparent-checkbox {
+  opacity: 0.0;
+}
+
+.spaced-tabs {
+  margin-top: 1rem;
+  font-size: small;
+}
+
+.slds-scrollable_x {
+  overflow-x: auto;
+}
+
+.center-align {
+  text-align: center;
+}
+
+.year-region-selection {
+  display: flex;
+  align-items: flex-start;
+  margin-left: 27%;
+}
+
+.year-selection,
+.region-selection {
+  margin-right: 4%;
+}
+
+.year-selection label,
+.region-selection label,
+.lightning-combobox label {
+  font-weight: bold; /* Make labels bold */
+  margin-bottom: 6px; /* Add a bit of spacing */
+}
+
+.lightning-combobox {
+  width: 200px;
+  height: 25px;
+  margin-bottom: 5px; /* Add a bit of spacing */
+  margin-top: 5px; /* Add a bit of spacing */
+}
+
+.larger1-font {
+  font-size: x-large;
+  text-align: center;
+  color: #eae6e6;
+}
+
+.spaced-tabs {
+  margin-top: 20px;
+}
+
+.larger-font {
+  font-size: 14px;
+}
+
+.bgClolor1 {
+  color: rgb(8, 104, 8); /* Green */
+}
+
+.bgClolor2 {
+  color: rgb(161, 12, 12); /* Red */
+}
+
+.bgClolor3 {
+  color: rgb(237, 139, 0); /* Orange */
+}
+
+.big-font {
+  font-size: 12px;
+}
+
+.lightning-tab .slds-tabs_default__link {
+  font-size: 14px;
+}
+
+.slds-flexbox {
+  display: grid;
+  gap: 60px;
+  grid-template-columns: 1fr 1fr;
+  margin-left: 22%;
+  margin-right: 30%;
+}
+
+.slds-mr-medium {
+  margin-right: 20px;
+}
+
+.slds-table {
+  border: 0.5px solid black;
+  border-collapse: collapse;
+  width: fit-content;
+  margin-right: 0.4%;
+  margin-left: 0.4%;
+}
+
+.slds-table th,
+.slds-table td {
+  border: 0.5px solid rgb(10, 9, 9);
+  padding: 8px;
+  border-right: 1px solid #d3d3d3;
+}
+
+.slds-table th {
+  font-weight: bold;
+  font-size: 12px;
+  border-right: 1px solid #d3d3d3;
+}
+
+.slds-card .slds-table_bordered {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.slds-th__action {
+  display: block;
+}
+
+.slds-button__icon {
+  display: none !important;
+}
+
+.table-width {
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.slds-table th,
+.slds-table td {
+  line-height: 0.4cm;
+}
+
+.total-row {
+  background-color: #eae6e6;
+  font-weight: bold;
+  font-size: 12px;
+}
+.slds-text-align_right1{
+  font-weight: 550;
+  text-align: right;
+}
+.slds-text-align_center1{
+  font-weight: 600;
+  text-align: center;
+}
+.parent-tab {
+    font-size: 13px;
+}
+.slds-text-align_right2 {
+  font-weight: 550;
+  text-align: right;
+}
+
+/* yourComponent.css */
+.green {
+    color: green !important;
+}
+
+.orange {
+    color: orange !important;
+}
+
+.red {
+    color: red !important;
+}
+
+.total-row {
+  background-color: #faf6f6; /* Grey color */
+  font-weight: 450;
+}
+.red-text {
+    color: rgb(161, 12, 12);
+}
+.container {
+    position: relative;
+}
+
+.table-container {
+    /* Define styles for your table container */
+}
+
+.abbreviations-container {
+    width: 70%;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: #f2f2f2;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    font-size: 12px;
+}
+
+@media (max-width: 768px) {
+    .abbreviations-container {
+        position: static; /* Change to static or relative */
+        margin-top: 10px; /* Adjust margin as needed */
+        margin-right: 10px; /* Adjust margin as needed */
+    }
+}

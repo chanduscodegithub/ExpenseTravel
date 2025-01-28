@@ -1,0 +1,41 @@
+<apex:page standardController="Timesheet__c" extensions="AddmultipleTimeSheetController" docType="html-5.0" lightningStylesheets="true">
+    
+    <apex:form >
+    	<apex:pageBlock >
+			<apex:pageBlockTable value="{!listTimeSheet}" var="ts">
+                 <apex:column headerValue="Region">
+					<apex:inputField value="{!ts.Region__c}"/>
+				</apex:column>
+                <apex:column headerValue="Time Sheet Name">
+					<apex:inputField value="{!ts.Name}"/>
+				</apex:column>
+               	<apex:column headerValue="Date">
+					<apex:inputField value="{!ts.Date__c}"/>
+				</apex:column>
+                <apex:column headerValue="Activity Category">
+					<apex:inputField value="{!ts.Activity_Category__c}"/>
+				</apex:column>
+                <apex:column headerValue="Activity Sub-Category">
+					<apex:inputField value="{!ts.Activity_Sub_Category__c}"/>
+				</apex:column>
+				
+				<apex:column headerValue="Account">
+					<apex:inputField value="{!ts.Account_Name__c}"/>
+				</apex:column>
+				<apex:column headerValue="Opportunity">
+					<apex:inputField value="{!ts.Opportunity__c}"/>
+				</apex:column>
+				<apex:column headerValue="Approx Time Spend (In Minutes)">
+					<apex:inputField value="{!ts.Approx_Time_Spend_In_Minutes__c}"/>
+				</apex:column>
+                <apex:column headerValue="Activity Description">
+					<apex:inputField value="{!ts.Activity_Description__c}"/>
+				</apex:column>
+				</apex:pageBlockTable>
+				<apex:pageBlockButtons >
+					<apex:commandButton value="Add Time Sheet Row" action="{!addTimeSheet}"/>
+					<apex:commandButton value="Save Time Sheets" action="{!saveTieSheet}"/>
+				</apex:pageBlockButtons>
+			</apex:pageBlock>
+	</apex:form>
+</apex:page>

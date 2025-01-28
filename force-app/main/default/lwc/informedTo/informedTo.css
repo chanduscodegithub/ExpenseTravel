@@ -1,0 +1,90 @@
+.slds-form-element__control.inform__info {
+  position: relative;
+}
+
+lightning-icon.slds-icon.slds-input__icon.slds-input__icon_right.slds-icon-text-default.info__icon.slds-icon-utility-info.slds-icon_container {
+  position: absolute;
+  top: 4px;
+  left: 42px;
+  z-index: 5;
+}
+
+lightning-icon.slds-icon.slds-input__icon.slds-input__icon_right.slds-icon-text-default.info__icon.slds-icon-utility-info.slds-icon_container::before {
+  content: attr(data-message);
+  /* Use the data attribute to get the tooltip text */
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 10;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+  /* Use half of the width (120/2 = 60), to center the tooltip */
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+lightning-icon.slds-icon.slds-input__icon.slds-input__icon_right.slds-icon-text-default.info__icon.slds-icon-utility-info.slds-icon_container:hover:before {
+  visibility: visible;
+  opacity: 1;
+}
+
+div.slds-listbox_selection-group.inform__to {
+  overflow: initial;
+}
+
+div.slds-listbox_selection-group.inform__to ul.slds-listbox_horizontal {
+  position: absolute;
+}
+
+.add-view-container .eachItem::after {
+  content: " ";
+  border-bottom: .5px solid #e1e0e0;
+  display: block;
+  position: relative;
+  left: -50px;
+  width: 120%;
+  top: 2px;
+}
+
+.add-view-container .eachItem {
+  cursor: pointer;
+  padding: 6px 0px;
+}
+
+.add-view-container .eachItem:last-child::after {
+  display: none;
+}
+
+.add-view-container .eachItem+* {
+  padding-top: 3px;
+}
+
+.add-view-container .search_res {
+  border: .8px solid rgb(201, 201, 201);
+  background-color: #fff;
+  min-height: 24px;
+  color: rgb(24, 24, 24);
+  border-radius: 0 0 4px 4px;
+  padding: 0 0 0 .9em;
+  margin-top: -2px;
+  z-index: 12;
+  position: relative;
+  box-shadow: 0 2px 3px 0 rgb(1, 118, 211);
+  max-height: 110px;
+  overflow: clip;
+}
+
+.add-view-container .search_res.off {
+  display: none;
+}

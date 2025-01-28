@@ -1,0 +1,154 @@
+<template>
+    <div class="offer-letter-container">
+        <div class="offer-letter-header">
+            <h2>C0632 - YUVATHI LAKKARAJU</h2>
+            <span class="status-approved" onclick={handleApprovalModal}>View</span>
+        </div>
+        <!-- <template if:true={showbuttons}>
+
+                    <lightning-button label="Approve" variant="brand" onclick={handleApprove}></lightning-button>
+                    &nbsp;&nbsp;
+                    <lightning-button label="Reject" variant="destructive" onclick={handleReject}>
+                    </lightning-button>&nbsp;&nbsp;
+                </template> -->
+        <div class="offer-letter-details">
+            <h3>Expense Claim Details</h3>
+            <div class="firstBlock">
+                <div class="detail-item">
+                    <span class="detail-label">Expense Requesting Date</span>
+                    <span class="detail-value">{expenseDate}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Expense Category</span>
+                    <span class="detail-value">{category}</span>
+                </div>
+            </div>
+            <div class="details-row" if:true={certification}>
+                <div class="details-column">
+                    <div class="detail-item">
+                        <span class="detail-label">Certification Expiry Date</span>
+                        <span class="detail-value">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Certification Name</span>
+                        <span class="detail-value">-</span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-row">
+                <div class="detail-item">
+                    <span class="detail-label">Employee ID</span>
+                    <span class="detail-value">C0632 - {employeeName}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Bill Amount</span>
+                    <span class="detail-value">{totalBillAmount}</span>
+                </div>
+            </div>
+            <div class="details-row">
+                <div class="detail-item">
+                    <span class="detail-label">Employee Comments</span>
+                    <span class="detail-value">{employeeComments}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Bill Number</span>
+                    <span class="detail-value">#1231232131</span>
+                </div>
+            </div>
+            <div class="details-row">
+                <div class="detail-item">
+                    <span class="detail-label">Currency</span>
+                    <span class="detail-value">{currency}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Department</span>
+                    <span class="detail-value">{department}</span>
+                </div>
+            </div>
+            <div class="details-row" if:true={cetification}>
+                <div class="details-column">
+                    <div class="detail-item">
+                        <span class="detail-label">Currency</span>
+                        <span class="detail-value">{currency}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-row" if:true={cetification}>
+                <div class="details-column">
+                    <div class="detail-item">
+                        <span class="detail-label">Department</span>
+                        <span class="detail-value">{department}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="offer-letter-details billSection">
+            <h3>Expense Claim Bills</h3>
+            <template if:true={bills}>
+                <div class="custom-table-container">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th style="width:300px;">Bills</th>
+                                <th style="width:150px;">Amount Spent Date</span></th>
+                                <th style="width:150px;">Bill Amount</span></th>
+                                <th style="width:150px;">Bill Number</span></th>
+                                <th style="width:200px;">Comments</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={itemlist} for:item="bill">
+                                <tr key={bill.id}>
+                                    <td><a href={bill.url} target="_blank">{bill.filename}</a></td>
+                                    <td>{bill.amtsptdate}</td>
+                                    <td>{bill.billamount}</td>
+                                    <td>{bill.billnumber}</td>
+                                    <td>{bill.comments}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+        </div>
+        <div class="offer-letter-footer">
+            <button class="slds-button slds-button_neutral" onclick={handleClose}>Close</button>
+        </div>
+    </div>
+
+    <template if:true={showcomments}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                <lightning-icon icon-name="utility:close"
+                   alternative-text="close"
+                   variant="inverse"
+                   size="small" ></lightning-icon>
+                <span class="slds-assistive-text">Close</span>
+             </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{headername} Comments</h2>
+                </header>
+
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <lightning-textarea name="Comments" label="Comments"
+                         value={Comments} onchange={handlechange} required="true"></lightning-textarea>
+                    <lightning-input label="reimbursementdate" name="reimbursementdate" required="true" type="date"
+                        onchange={handlechange} value={Comments}>
+                    </lightning-input>
+                </div>
+
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={onsubmit}>Submit</button>
+                    <button class="slds-button slds-button_neutral" onclick={hideModalBox}>Cancel</button>
+                </footer>
+
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,17 @@
+<apex:page controller="GoogleOAuthController">
+    <apex:form >
+        <apex:pageMessages />
+        <apex:actionFunction name="handleAuthCode" action="{!processAuthCode}" rerender="messages">
+            <apex:param name="code" assignTo="{!authCode}" value="" />
+        </apex:actionFunction>
+    </apex:form>
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const authCode = urlParams.get('code');
+            if (authCode) {
+                handleAuthCode(authCode);
+            }
+        };
+    </script>
+</apex:page>

@@ -1,0 +1,13 @@
+<template>
+<lightning-card title="Contact Information - ClientContacts">
+    <lightning-datatable
+            key-field="id"
+            data={focusedAccountList}
+            columns={columns}
+            draft-values={draftValue}>
+            
+    </lightning-datatable>
+    <lightning-button-icon icon-name="utility:add" alternative-text="add"   class="slds-m-left_xx-small" title="Add" onclick={handleClickRowAdd}></lightning-button-icon>
+</lightning-card>
+
+</template>

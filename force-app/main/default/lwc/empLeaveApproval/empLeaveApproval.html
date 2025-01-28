@@ -1,0 +1,88 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <div class="slds-page-header">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-custom-custom27" title="Employee_Leave">
+                            <lightning-icon icon-name="custom:custom27" alternative-text="Icon"></lightning-icon>
+                            <span class="slds-assistive-text">Employee Leave</span>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span>Employee Leave</span>
+                                    <span class="slds-page-header__title slds-truncate" title="Timesheet Number">{empLeaveData}</span>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Leave Cancellation : Employee can cancel his leave before manager approves/Rejects line number: (23 to 29)-->
+                    <template if:true={isRecordOwner}> 
+                        <div class="slds-float_right">
+                             <!--  Cancel Button functionality before manager approves/Rejects -->
+                            <button class="slds-button slds-button_neutral" onclick={handleCancel} title="Cancel" >Cancel</button>
+                        </div>
+                     </template> 
+                </div>
+            </div>
+            <div class="slds-page-header__col-actions">
+                <div class="slds-page-header__controls">
+                    <div class="slds-page-header__control">
+                        <ul class="slds-button-group-list">
+                            <li if:true={isManager}>
+                                <button class="slds-button slds-button_neutral" onclick={handleApproval} disabled={isButtonDisable}>Approve</button>
+                                <button class="slds-button slds-button_neutral" onclick={initRejection} disabled={isButtonDisable}>Reject</button>
+                            </li>
+                            <li if:true={hrApprovalPending}>
+                                <button class="slds-button slds-button_neutral" onclick={handleApproval} disabled={isButtonDisable}>Awaiting HR Approval</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal-->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container specificity">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={initRejection}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Enter Rejection Message</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <table class="slds-table slds-table_bordered">
+                        <thead>
+                            <tr class="slds-text-title">
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Message">Message <span class ="custom-asterisk">*</span></div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="row" class="message">
+                                    <div class="slds-truncate message__area" title="Rejection Note">
+                                         <lightning-textarea type="text" name="Message" label="" value={RejectionMessage} message-when-value-missing="Field is mandatory." onchange={handleInput} data-id={leaveData.Id}></lightning-textarea> 
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={initRejection} title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={handleRejection} title="OK">OK</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

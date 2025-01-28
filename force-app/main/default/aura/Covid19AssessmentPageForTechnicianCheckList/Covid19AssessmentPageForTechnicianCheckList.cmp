@@ -1,0 +1,41 @@
+<aura:component >
+    <aura:attribute name="radioButtonDetails" type="Map"/>
+    <aura:attribute name="key" type="String" />
+    <aura:attribute name="listRadioButtons" type="List" />
+    <aura:attribute name="finalValues" type="Object" />
+    <aura:attribute name="totalWeightage" type="Integer"/>
+    <aura:attribute name="resultMap" type="Map"/>
+    <aura:attribute name="isBodyTemp" type="Boolean" default="false"/>
+    <aura:attribute name="picklistValues" type="String[]" default="[]"/>
+    <aura:attribute name="addWeight" type="Boolean" default='true'/>
+    <aura:attribute name="eachValue" type="Boolean"/>
+    <aura:attribute name="checkYes" type="String"/>
+    <aura:attribute name="questionRowStyle" type="String"/>
+    <aura:attribute name="areYouVaccinated" type="String"/>
+    <aura:attribute name="allowSubmit" type="Boolean" />
+    <aura:attribute name="isPicklistExist" type="Boolean" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doChildInit}"/>
+    <aura:if isTrue="{!v.isBodyTemp}">
+        <td data-label="Close Date" colspan="2" style="padding: 0;">
+            <div class="selectStyle" title="Cloudhub">
+                <!--<lightning:combobox name="progress" label="" value="" placeholder="Select a value" options="{!v.statusOptions}" onchange=""/>-->
+                <lightning:select aura:id="picklistvalue" class="slds-p-bottom_medium slds-p-horizontal_medium" name="{!v.key}" label="" onchange="{!c.pickListChange}" value="{!v.areYouVaccinated}" >
+                        <option name="{!v.key}" value="">Select a Value</option>
+                        <aura:iteration items="{!v.picklistValues}" var="option">
+                            <option value="{!option}">{!option}</option>
+                        </aura:iteration>	
+                    </lightning:select>
+            </div>
+        </td>
+        <aura:set attribute="else">
+            <aura:iteration items="{!v.listRadioButtons}" var="item">
+                <td data-label="Close Date">
+                    <div class="slds-truncate" title="Cloudhub">
+                        <lightning:input style="{!v.checkYes}" class="radioButton" data-record="{!v.key}" aura:id="assignmentOptions" name="{!item.name}" type="radio" value="{!item.label}" onchange="{!c.handleRadioButtonValue}" required="true"/>
+                    </div>
+                </td>
+            </aura:iteration>
+        </aura:set>
+    </aura:if>
+</aura:component>

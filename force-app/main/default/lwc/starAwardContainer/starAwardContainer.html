@@ -1,0 +1,244 @@
+<template>
+    <template if:false={resetValues}>
+        <article class="slds-card">
+            <div class="slds-card__header slds-grid slds-assistive-text">
+    
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <table>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td colspan="2" style="text-align: center;">
+                                        <img src={STARWAR_IMAGE} alt='Add a Response'>
+                                    </td>
+                                </tr>
+                                <tr class="input"> 
+                                    <td class="insideTd">
+                                        <!-- Search input -->
+                                        <div class="input-container">
+                                            <label for="awardSearchInput" class="input-label">To</label>
+                                            <input
+                                                id="awardSearchInput"
+                                                class="search"
+                                                type="text"
+                                                value={awardSearchKey}
+                                                oninput={handleAwardSearchChange}
+                                                placeholder="Type the name..."
+                                            />
+                                        </div>
+
+                                        <!-- Dropdown with filtered employees -->
+                                        <template if:true={showAwardDropdown}>
+                                            <div class="dropdown">
+                                                <ul class="dropdown-list">
+                                                    <template for:each={filteredAwardEmployees} for:item="employee">
+                                                        <li key={employee.id}>
+                                                            <button class="btn" data-id={employee.id}
+                                                                onclick={handleAwardSelect}>
+                                                                <img
+                                                                    class="avatarDropdown"
+                                                                    src={employee.avatar}
+                                                                    alt="User Avatar"
+                                                                    title={employee.name}
+                                                                />
+                                                            <div class="column">
+                                                                <p>{employee.name}</p>
+                                                                <p>{employee.email}</p>
+                                                            </div>
+                                                            </button>
+                                                        </li>
+                                                    </template>
+                                                    <template if:true={noAwardEmployeesFound}>
+                                                        <li>No employees found.</li>
+                                                    </template>
+                                                </ul>
+                                            </div>
+                                        </template>
+                                    </td>
+                                    
+                                    <td class="insideTd">
+                                        <!-- Search input -->
+                                        <div class="input-container">
+                                            <label for="awardSearchInput" class="inform-input-label">Inform</label>
+                                            <input
+                                                id="informSearchInput"
+                                                class="search"
+                                                type="text"
+                                                value={informSearchKey}
+                                                oninput={handleInformSearchChange}
+                                                placeholder="Type the name..."
+                                            />
+                                        </div>
+
+
+                                        <template if:true={informSuggestions.length}>
+                                            <ul class="suggestions-list">
+                                                <div class="info-container" title="DI: These are individuals you have informed in the past">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="info-icon" title="Hover On me" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+                                                </div>
+                                                <template for:each={truncatedInformSuggestions} for:item="employee">
+                                                    <li key={employee.id} class="tooltip">
+                                                        <!-- <div class="employee-item"  title={employee.email} data-id={employee.id} onmouseover={openToolTip} onmouseleave={closeToolTip}> -->
+                                                        <div class="employee-item"  title={employee.email} data-id={employee.id}>
+                                                            <button class="empName btn" data-id={employee.id} onclick={handleInformSelect}>
+                                                                 {employee.displayName}
+                                                            </button>
+                                                            <button class="add-button btn" data-id={employee.id} onclick={handleInformSelect}>
+                                                                +
+                                                            </button>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                                <!-- <span class={tooltipClass}>{currentTooltip}</span> -->
+                                            </ul>
+                                        </template>
+
+                                        <!-- Dropdown with filtered employees -->
+                                        <template if:true={showInformDropdown}>
+                                            <div class="dropdown">
+                                                <ul class="dropdown-list">
+                                                    <template for:each={filteredInformEmployees} for:item="employee">
+                                                        <li key={employee.id}>
+                                                            <button class="btn"
+                                                                data-id={employee.id}
+                                                                onclick={handleInformSelect}
+                                                            >
+                                                            <img class="avatarDropdown" src={employee.avatar} alt="User Avatar" title={employee.name} />
+                                                            <div class="column">
+                                                                <p>{employee.name}</p>
+                                                                <p>{employee.email}</p>
+                                                            </div>
+                                                            </button>
+                                                        </li>
+                                                    </template>
+                                                    <template if:true={noInformEmployeesFound}>
+                                                        <li>No employees found.</li>
+                                                    </template>
+                                                </ul>
+                                            </div>
+                                        </template>
+                                    </td>
+                                </tr>
+                                <tr class="container">
+                                    <td class="awardedToContainer">
+                                        <!-- Display selected employees -->
+                                        <template if:true={selectedAwardEmployees}>
+                                            <h3 class="heading">AWARD</h3>
+                                            <ul class="selected-list ">
+                                                <template for:each={selectedAwardEmployees} for:item="employee">
+                                                    <li key={employee.id}>
+                                                        <div class="row">
+                                                            <img
+                                                                class="employee-avatar"
+                                                                src={employee.avatar}
+                                                                alt="User Avatar"
+                                                                title={employee.name}
+                                                            />
+                                                            <div class="detail">
+                                                                <p class="Name">{employee.name} ({employee.employeeId})</p>
+                                                                <p>{employee.email}</p>
+                                                            </div>
+                                                            <button
+                                                                class="remove-button btn"
+                                                                data-id={employee.id}
+                                                                onclick={handleAwardRemove}
+                                                            >
+                                                                X
+                                                            </button>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </template>
+                                    </td>
+                                    <td class="awardedToContainer">
+                                        <!-- Display selected employees -->
+                                        <template if:true={selectedInformEmployees}>
+                                            <h3 class="heading">INFORM</h3>
+                                            <ul class="selected-list inputRequired">
+                                                <template for:each={selectedInformEmployees} for:item="employee">
+                                                    <li key={employee.id}>
+                                                        <div class="row">
+                                                            <img
+                                                                class="employee-avatar"
+                                                                src={employee.avatar}
+                                                                alt="User Avatar"
+                                                                title={employee.name}
+                                                            />
+                                                            <div class="detail">
+                                                                <p class="Name">{employee.name} <template if:false={employee.isGroup}> ({employee.employeeId})</template></p>
+                                                                <p>{employee.email}</p>
+                                                            </div>
+                                                            <button
+                                                                class="remove-button btn"
+                                                                data-id={employee.id}
+                                                                onclick={handleInformRemove}
+                                                            >
+                                                                X
+                                                            </button>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </template>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="tdClass">
+                                        <label for="comment" class="headingComment">Comments</label>
+                                        <textarea id="comment" name="comment" class="comment input-fields"  onblur={validateComment} oninput={removeError}  required></textarea>
+                                        <div class="error-message" if:true={commentError}>
+                                            {commentError}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: center;">
+                                        <lightning-button variant="brand" label="Send GOLD ST**R"  title="Submit" onclick={handleConfirmationModal} class="slds-var-m-left_x-small"></lightning-button>
+                                    </td>
+                                </tr>
+                        
+                            </table> 
+                        </td>
+                    </tr>
+                    <tr>                       
+                        <td>
+                            <c-list-of-award-star></c-list-of-award-star>
+                        </td>
+                    </tr>
+                  
+                </table>
+            </div>
+        </article> 
+        <template if:true={confirmationModal}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- Modal/Popup Header -->
+                    <header class="slds-modal__header headerContainer">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClose}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 class="slds-text-heading_medium">Confirmation</h2>
+                    </header>
+
+                    <!-- Modal/Popup Body -->
+                    <div class="confirmationContainer">
+                        <p>Are you sure you want to send the Gold Star?</p>
+                    </div>
+
+                    <!-- Modal/Popup Footer -->
+                    <footer class="slds-modal__footer footer">
+                        <div class="buttonContainer">
+                            <button class="slds-button slds-button_neutral" onclick={handleClose}>No</button>
+                            <button class="slds-button slds-button_neutral" onclick={handleSubmit}>Yes</button>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </template>      
+</template>

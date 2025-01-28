@@ -1,0 +1,20 @@
+<template>
+    <fieldset class="rate ratingData" disabled={noedit}>
+        <input type="radio"  value="5" id={rating10} name={name} checked={check10} onchange={handleRatingClick}/><label for={rating10}
+            title="5"></label>
+        <input type="radio" value="4.5" id={rating9} name={name} checked={check9} onchange={handleRatingClick}/><label class="half" for={rating9}
+            title="4.5"></label>
+        <input type="radio"  value="4" id={rating8} name={name} checked={check8} onchange={handleRatingClick}/><label for={rating8} title="4"></label>
+        <input type="radio"  value="3.5" id={rating7} name={name} checked={check7} onchange={handleRatingClick}/><label class="half" for={rating7}
+            title="3.5"></label>
+        <input type="radio"  value="3" id={rating6} name={name} checked={check6} onchange={handleRatingClick}/><label for={rating6} title="3"></label>
+        <input type="radio"  value="2.5"  id={rating5} name={name} checked={check5} onchange={handleRatingClick}/><label class="half" for={rating5}
+            title="2.5"></label>
+        <input type="radio"  value="2"  id={rating4}  name={name} checked={check4} onchange={handleRatingClick} /><label for={rating4} title="2"></label>
+        <input type="radio"  value="1.5" id={rating3} name={name} checked={check3} onchange={handleRatingClick}/><label class="half" for={rating3}
+            title="1.5"></label>
+        <input type="radio"  value="1" id={rating2}  name={name} checked={check2} onchange={handleRatingClick}/><label for={rating2} title="1"></label>
+        <input type="radio" value="0.5" id={rating1} name={name} checked={check1} onchange={handleRatingClick}/><label class="half" for={rating1}
+            title="0.5"></label>
+    </fieldset>
+</template>

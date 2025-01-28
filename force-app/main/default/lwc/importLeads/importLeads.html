@@ -1,0 +1,195 @@
+<!--
+  @description       : 
+  @author            : Ibrahim
+  @group             : 
+  @last modified on  : 03-21-2024
+  @last modified by  : Ibrahim
+-->
+<template>
+    <lightning-card title="Upload CSV Files">
+        <div class="slds-text-align_center">
+            <lightning-input type="file" label="Upload Lead Files" variant="label-hidden" accept=".csv" onchange={handleFileChange} disabled={isFileUploaded}></lightning-input>
+            <div class="slds-text-body_small slds-text-color_error">{fileName}</div>
+        </div>
+    </lightning-card>
+
+    <!-- modal start -->
+    <template if:true={isShowModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-modal_medium slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClosePopup}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+
+                    <!-- CSV file header display -->
+                    <template if:true={isShowLeadCSV}>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Are you sure you want upload these Lead records?</h2>
+                    </template>
+
+                    <!-- lead inserted and updated to saleforce header display -->
+                    <template if:false={isShowLeadCSV}>
+                        <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Lead record inserted and updated successfully</h2>
+                    </template>
+                </header>
+
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_large" id="modal-content-id-1">
+                    <template if:true={showSpinner}>
+                        <div class="backgroundInverse">
+                            <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+                        </div>
+                    </template>
+
+                    <!-- CSV file records header display -->
+                    <template if:true={isShowLeadCSV}>
+                        <table class="slds-box slds-p-around_none slds-table slds-table_bordered slds-table_col-bordered">
+                            <thead>
+                                <tr>
+                                    <th>FirstName</th>
+                                    <th>LastName</th>
+                                    <th>Email Address</th>
+                                    <th>Phone</th>
+                                    <!-- <th>Street</th>
+                                    <th>City</th>
+                                    <th>State</th> -->
+                                    <th>Country</th>
+                                    <!-- <th>PostalCode</th> -->
+                                    <th>Lead Status</th>
+                                    <th>Lead Source</th>
+                                    <th>Company</th>
+                                    <th>Title</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={csvRecords} for:item="leadRec">
+                                    <tr key={leadRec.EmailAddress}>
+                                        <td>{leadRec.FirstName}</td>
+                                        <td>{leadRec.LastName}</td>
+                                        <td>{leadRec.EmailAddress}</td>
+                                        <td>{leadRec.Phone}</td>
+                                        <!-- <td>{leadRec.Street}</td>
+                                        <td>{leadRec.City}</td>
+                                        <td>{leadRec.State}</td> -->
+                                        <td>{leadRec.Country}</td>
+                                        <!-- <td>{leadRec.PostalCode}</td> -->
+                                        <td>{leadRec.LeadStatus}</td>
+                                        <td>{leadRec.LeadSource}</td>
+                                        <td>{leadRec.Company}</td>
+                                        <td>{leadRec.Title}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+
+                    <!-- lead inserted and updated to saleforce table display -->
+                    <template if:false={isShowLeadCSV}>
+                        <!-- Success Insert Result -->
+                        <div>Count of Lead records successfully Inserted is : <strong> {successInsertCount}</strong></div>
+                        <template if:true={isShowInsertResult}>
+                            <div class="slds-p-bottom_medium">Below are the Lead records</div>
+                            <table class="slds-box slds-p-around_none slds-table slds-table_bordered slds-table_col-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Lead Id</th>
+                                        <th>Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={successInsertResult} for:item="successInsert">
+                                        <tr key={successInsert.leadId}>
+                                            <td><a href={successInsert.leadURL} target="_blank" class="text-blue">{successInsert.leadId}</a></td>
+                                            <td>{successInsert.Name}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+
+                         <!-- Success Update Result -->
+                         <div class="slds-p-top_large">Count of Lead records successfully Updated is : <strong> {successUpdateCount}</strong></div>
+                        <template if:true={isShowUpdateResult}>
+                            <div class="slds-p-bottom_medium">Below are the Lead records</div>
+                            <table class="slds-box slds-p-around_none slds-table slds-table_bordered slds-table_col-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Lead Id</th>
+                                        <th>Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={successUpdateResult} for:item="successUpdate">
+                                        <tr key={successUpdate.leadId}>
+                                            <td><a href={successUpdate.leadURL} target="_blank" class="text-blue">{successUpdate.leadId}</a></td>
+                                            <td>{successUpdate.Name}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        
+                        <!-- Error Result -->
+                        <div class="slds-p-top_large">Count of Lead records which is not Inserted/Updated is : <strong> {errorCount}</strong></div>
+                        <template if:true={isShowErrorResult}>
+                            <div class="slds-p-bottom_medium">Below are the Lead Names</div>
+                        <table class="slds-box slds-p-around_none slds-table slds-table_bordered slds-table_col-bordered slds-table_fixed-layout">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Error Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={errorResult} for:item="leadErr">
+                                    <tr key={leadErr.Name}>
+                                        <td style="white-space: break-spaces;">{leadErr.Name}</td>
+                                        <td style="white-space: break-spaces;">{leadErr.message}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                        </template>
+
+                        <!-- Duplicate Emails in sheet -->
+                        <div class="slds-p-top_large">Count of Lead records which is not Inserted/Updated because having duplicate emails in csv files is : <strong> {duplicateEmailCount}</strong></div>
+                        <template if:true={isShowDuplicateEmails}>
+                            <div class="slds-p-bottom_medium">Below are the Lead Names and Emails from the CSV File</div>
+                        <table class="slds-box slds-p-around_none slds-table slds-table_bordered slds-table_col-bordered slds-table_fixed-layout">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={duplicateEmailResult} for:item="dupEmail">
+                                    <tr key={dupEmail.Name}>
+                                        <td>{dupEmail.Name}</td>
+                                        <td>{dupEmail.LeadEmail}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                        </template>
+                    </template>
+                </div>
+
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <lightning-button class="slds-m-around_xx-small slds-m-right_large" variant="neutral" label="Cancel" onclick={handleClosePopup}></lightning-button>
+                    <template if:true={isShowLeadCSV}>
+                        <lightning-button variant="brand" label="Upload" onclick={handleSubmit}></lightning-button>
+                    </template>
+                    <template if:false={isShowLeadCSV}>
+                        <lightning-button variant="brand" label="Send Email" onclick={handleSendEmail}></lightning-button>
+                    </template>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- modal end -->
+</template>

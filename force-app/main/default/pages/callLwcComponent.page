@@ -1,0 +1,15 @@
+<apex:page standardController="Attendance__c" recordSetVar="test" showHeader="false" sidebar="false">
+    <apex:includeLightning />  
+    <div id="LightningComponentid" />    
+    <script>
+    $Lightning.use("c:callLwcComponent", function() {
+        $Lightning.createComponent("c:attendenceManagerApprovalCmp",
+          { 
+          },
+          "LightningComponentid",
+          function(cmp) {
+             console.log('LWC Componenet added in VF page');
+          });
+    });
+    </script>
+</apex:page>

@@ -1,0 +1,95 @@
+<template>
+
+	<template if:true={showCalender}>
+		<template if:true={loader}>
+			<lightning-spinner variant="brand" size="large"> </lightning-spinner>
+		</template>
+		<c-calender-view-parent events={events} all-attendence-records={wiredResult.data} oneventclicked={handleEvent}
+			onrefresh={refreshTable}></c-calender-view-parent>
+	</template>
+
+	<template if:true={openModal}>
+		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true"
+			aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open">
+			<div class="slds-modal__container">
+				<header class="slds-modal__header">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+					<lightning-icon icon-name="utility:close"
+                   alternative-text="close"
+                   variant="inverse"
+                   size="small" ></lightning-icon>
+					<span class="slds-assistive-text">Close</span>
+				</button>
+					<h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Attendance Regularization
+					</h2>
+				</header>
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+					<div class="demo-only demo-only--sizing slds-grid slds-wrap">
+						<div class="slds-size_2-of-2">
+							Reporting manager : <lightning-formatted-text value={managerDetails.Name}
+								label="Reporting manager"></lightning-formatted-text>
+						</div>
+						<div class="slds-size_2-of-2">
+							<template if:true={overrideNewButton}>
+								<lightning-input type="date" name="atdDate" label="Regularzid Date"
+									value={atdRegularizedDate} onchange={handleDateCtrl} class="slds-m-around_x-small"
+									required>
+								</lightning-input>
+							</template>
+							<template if:false={overrideNewButton}>
+								Date : <lightning-formatted-date-time value={atdResult.Date__c} label="Date" required>
+								</lightning-formatted-date-time>
+							</template>
+						</div>
+						<div class="slds-size_2-of-2">
+
+							<template if:true={duration}>
+								<b> Total Duration : </b>
+								<lightning-formatted-text value={duration} class="bold-it">
+								</lightning-formatted-text>
+							</template>
+							<template if:false={duration}>
+								Total Duration : 00:00
+							</template>
+						</div>
+						<div class="slds-size_1-of-2">
+							<lightning-input type="time" name="checkInTime" label="Check IN" value={checkIn}
+								onchange={handleTimeInCtrl} class="slds-m-around_x-small" hour="2-digit"
+								secound="2-digit" hour12="true" required>
+							</lightning-input>
+						</div>
+						<div class="slds-size_1-of-2">
+							<lightning-input type="time" name="checkOutTime" label="Check OUT" value={checkOut}
+								onchange={handleTimeInCtrl} class="slds-m-around_x-small" required>
+							</lightning-input>
+						</div>
+						<div class="slds-size_1-of-2">
+							<lightning-combobox name="Reason" label="Reason" value={empReason}
+								placeholder="Select Reason" options={options} onchange={handleReasonChange}
+								dropdown-alignment="auto" class="slds-m-around_x-small" required>
+							</lightning-combobox>
+						</div>
+						<div class="slds-size_1-of-2">
+							<lightning-textarea name="EmpCommnets" label="Employee Comments"
+								placeholder="Enter Any Comments(Optional.....)" value={empCommnets}
+								onchange={handleEmpComment} class="slds-m-around_x-small" required></lightning-textarea>
+						</div>
+					</div>
+				</div>
+				<footer class="slds-modal__footer">
+					<lightning-button class="slds-p-left_small" label="View Attendance" variant="brand"
+						onclick={viewRecordDetails}>
+					</lightning-button>
+					<lightning-button class="slds-p-left_small" label="Cancel" variant="brand" onclick={hideModalBox}>
+					</lightning-button>
+					<lightning-button class="slds-p-left_small" label="Submit" variant="brand" onclick={handleConfirmClick}>
+					</lightning-button>
+					<!--<button class="slds-button slds-button_neutral slds-m-left_x-small" onclick={viewRecordDetails}>View Attendence</button>
+					<button class="slds-button slds-button_neutral slds-m-left_x-small" onclick={hideModalBox}>Cancel</button>
+					<button class="slds-button slds-button_neutral slds-m-left_x-small" onclick={handleSubmit}>Submit</button>-->
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</template>
+</template>

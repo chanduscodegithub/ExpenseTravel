@@ -1,0 +1,176 @@
+<apex:page standardController="Billing__c" title="Create Billing" sidebar="false" extensions="billingFromBCController" lightningStylesheets="true" docType="html-5.0">
+    
+    <!--<apex:stylesheet value="{!URLFOR($Resource.AcctSeed__accounting_resources, '/css/common.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.AcctSeed__accounting_resources, '/css/billing-opp.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.AcctSeed__accounting_resources, '/css/post-table.css')}" />
+<apex:variable var="customLEX" value="customLEXOn" rendered="{!$User.UIThemeDisplayed = 'Theme4d' || $User.UIThemeDisplayed = 'Theme4u'}">
+<apex:stylesheet value="{!URLFOR($Resource.AcctSeed__accounting_resources, '/css/visualforce-lex-ext.css')}" />
+</apex:variable>
+
+<apex:includeScript value="{!URLFOR($Resource.AcctSeed__accounting_resources, '/javascript/jquery.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.AcctSeed__internationalization_resources, '/javascript/Intl.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.AcctSeed__internationalization_resources, '/locale-data/jsonp/' & DefaultLocale & '.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.AcctSeed__accounting_resources, '/javascript/accounting-common.js')}" />-->
+    
+    
+    
+    <apex:includeScript value="{!URLFOR($Resource.AcctSeed__accounting_resources, '/javascript/accounting-currency.js')}" loadOnReady="true" />
+    <apex:includeScript value="{!URLFOR($Resource.AcctSeed__accounting_resources, '/javascript/currency-formatter.js')}" loadOnReady="true" />
+    <apex:includeScript value="{!URLFOR($Resource.AcctSeed__accounting_resources, '/javascript/checkbox-set.js')}" loadOnReady="true" />
+    <apex:includeScript value="{!URLFOR($Resource.AcctSeed__accounting_resources, '/javascript/checkbox-set-billing.js')}" loadOnReady="true" />
+    
+    <apex:form id="theForm" styleClass="billFromOpp">
+        <apex:pageMessages id="showmsg"></apex:pageMessages>
+        <apex:sectionHeader title="{!$ObjectType.Billing__c.label}" subtitle="{!transactionRec.Name}" />
+        
+        <apex:pageBlock id="theBlock" title="Create {!$ObjectType.AcctSeed__Billing__c.label}">
+            
+            
+            
+            <apex:pageBlockButtons id="buttons">
+                
+                <apex:commandButton id="saveButton"
+                                    value="Create"
+                                    action="{!createBilling}"
+                                    status="pageStatus"
+                                    reRender="theForm"
+                                    />
+                <apex:commandButton id="savePostButton"
+                                    value="Create & Post"
+                                    action="{!createBillingAndPost}"
+                                    status="pageStatus"
+                                    reRender="theForm"
+                                    />
+                <apex:commandButton id="cancelButton" action="{!cancel}"  status="pageStatus" value="Back" reRender="theForm"  immediate="true" />
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection id="firstBlockSection"
+                                   title="{!$ObjectType.AcctSeed__Billing__c.Label}"
+                                   collapsible="false"
+                                   columns="2"
+                                   >
+                <apex:pageBlockSectionItem labelStyleClass="width5" dataStyleClass="width5">
+                    <apex:outputLabel value="Customer" />
+                    <apex:outputField value="{!transactionRec.Account__r.Name}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem labelStyleClass="width5" dataStyleClass="width30">
+                    <apex:outputLabel value="{!$ObjectType.AcctSeed__Billing__c.fields.AcctSeed__Date__c.Label}" />
+                    <apex:input type="date" value="{!invoiceDate}">
+                        <apex:actionSupport event="onchange" action="{!getautopopultevalue}" />
+                    </apex:input>
+                    
+                </apex:pageBlockSectionItem>
+                <!--apex:pageBlockSectionItem labelStyleClass="width5" dataStyleClass="width5">
+<apex:outputLabel value="{!$ObjectType.AcctSeed__Billing__c.fields.AcctSeed__Ledger__c.Label}"/>
+<apex:selectList value="{!defaultledger}" size="1"> 
+<apex:selectOptions value="{!Ledgernames}" /> 
+</apex:selectList>
+</apex:pageBlockSectionItem-->
+                <apex:pageBlockSectionItem labelStyleClass="width5" dataStyleClass="width5">
+                    <apex:outputLabel value="Total" />
+                    <apex:outputText id="amount-full" value="{!Headertotal}" />
+                </apex:pageBlockSectionItem>
+                
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Billing Lines"
+                                   collapsible="false"
+                                   columns="1">
+                
+                <apex:actionStatus id="pageStatus">
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+                                &nbsp;
+                            </div>
+                            <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+                                <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                                    <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                                    <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                                </div>
+                            </div>
+                        </apex:outputPanel>            
+                    </apex:facet>
+                </apex:actionStatus>
+                
+                <apex:pageBlockTable value="{!lineitems}" var="line" styleClass="auto-layout">
+                    <!--apex:column >
+<apex:facet name="header">
+<input type="checkbox" class="rbLines_checkbox_all"/>
+</apex:facet>
+<apex:inputCheckbox value="{!line.isSelected}" styleClass="rbLines_checkbox"/>
+</apex:column-->
+                    <apex:column headerValue="{!$ObjectType.AcctSeed__Billing_Line__c.fields.AcctSeed__Date__c.Label}" styleClass="amount-row-date">
+                        <apex:input type="date" value="{!invoiceLineDate}"></apex:input>
+                    </apex:column>
+                    <apex:column headerValue="Description" styleClass="amount-row-quantity"> 
+                        <p><apex:outputField value="{!line.billingLineRec.PO_Number__c}"/><br/>
+                            <apex:outputField value="{!line.billingLineRec.Resource_Name__c}"/><br/>
+                            <apex:outputField value="{!line.billingLineRec.Description__c}"/></p>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.AcctSeed__Billing_Line__c.fields.AcctSeed__Hours_Units__c.Label}" styleClass="amount-row-quantity">
+                        <!--apex:inputField value="{!line.billingLineRec.Qty__c}"/-->
+                        <apex:outputField value="{!line.billingLineRec.Qty__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Price" styleClass="amount-row-price">
+                        <!--apex:inputField value="{!line.billingLineRec.AcctSeed__Rate__c}" rendered="{!NOT(line.isAvalaraSalesTax)}"/-->
+                        <apex:outputField value="{!line.billingLineRec.Rate__c}" />
+                    </apex:column>
+                    <apex:column headerClass="amount-all align-right" styleClass="amount-row align-right nowrap">
+                        <!--apex:facet name="header">
+<apex:outputText value="{!line.billingLineRec.Total__c}" />
+</apex:facet-->
+                        <apex:outputtext value="{0,Number,0.00}" >
+                            <apex:param value="{!line.billingLineRec.Rate__c * line.billingLineRec.Qty__c}"/>
+                        </apex:outputtext>
+                        <!--apex:outputText id="billingAmount"
+value="{!line.billingLineRec.Rate__c * line.billingLineRec.Qty__c}"/-->
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.AcctSeed__Billing_Line__c.fields.AcctSeed__Tax_Group__c.Label}"
+                                 headerClass="align-right" styleClass="align-right nowrap">
+                        <apex:outputText rendered="{!NoTax}"/>
+                        <apex:outputField value="{!line.billingLineRec.Product__r.AcctSeed__Tax_Group__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.AcctSeed__Billing_Line__c.fields.AcctSeed__Tax_Amount2__c.Label}"
+                                 headerClass="align-right" styleClass="amount-row-tax align-right nowrap" >
+                        <apex:inputText value="{!line.Taxamount}"> </apex:inputText>
+                    </apex:column>
+                    <apex:column id="totalAmount" headerValue="{!$ObjectType.AcctSeed__Billing_Line__c.fields.AcctSeed__Total__c.Label}"
+                                 headerClass="align-right" styleClass="amount-row-total align-right nowrap" >
+                        <apex:outputtext value="{0,Number,0.00}" >
+                            <apex:param value="{!(line.billingLineRec.Rate__c * line.billingLineRec.Qty__c) + line.Taxamount}"/>
+                        </apex:outputtext>
+                        <!--apex:outputText value="{!(line.billingLineRec.Rate__c * line.billingLineRec.Qty__c) + line.Taxamount}"/-->
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.AcctSeed__Billing_Line__c.fields.AcctSeed__Product__c.Label}">
+                        <!--apex:inputField value="{!line.billingLineRec.AcctSeed__Product__c}" rendered="{!NOT(line.isAvalaraSalesTax)}"/-->
+                        <apex:outputField value="{!line.billingLineRec.Product__c}" />
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.AcctSeed__Billing_Line__c.fields.AcctSeed__Revenue_GL_Account__c.Label}">
+                        <!--apex:inputField value="{!revenueGLaccount}" required="true" rendered="{!revenueGLaccount}"/-->
+                        <apex:outputField value="{!line.billingLineRec.Product__r.AcctSeed__Revenue_GL_Account__c}" />
+                    </apex:column>
+                    <!--apex:repeat value="{!$ObjectType.AcctSeed__Billing_Line__c.FieldSets.AcctSeed__BillingFromOpportunity}" var="dynamicField">
+<apex:column headerValue="{!dynamicField.Label}">
+<apex:inputField value="{!line.billingLineRec[dynamicField.fieldPath]}"
+styleClass="{!IF(dynamicField.type == 'textarea', 'fieldComment', '') + IF($User.UIThemeDisplayed = 'Theme4d' || $User.UIThemeDisplayed = 'Theme4u', 'LEX', '')}" />
+</apex:column>
+</apex:repeat>
+<apex:column >
+<apex:inputHidden id="lineTaxRate" value="{!line.taxRate}" rendered="{!isHeaderLevelPostEnabled && !isAvalaraTaxCalcEnabled}"/>
+</apex:column-->
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:outputField value="" rendered="false" />
+        <apex:outputField value="" rendered="false" />
+        <apex:outputField value="" rendered="false" />
+        <apex:outputText value="" rendered="false" />
+        <apex:outputField value="" rendered="false" />
+        
+    </apex:form>
+    
+</apex:page>

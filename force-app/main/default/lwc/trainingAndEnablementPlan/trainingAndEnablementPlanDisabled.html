@@ -1,0 +1,255 @@
+<template>
+    <article class="slds-card">
+        <div class="container">
+            <div class="slds-card__body slds-card__body_inner">
+                <!-- Section for displaying current certifications -->
+                <section>
+                    <div class="slds-page-header">
+                        <div class="slds-page-header__row">
+                            <div class="slds-page-header__col-title">
+                                <div class="slds-media" style="align-items: center;">
+                                    <div class="slds-media__figure">
+                                        <lightning-icon icon-name="utility:education" class="slds-icon slds-page-header__icon" alternative-text="Certifications" title="Certifications"></lightning-icon>
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <div class="slds-page-header__name">
+                                            <div class="slds-page-header__name-title">
+                                                <h2>Current Certifications</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout slds-table_striped">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Certificates">
+                                        Certificate Name
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Certificate No">Certificate No</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Submition Date">Completion Date</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Expiry Date">Expiry Date</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Updated In SF Portal">Updated In SF Portal</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={certificationsList} for:item="certification">
+                                <tr key={certification.id} class="slds-hint-parent">
+                                    <td data-label="Certificate Name" class="slds-truncate" title={certification.certificationName} scope="row">
+                                        {certification.certificationName}
+                                    </td>
+                                    <td data-label="Certificate No" scope="row">
+                                        {certification.certificateNumber}
+                                    </td>
+                                    <td class="slds-cell-wrap" data-label="Submition Date">
+                                        <lightning-formatted-date-time value={certification.completionDate} year="2-digit" month="short" day="2-digit" weekday="long"></lightning-formatted-date-time>
+                                    </td>
+                                    <td class="slds-cell-wrap" data-label="Expiry Date">
+                                        <lightning-formatted-date-time value={certification.expiryDate} year="2-digit" month="short" day="2-digit" weekday="long"></lightning-formatted-date-time>
+                                    </td>
+                                    <td>
+                                        {certification.updatedInSf}
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Section for displaying recommended certifications -->
+                <section>
+                    <div class="slds-page-header">
+                        <div class="slds-page-header__row">
+                            <div class="slds-page-header__col-title">
+                                <div class="slds-media" style="align-items: center;">
+                                    <div class="slds-media__figure">
+                                        <lightning-icon icon-name="utility:record_alt" class="slds-icon slds-page-header__icon" alternative-text="Recommended Certifications" title="Recommended Certifications"></lightning-icon>
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <div class="slds-page-header__name">
+                                            <div class="slds-page-header__name-title">
+                                                <h2>Recommended Certifications</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout slds-table_striped">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Certificate">
+                                        Certificate Name
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Target Date">Target Date</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Status">Status</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={employeeCertificationsPlan} for:item="cplan">
+
+                                <tr class="slds-hint-parent" key={cplan.index}>
+                                    <th data-label="Certificate" scope="row">
+                                        <lightning-input value={cplan.certificateName} type="search" variant="label-hidden" data-index={cplan.index} data-for="certificateName" onchange={searchForCertificate} disabled>
+                                        </lightning-input>
+                                        <div if:true={cplan.displayDropDown} class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" data-index={cplan.index} role="listbox">
+                                            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+
+                                                <template for:each={searchedCertificateResultList} for:item="searchResult">
+                                                    <li key={searchResult.value} data-value={searchResult.value} data-label={searchResult.label} data-index={cplan.index} role="presentation" onclick={selectCertificateFromSearchResult} class="slds-listbox__item">
+                                                        <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                            <span class="slds-media__body">
+                                                                <span class="slds-truncate" title={searchResult.label}>
+                                                                    {searchResult.label}
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </template>
+
+                                            </ul>
+                                        </div>
+
+                                    </th>
+                                    <td class="slds-cell-wrap" data-label="Target Date">
+                                        <lightning-input type="date" variant="label-hidden" value={cplan.targetDate} disabled></lightning-input>
+                                    </td>
+                                    <td class="slds-cell-wrap" data-label="Status">
+                                        <lightning-combobox name="Status" variant="label-hidden" value={cplan.status} disabled placeholder="Status" options={certificateStatus}></lightning-combobox>
+                                    </td>
+                                </tr>
+
+                            </template>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Section for displaying Additional Training / Enablement Plans -->
+                <section>
+                    <div class="slds-page-header">
+                        <div class="slds-page-header__row">
+                            <div class="slds-page-header__col-title">
+                                <div class="slds-media" style="align-items: center;">
+                                    <div class="slds-media__figure">
+                                        <lightning-icon icon-name="utility:record_create" class="slds-icon slds-page-header__icon" alternative-text="Additional Training / Enablement Plans" title="Additional Training / Enablement Plans"></lightning-icon>
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <div class="slds-page-header__name">
+                                            <div class="slds-page-header__name-title">
+                                                <h2>Additional Training / Enablement Plans</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout slds-table_striped">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Process Training">Process Training</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Soft Skills">Soft Skills</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Mentorship Program">Mentorship Program</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={employeeEnablementPlans} for:item="eplan">
+                                <tr class="slds-hint-parent" key={eplan.index}>
+                                    <th data-label="Process Training" scope="row">
+                                        <lightning-input value={eplan.processTraining} disabled variant="label-hidden"></lightning-input>
+                                    </th>
+                                    <td class="slds-cell-wrap" data-label="Soft Skills">
+                                        <lightning-input value={eplan.softSkills} disabled variant="label-hidden"></lightning-input>
+                                    </td>
+                                    <td class="slds-cell-wrap" data-label="Mentorship Program">
+                                        <lightning-input value={eplan.mentorship} disabled variant="label-hidden"></lightning-input>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+
+                </section>
+
+                <!-- Section for displaying Manager's Overall Comments -->
+                <section>
+                    <div class="slds-page-header">
+                        <div class="slds-page-header__row">
+                            <div class="slds-page-header__col-title">
+                                <div class="slds-media" style="align-items: center;">
+                                    <div class="slds-media__figure">
+                                        <lightning-icon icon-name="utility:textarea" class="slds-icon slds-page-header__icon" alternative-text="Manager's Overall Comments" title="Manager's Overall Comments"></lightning-icon>
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <div class="slds-page-header__name">
+                                            <div class="slds-page-header__name-title">
+                                                <h2>Manager's Overall Comments</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <lightning-input-rich-text value={managerComments} disabled></lightning-input-rich-text>
+                </section>
+
+                <!-- Section for displaying Reviewer's Overall Comments -->
+                <section>
+                    <div class="slds-page-header">
+                        <div class="slds-page-header__row">
+                            <div class="slds-page-header__col-title">
+                                <div class="slds-media" style="align-items: center;">
+                                    <div class="slds-media__figure">
+                                        <lightning-icon icon-name="utility:textarea" class="slds-icon slds-page-header__icon" alternative-text="Reviewer's Overall Comments (if any)" title="Reviewer's Overall Comments (if any)"></lightning-icon>
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <div class="slds-page-header__name">
+                                            <div class="slds-page-header__name-title">
+                                                <h2>Reviewer's Overall Comments (if any)</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <lightning-input-rich-text value={reviewerComments} disabled></lightning-input-rich-text>
+                </section>
+            </div>
+            <footer class="slds-card__footer">
+                <!-- <lightning-button class="slds-card__footer-action" variant="brand" type="submit" label="Save As Draft" title="Save As Draft" disabled></lightning-button> -->
+                <lightning-button class="slds-card__footer-action" variant="brand" type="submit" label="Save" title="Save" disabled></lightning-button>
+                <lightning-button class="slds-card__footer-action" variant="brand" label="Cancel" title="Cancel" onclick={handelCancel}></lightning-button>
+            </footer>
+        </div>
+    </article>
+</template>

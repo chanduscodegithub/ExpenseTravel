@@ -1,0 +1,24 @@
+.dummy{
+	color : black;
+}
+
+.bgColor{
+	background-color: rgb(234, 234, 234);
+}
+
+.text-red{
+	color: rgb(219, 17, 17);
+}
+
+.text-green{
+	color: rgb(25, 168, 25);
+}
+
+.modalBodySpinner{
+	position: relative;;
+}
+
+.loaderContainer{
+	height: 27rem;
+	top: 3rem;
+}

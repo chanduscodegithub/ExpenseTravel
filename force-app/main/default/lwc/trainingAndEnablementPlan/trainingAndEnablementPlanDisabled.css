@@ -1,0 +1,87 @@
+.container{
+    max-width: 98vw;
+    margin: auto;
+}
+
+section{
+    margin-top: 20px;
+}
+
+.employee-heading{
+    letter-spacing: 1.5px;
+    font-size: 1.5rem;
+    font-weight: 500;
+    /* margin: auto 100px; */
+    text-decoration: underline var(--lwc-brandPrimary) solid 1px;
+    text-underline-position: under;
+    margin-bottom: 5px; 
+}
+
+.employee-current-skills::after{
+    width: 180px;
+    margin-bottom: 5px; 
+}
+
+.slds-card__header p.employee-heading + p{
+    font-size: 1.1rem;
+}
+
+.slds-card__header div.skills-container{
+    max-width: 50vw;
+    margin: auto;
+}
+
+.slds-grid:not(:first-child){
+    padding-top: 15px;
+}
+
+.slds-page-header__name-title{
+    letter-spacing: 1.2px;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+lightning-button.slds-card__footer-action{
+    display: inline;
+}
+
+footer.slds-card__footer lightning-button:not(:first-child){
+    margin-left: 10px;
+}
+
+.slds-card__body section:nth-child(2){
+    position: relative;
+    z-index: 2;
+}
+
+.slds-card__body section:nth-child(2){
+    position: relative;
+    z-index: 2;
+}
+
+.slds-card__body section:nth-child(3){
+    position: relative;
+    z-index: 1;
+}
+
+/* section:nth-child(1) table thead tr th:not(:first-child){
+    width: 30%;
+    text-align: end;
+}
+
+section:nth-child(1) table tbody td:not(:first-child){
+    text-align: end;
+} */
+
+/* section:nth-child(2) table thead tr th:last-child,
+section:nth-child(3) table thead tr th:last-child{
+    width: 50px;
+} */
+
+table tbody tr td:last-child lightning-icon{
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+}

@@ -1,0 +1,14 @@
+.input__container__dd {
+  position: relative;
+}
+
+.input__container__dd_delete {
+  position: absolute;
+  left: 99%;
+  top: 34%;
+}
+
+.input__container__dd div.slds-col.slds-size_1-of-4.line__one,
+.input__container__dd div.slds-col.slds-size_1-of-4.line__two {
+  max-width: 340px;
+}

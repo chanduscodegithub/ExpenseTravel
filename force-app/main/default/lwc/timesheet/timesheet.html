@@ -1,0 +1,482 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <c-carousel-cmp if:true={carouselStatus}></c-carousel-cmp>
+    <div class="exampleHolder" if:true={spinnerFlag}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </div>
+    <article class="slds-card" if:false={spinnerFlag}>
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-individual" title="Timesheet">
+                                <lightning-icon icon-name="standard:individual" alternative-text="Icon"></lightning-icon>
+                                <span class="slds-assistive-text">Timesheet AB</span>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate" title="Add & View Timesheet">Timesheet</span>
+                                    </h1>
+                                </div>
+                            </div>
+                            <p class="slds-page-header__name-meta">{empObj.Name}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-page-header__col-actions">
+                    <div class="slds-page-header__controls">
+                        <div class="slds-page-header__control">
+                            <ul class="slds-button-group-list">
+                                <li>
+                                    <button class="slds-button slds-button_neutral" onclick={changeDate} disabled={managerView}>Change Date</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Meta-->
+            <!--<div class="slds-page-header__row">
+                <div class="slds-page-header__col-meta">
+                    <p class="slds-page-header__meta-text coloredMsg" if:false={ifBlank}><em>{staticLeaveAddress}</em></p>
+                </div>
+                <div class="slds-page-header__col-controls">
+                    <div class="slds-page-header__controls">
+                        <div class="slds-page-header__control">
+                            <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="Report" onclick={handleReport}>
+                                /*<svg class="slds-button__icon" aria-hidden="true">
+                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+                                </svg>*/
+                                <lightning-icon icon-name="utility:warning" alternative-text="Report an Issue!" title="Report an issue!"></lightning-icon>
+                                <span class="slds-assistive-text">Report</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <div if:true={momentizedStartDate} class="weekBlock">
+                <span class="slds-text-heading_medium">Projects&ensp;&ensp;<span class="border-green">Total Hours: <span class="text-green">{totalHours}</span></span></span>
+                <span class="slds-page-header__name-meta slds-text-heading_medium"><span class="border-orange">Week: <span class="text-orange">{startDateStr} ({startDayStr}) - {endDateStr} ({endDayStr})</span></span></span>
+            </div>
+            <div class="slds-var-m-around_small">
+                <!--<p if:false={ifBlank} class="coloredMsg"><em>{staticLeaveAddress}</em></p>-->
+                <div class="slds-text-heading_medium" if:true={ifBlank}>
+                    <b>You don't have any project allocation, please contact your project manager.</b>
+                </div>
+                <!--<table class="slds-table slds-table_bordered">
+                    <thead>
+                        <tr class="slds-text-title_caps">
+                            <th scope="col">
+                                <div class="slds-truncate" title="Project Name">Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Region">Region</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Reporting Manager">Manager</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate doubleLine" title="Billing Status">Status</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Date">Date</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Category">Category</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Sub-Category">Sub-Category</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Work Hour">Hours</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Description">Description</div>
+                            </th>
+                            <th scope="col" if:false={submittedFlag}>
+                                <div class="slds-truncate" title="Options">Options</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody if:true={generatedAlloc}>
+                        <template for:each={generatedAlloc} for:item="projectAlloc">
+                            <template for:each={projectAlloc.eachProject} for:item="eachTS" key={projectAlloc.key}>
+                                <tr key={eachTS.key}>
+                                    <th scope="row">
+                                        <div class="slds-truncate projectCol" title={eachTS.eachDate.project}>
+                                            {eachTS.eachDate.project}
+                                        </div>
+                                    </th>
+                                    <th scope="row">
+                                        <div class="slds-truncate regionCol" title="Region">
+                                            {eachTS.eachDate.region}
+                                        </div>
+                                    </th>
+                                    <th scope="row">
+                                        <div class="slds-truncate managerCol" title={eachTS.eachDate.reportingManager}>
+                                            {eachTS.eachDate.reportingManager}
+                                        </div>
+                                    </th>
+                                    <th scope="row">
+                                        <div class="slds-truncate billingCol" title="Billing Status">
+                                            {eachTS.eachDate.billingStatus}
+                                        </div>
+                                    </th>
+                                    <th scope="row">
+                                        <div class="slds-truncate dateCol" title="Date">
+                                            <lightning-input type="date" name="Date" label="" value={eachTS.eachDate.date} data-project={projectAlloc.key} data-id={eachTS.key} data-infofor="date" onchange={handleInput} required disabled={submittedFlag}></lightning-input>
+                                        </div>
+                                    </th>
+                                    <th scope="row">
+                                        <div class="slds-truncate catCol" title="Category">
+                                            <lightning-combobox name="Category" value={eachTS.eachDate.category} placeholder="" options={categoryOptions} data-project={projectAlloc.key} data-id={eachTS.key} data-infofor="category" onchange={handleInput} required disabled={submittedFlag}></lightning-combobox>
+                                        </div>
+                                    </th>
+                                    <th scope="row">
+                                        <div class="slds-truncate subcatCol" title="Sub-Category">
+                                            <lightning-combobox name="Sub-Category" value={eachTS.eachDate.sub_category} placeholder="" options={subcategoryOptions} data-project={projectAlloc.key} data-id={eachTS.key} data-infofor="sub_category" onchange={handleInput} required disabled={submittedFlag}></lightning-combobox>
+                                        </div>
+                                    </th>
+                                    <th scope="row">
+                                        <div class="slds-truncate hourCol" title="Hours">
+                                            <lightning-input type="number" name="Hours" value={eachTS.eachDate.work_hour} label="" max="99" step="0.01" data-project={projectAlloc.key} data-id={eachTS.key} data-infofor="work_hour" onchange={handleInput} required disabled={submittedFlag}></lightning-input>
+                                        </div>
+                                    </th>
+                                    <th scope="row">
+                                        <div class="slds-truncate descriptCol" title="Description">
+                                            <lightning-textarea type="text" name="Description" value={eachTS.eachDate.description} data-project={projectAlloc.key} data-id={eachTS.key} data-infofor="description" onchange={handleInput} required disabled={submittedFlag}></lightning-textarea>
+                                        </div>
+                                    </th>
+                                    <th scope="row" if:false={submittedFlag}>
+                                        <div class="slds-truncate optionsCol" title="Buttons">
+                                            <lightning-button-group>
+                                                <lightning-button label="Clone" data-project={projectAlloc.key} data-id={eachTS.key} data-date={eachTS.eachDate.date} onclick={handleClone}></lightning-button>
+                                                <lightning-button label="Add" data-project={projectAlloc.key} data-id={eachTS.key} data-date={eachTS.eachDate.date} onclick={handleAdd}></lightning-button>
+                                                <lightning-button label="Delete" data-project={projectAlloc.key} data-id={eachTS.key} data-date={eachTS.eachDate.date} onclick={handleSubtract}></lightning-button>
+                                            </lightning-button-group>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </template>
+                        </template>
+                    </tbody>
+                </table>-->
+                <lightning-accordion allow-multiple-sections-open onsectiontoggle={handleSectionToggle} active-section-name={activeSections}>
+                    <template for:each={generatedAlloc} for:item="projectAlloc" for:index="index">
+                        <div class="childElementHours border-green" key={projectAlloc.key}>Hours: <span class="text-green">{projectAlloc.currProjectHours}</span></div>
+                        <lightning-accordion-section name={projectAlloc.key} label={projectAlloc.projectLabel} key={projectAlloc.key} if:true={projectAlloc.eachProject.length}>
+                            <!-- Add div and br into this comment to remove Project Info at top-->
+                            <div class="projectInfoCard slds-p-top_medium" if:false={projectAlloc.otherAlloc}>
+                                <span class="slds-text-heading_small"><b>Region: </b>{projectAlloc.region},</span> &emsp;
+                                <span class="slds-text-heading_small"><b>Reporting Manager: </b>{projectAlloc.manager},</span> &emsp;
+                                <span class="slds-text-heading_small"><b>Status: </b>{projectAlloc.status},</span> &emsp;
+                                <span class="slds-text-heading_small"><b>Allocation: </b>{projectAlloc.allocCent}%</span>
+
+                                <!-- Disabling Upload Proof-->
+                                <div class="uploadBtn" style="float: right;">
+                                    <label class="slds-file-selector__body">
+                                        <input type="file" label={projectAlloc.fileName} accept=".xlsx, .xls, .csv, .png, .doc, .docx, .pdf"
+                                               onchange={handleUploadProof} class="slds-file-selector__input slds-assistive-text"  data-id={index} disabled={projectAlloc.disablebtn} >
+                                        <span class="slds-file-selector__button slds-button slds-button_neutral">
+                                            <lightning-icon icon-name="utility:upload" size="x-small" class="slds-icon-text-default"></lightning-icon> &nbsp;
+                                            Upload Proof
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <div class="clearFloat"></div> <!-- Add a clearing div -->
+
+                                <div class="fileName">
+                                    <div class="flex-container">
+                                        <p key={index} style="margin-right: 10px;">{projectAlloc.fileName}</p>
+                                        <lightning-icon if:true={projectAlloc.fileName} icon-name="utility:close" size="x-small" data-id={index} onclick={removeFile}></lightning-icon>
+                                    </div>
+                                </div>
+                            </div>
+                            </br>
+                            <table class="slds-table slds-table_bordered">
+                                <thead class="custom-th">
+                                    <tr class="slds-text-title">
+                                        <!--<th scope="col">
+                                            <div class="slds-truncate" title="Project Name">Name</div>
+                                        </th>--HERE
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Region">Region</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Reporting Manager">Manager</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate doubleLine" title="Billing Status">Status</div>
+                                        </th>-->
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Date">Date</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Category">Category</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Sub-Category">Sub-Category</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Work Hour">Hours</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-truncate" title="Description">Description</div>
+                                        </th>
+                                        <th scope="col" if:false={lockedToEdit}>
+                                            <div class="slds-truncate" title="Options"></div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={projectAlloc.eachProject} for:item="eachTS">
+                                        <tr key={eachTS.key} data-daystr={eachTS.eachDate.dayStr}>
+                                            <!--<th scope="row">
+                                                <div class="slds-truncate projectCol" title={eachTS.eachDate.project}>
+                                                    {eachTS.eachDate.project}
+                                                </div>
+                                            </th>--HERE
+                                            <th scope="row">
+                                                <div class="slds-truncate regionCol" title="Region">
+                                                    {eachTS.eachDate.region}
+                                                </div>
+                                            </th>
+                                            <th scope="row">
+                                                <div class="slds-truncate managerCol" title={eachTS.eachDate.reportingManager}>
+                                                    {eachTS.eachDate.reportingManager}
+                                                </div>
+                                            </th>
+                                            <th scope="row">
+                                                <div class="slds-truncate billingCol" title="Billing Status">
+                                                    {eachTS.eachDate.billingStatus}
+                                                </div>
+                                            </th>-->
+
+                                            <td scope="row" style="width: 16%;">
+                                                <div class="slds-truncate dateCol" title="Date">
+                                                    <lightning-input type="date" name="Date" label="" value={eachTS.eachDate.date} data-project={projectAlloc.key} data-id={eachTS.key} data-infofor="date" onchange={handleInput} required disabled={eachTS.eachDate.disableline}></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td scope="row" style="width: 14%;">
+                                                <div class="slds-truncate catCol" title="Category">
+                                                    <lightning-combobox name="Category" value={eachTS.eachDate.category} placeholder="" options={eachTS.eachDate.catOptions} data-project={projectAlloc.key} data-id={eachTS.key} data-infofor="category" onchange={handleInput} required disabled={eachTS.eachDate.disableline} message-when-value-missing="Field is mandatory."></lightning-combobox>
+                                                </div>
+                                            </td>
+                                            <td scope="row" style="width: 14%;">
+                                                <div class="slds-truncate subcatCol" title="Sub-Category">
+                                                    <lightning-combobox name="Sub-Category" value={eachTS.eachDate.sub_category} placeholder="" options={eachTS.eachDate.subcatOptions} data-project={projectAlloc.key} data-id={eachTS.key} data-infofor="sub_category" onchange={handleInput} required disabled={eachTS.eachDate.disableline} message-when-value-missing="Field is mandatory."></lightning-combobox>
+                                                </div>
+                                            </td>
+                                            <td scope="row" if:false={eachTS.eachDate.leaveField} style="width: 6%;">
+                                                <div class="slds-truncate hourCol" title="Hours">
+                                                    <lightning-input type="number" name="Hours" value={eachTS.eachDate.work_hour} label="" max="12" min="0" step="0.01" data-project={projectAlloc.key} data-id={eachTS.key} data-infofor="work_hour" onchange={handleInput} required disabled={eachTS.eachDate.disableline} message-when-value-missing="Field is mandatory."></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td scope="row" if:true={eachTS.eachDate.leaveField}  style="width: 6%;">
+                                                <div class="slds-truncate hourCol" title="Hours">
+                                                    <lightning-combobox name="Hours" value={eachTS.eachDate.work_hour} placeholder="" options={leaveHoursOpt} data-project={projectAlloc.key} data-id={eachTS.key} data-infofor="work_hour" onchange={handleInput} required disabled={eachTS.eachDate.disableline} message-when-value-missing="Field is mandatory."></lightning-combobox>
+                                                </div>
+                                            </td>
+                                            <td scope="row">
+                                                <div class="slds-truncate descriptCol1" title="Description">
+                                                    <lightning-textarea type="text" name="Description" value={eachTS.eachDate.description} data-project={projectAlloc.key} data-id={eachTS.key} data-infofor="description" onchange={handleInput} required disabled={eachTS.eachDate.disableline} message-when-value-missing="Field is mandatory."></lightning-textarea>
+                                                </div>
+                                            </td>
+                                            <td scope="row" if:false={eachTS.eachDate.disableline}>
+                                                <div class="slds-truncate optionsCol" title="Buttons">
+                                                    <lightning-button-group>
+                                                        <lightning-button label="Clone" class="slds-m-right_small" title="Clone for the rest of the days of the week" data-project={projectAlloc.key} data-id={eachTS.key} data-date={eachTS.eachDate.date} onclick={handleClone}></lightning-button>
+                                                        <lightning-button label="Add" class="slds-m-right_small"  title="Add new activity" data-project={projectAlloc.key} data-id={eachTS.key} data-date={eachTS.eachDate.date} onclick={handleAdd}></lightning-button>
+                                                        <lightning-button label="Delete" title="Delete" data-project={projectAlloc.key} data-id={eachTS.key} data-date={eachTS.eachDate.date} onclick={handleSubtract}></lightning-button>
+                                                    </lightning-button-group>
+                                                    
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </lightning-accordion-section>
+                    </template>
+                </lightning-accordion>
+                <div class="allDown">
+                    <div class="downButtons" if:false={managerView}>
+                        <lightning-button label="Back" variant="brand" title="Back" onclick={handleBack} class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button label="Save as Draft" variant="success" title="Save as Draft" onclick={handleDraft} class="slds-m-left_x-small" disabled={lockedToEdit}></lightning-button>
+                        <lightning-button label="Submit" variant="brand" title="Submit" onclick={handleConfirmation} class="slds-m-left_x-small" disabled={lockedToEdit}></lightning-button>
+                        <!--<lightning-button if:true={loadReportButton} icon-name="utility:report_issue" label="Error logging timesheet? " title="Report an Issue" onclick={handleReport} variant="brand" class="slds-float_left slds-m-left_x-small reportIconBtn"></lightning-button>-->
+                    </div>
+                    <div class="downButtons" if:true={managerView}>
+                        <lightning-button label="Back" variant="brand" title="Back" onclick={handleBack} class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button label="Reject" variant="success" title="Reject" onclick={handleRejection} class="slds-m-left_x-small" disabled="true"></lightning-button>
+                        <lightning-button label="Approve" variant="brand" title="Approve" onclick={handleApproval} class="slds-m-left_x-small" disabled="true"></lightning-button>
+                    </div>
+                    <div class="errorReportBtn">
+                        <lightning-button-icon icon-name="utility:report_issue" if:true={loadReportButton} title="Report an Issue" onclick={handleReport} variant="bare" class="slds-float_left slds-m-left_x-small reportIconBtn"></lightning-button-icon>
+                        <a if:true={loadReportButton} title="Report an Issue" onclick={handleReport} variant="brand" class="slds-float_left reportIconBtn">Error logging timesheet?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Modal-->
+        <template if:true={isModalOpen}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={previousPage}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Select Date</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        Hello, {empObj.Name}
+                        <lightning-input type="date" name="Week Start Date" label="Week Start Date" required value={todayPlaceholder} onchange={onDateChange}></lightning-input>
+                        </br>
+                        <!--<lightning-input type="checkbox" label="Working on Weekend?" name="Weekend" checked={workaholic} onchange={handleWeekendWorkaholic}></lightning-input>-->
+                        </br>
+                        </br>Note: Select any day of the week (Mon-Sun), to log timesheets for that week.
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={previousPage} title="Cancel">Cancel</button>
+                        <button class="slds-button slds-button_brand" onclick={submitStartDate} title="OK">OK</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <!--Clone Date-->
+        <template if:true={isCloneOpen}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeClone}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Clone Details</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium cloneDetails" id="modal-content-id-2">
+                        <span class="slds-text-body_regular">Cloning from: {cloneInfo.cloneDatePretty}</span>&emsp;
+                        <lightning-icon icon-name="utility:forward" alternative-text="Upto" title="Upto Icon"></lightning-icon>&emsp;
+                        <span class="slds-text-body_regular">Clone upto: {cloneInfo.initDatePretty}</span>
+                        </br>
+                        <p>Select clone required upto:</p>
+                        <lightning-input type="date" name="" label="To extend cloning to further date, please select from below:" required value={cloneInfo.initNextDay} disabled={cloneInfo.lastDay} onchange={onCloneDateChange}></lightning-input>
+                        </br>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={closeClone} title="Cancel">Cancel</button>
+                        <button class="slds-button slds-button_brand" onclick={processClone} title="OK">OK</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <!--Submit Confirmation-->
+        <template if:true={confirmBox}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeConfirm}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">Confirmation</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                        <span class="slds-text-body_regular">{confirmBoxMsg}</span>
+                        <!--<p class="slds-text-body_regular">Once submitted timesheet cannot be modified, you want to proceed?</p>-->
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={closeConfirm} title="Cancel">Cancel</button>
+                        <button class="slds-button slds-button_brand" onclick={handleSubmit} title="Proceed">Proceed</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <!--Delete Confirmation-->
+        <template if:true={deleteConfirm}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeDelete}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-04" class="slds-text-heading_medium slds-hyphenate">Confirmation</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
+                        <span class="slds-text-body_regular">Are you sure you want to proceed?</span>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={closeDelete} title="No">Cancel</button>
+                        <button class="slds-button slds-button_brand" onclick={confirmDelete} title="Yes">Yes</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <!--Description Confirmation-->
+        <!-- <template if:true={validateDraft}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeValidateDraft}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-05" class="slds-text-heading_medium slds-hyphenate">Confirmation</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-5">
+                        <span class="slds-text-body_regular">Description is mandatory, records without description will be ignored.<br />Are you sure you want to proceed?</span>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={closeValidateDraft} title="No">Cancel</button>
+                        <button class="slds-button slds-button_brand" onclick={handleDraft} title="Yes">Yes</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template> -->
+        <!--Approval Confirmation-->
+        <template if:true={showApprovalBox}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeApprovalBox}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-06" class="slds-text-heading_medium slds-hyphenate">{approvalBoxHeading}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-6">
+                        <lightning-textarea type="text" name="Description" onchange={handleDescriptionInput} value={approvalDescription} placeholder={approvalBoxPlaceholder}></lightning-textarea>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={closeApprovalBox} title="Cancel">Cancel</button>
+                        <button class="slds-button slds-button_brand" onclick={submitApproval} title="Submit">{approvalBoxLabel}</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <!--Report Confirmation-->
+        <template if:true={reportFlag}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <c-report-issue ongetflagvalue={handleClose}></c-report-issue>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </article>
+</template>

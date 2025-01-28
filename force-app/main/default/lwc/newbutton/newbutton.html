@@ -1,0 +1,449 @@
+<template>
+    <article class="slds-card">
+        <div class="slds-card__body slds-card__body_inner">
+            <template if:true={openform}>
+                <header class="slds-card__header slds-grid slds-grid_align-center">
+                    <h2 class="slds-card__header-title">New</h2>
+                </header>
+            </template>
+
+            <lightning-record-edit-form object-api-name="Position__c" columns="2" onsubmit={handleNext}
+                onsuccess={handlesuccess}>
+                <lightning-messages></lightning-messages>
+                <template if:true={openform}>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input-field field-name="Department__c" value={Dept} name="Department__c"
+                                onchange={handleChange} required>
+                            </lightning-input-field>
+                        </div>
+
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input-field field-name="Position_Title__c" value={Title} name="Position_Title__c"
+                                onchange={handleChange} required>
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            &nbsp;<label class="slds-form-element__label slds-text-body_regular">Jd Link</label>
+                            <div>&nbsp;<a href={link} target="_blank">{link}</a></div>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input-field field-name="Customer__c" name="Customer__c" value={custom}
+                                onchange={handleChange}>
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input-field field-name="Project__c" name="Project__c" value={project}
+                                onchange={handleChange}>
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input-field field-name="Country1__c" name="Country1__c" value={country}
+                                onchange={handleChange} required>
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input-field field-name="City1__c" name="City1__c" value={city}
+                                onchange={handleChange} required>
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input-field field-name="Type_Of_Resource__c" name="Type_Of_Resource__c"
+                                value={Top} onchange={handleChange} required>
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input-field data-mode-of-work field-name="Mode_Of_Work__c" name="Mode_Of_Work__c"
+                                value={mod} onchange={handleChange} required>
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input-field field-name="Requisition_Type__c" name="Requisition_Type__c"
+                                value={rt} onchange={handleChange} required>
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input-field field-name="Hiring_Priority__c" name="Hiring_Priority__c"
+                                value={Hiringpriority} onchange={handleChange} required>
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input-field field-name="Job_Description__c" name="Job_Description__c"
+                                onchange={handleChange}>
+                            </lightning-input-field>
+                        </div>
+                        <template lwc:if={isHighPriority}>
+                            <div class="slds-col slds-size_6-of-12">
+                                <lightning-input-field field-name="Business_Justification__c"
+                                    name="Business_Justification__c" value={BJ} onchange={handleChange} required>
+                                </lightning-input-field>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                            <div class="slds-col slds-size_6-of-12">
+
+                            </div>
+                        </template><br/>
+                        <div class="slds-col slds-size_6-of-12">
+
+                        </div>
+                    </div>
+
+                    <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+                        <lightning-accordion-section name="Round 1" label=" Technical Panel Round 1"
+                            class="accordianColor slds-is-open">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Interviewer1_R1__c" name="Interviewer_Level_1__c"
+                                        value={interviewerLevel1} onchange={handleChange} required>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Interviewer2_R1__c" name="Interviewer_Level_2__c"
+                                        value={interviewerLevel2} onchange={handleChange} required>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Interviewer_Available_Day_Level_1__c"
+                                        name="Interviewer_Available_Day_Level_1__c" value={interviewerDay1}
+                                        onchange={handleChange} required>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Interviewer_Available_Day_Level_2__c"
+                                        name="Interviewer_Available_Day_Level_2__c" value={interviewerDay2}
+                                        onchange={handleChange} required>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Interviewer_Slot_Level_1__c"
+                                        name="Interviewer_Slot_Level_1__c" value={interviewerSlot1}
+                                        onchange={handleChange} required>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Interviewer_Slot_Level_2__c"
+                                        name="Interviewer_Slot_Level_2__c" value={interviewerSlot2}
+                                        onchange={handleChange} required>
+                                    </lightning-input-field>
+                                </div>
+                            </div>
+                        </lightning-accordion-section>
+
+                        <!--section 2-->
+                        <lightning-accordion-section name="Round 2" label="Technical Panel Round 2"
+                            class="accordianColor slds-is-open">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Interviewer1_R2__c"
+                                        name="Interviewer_2_Level_1__c" value={interviewer2Level1}
+                                        onchange={handleChange} required>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Interviewer2_R2__c"
+                                        name="Interviewer_2_Level_2__c" value={interviewer2Level2}
+                                        onchange={handleChange}>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Interviewer_2_Available_Day_Level_1__c"
+                                        name="Interviewer_2_Available_Day_Level_1__c" value={interviewer2Day1}
+                                        onchange={handleChange} required>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Interviewer_2_Available_Day_Level_2__c"
+                                        name="Interviewer_2_Available_Day_Level_2__c" value={interviewer2Day2}
+                                        onchange={handleChange}>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Interviewer_2_Slot_Level_1__c"
+                                        name="Interviewer_2_Slot_Level_1__c" value={interviewer2Slot1}
+                                        onchange={handleChange} required>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input-field field-name="Interviewer_2_Slot_Level_2__c"
+                                        name="Interviewer_2_Slot_Level_2__c" value={interviewer2Slot2}
+                                        onchange={handleChange}>
+                                    </lightning-input-field>
+                                </div>
+                            </div>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+
+                    <footer class="slds-m-top_large slds-grid slds-grid_align-center slds-align--absolute-center">
+                        <lightning-button variant="brand" label="Cancel" type="button" onclick={closeQuickAction}>
+                        </lightning-button>
+                        &nbsp;&nbsp;
+                        <lightning-button type="submit" variant="brand" label="Save & Next"></lightning-button>
+                    </footer>
+                </template>
+
+
+            </lightning-record-edit-form>
+        </div>
+        <template if:true={eligible}>
+            <div class="slds-form-element slds-align_absolute-center">
+                <div class="slds-form-element__control slds-text-color_default">
+
+
+                    <span class="slds-form-element__label custom-close "><b>Please confirm CCM and submit .</b></span>
+
+                    <lightning-record-edit-form record-id={recordId} object-api-name="Position__c"
+                        onsubmit={handleSuccess1} onsuccess={handlesuccess2} onload={handleLoad} data-id="1">
+                        <lightning-messages></lightning-messages>
+                        <template for:each={fieldList} for:item="field">
+
+                            <div key={field} class=" slds-p-top_small slds-grid">
+                                <div class=" slds-col slds-size_11-of-12">
+                                    <lightning-input-field field-name={field} required>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-12">
+                                    <lightning-button-icon icon-name="utility:close" onclick={handleclose}
+                                        class="custom-close-icon">
+                                    </lightning-button-icon>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="slds-text-align_center slds-text-color_default slds-m-top_medium">
+                            <b>Note:</b> Approval process will be initiated upon Submit.
+                        </div>
+                        <footer class="slds-m-top_large slds-grid slds-grid_align-center slds-align--absolute-center">
+                            <lightning-button variant="brand" label="Back" type="button" onclick={handleBack}>
+                            </lightning-button>
+                            &nbsp;&nbsp;
+                            <lightning-button variant="brand" type="submit" name="submit" label="submit">
+
+                            </lightning-button>
+                            &nbsp;&nbsp;
+                            <lightning-button variant="brand" label="Cancel" type="button" onclick={closeQuickAction}>
+                            </lightning-button>
+
+
+                        </footer>
+
+                    </lightning-record-edit-form>
+                </div>
+            </div>
+
+        </template>
+        <template if:true={isShowModal}>
+            <template if:false={eligible}>
+                <lightning-record-view-form record-id={recordId} object-api-name="Position__c">
+
+                    <div
+                        class="slds-m-left_xx-small slds-m-top_large slds-box slds-box_x-small slds-text-align_center slds-text-heading_bold slds-text-heading_small">
+                        <h3>Overall Summary</h3>
+                    </div>
+                    <div class="slds-grid slds-wrap ">
+                        <template for:each={fieldnames} for:item="field">
+                            <div class="slds-col slds-size_1-of-4   slds-m-left_large slds-m-top_medium" key={field}>
+                                <b><label for="name" class="slds-form-element__label slds-text-body_regular slds-border_bottom">{field.label}</label></b>
+                                <div>
+                                    <span><lightning-output-field field-name={field.name} variant="label-hidden"></lightning-output-field></span>
+                                </div>
+                            </div>
+                        </template>
+                        <template if:true={isHighPriority}>
+
+                            <div class="slds-col slds-size_1-of-4  slds-m-top_medium">
+                                <b><label for="name" class="slds-form-element__label slds-text-body_regular slds-border_bottom">Hiring Justification</label></b>
+                                <div>
+                                    <span><lightning-output-field field-name="Business_Justification__c" variant="label-hidden"></lightning-output-field></span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    <div
+                        class="slds-m-left_xx-small slds-m-top_large slds-box slds-box_x-small slds-text-align_center slds-text-heading_bold slds-text-heading_small">
+                        <h3>Job Role Information</h3>
+                    </div>
+
+                    <lightning-layout multiple-rows>
+                        <template for:each={jobrolefields} for:item="field">
+                            <lightning-layout-item size="6" key={field}>
+                                <div class=" slds-m-left_large slds-m-top_medium">
+                                    <b>
+                        <label for="name" class="slds-form-element__label slds-text-body_regular slds-border_bottom">{field.label}</label>
+                    </b>
+                                    <div>
+                                        <span>
+                            <lightning-output-field field-name={field.name} variant="label-hidden" ></lightning-output-field>
+                        </span>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                        </template>
+                    </lightning-layout>
+
+                    <lightning-accordion allow-multiple-sections-open active-section-name={activeSectionsPreview}>
+                        <lightning-accordion-section name="Round 1" label=" Technical Panel Round 1"
+                            class="accordianColor slds-is-open">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer1_R1__c"
+                                        name="Interviewer_Level_1__c" value={interviewerLevel1} required>
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer2_R1__c"
+                                        name="Interviewer_Level_2__c" value={interviewerLevel2} required>
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer_Available_Day_Level_1__c"
+                                        name="Interviewer_Available_Day_Level_1__c" value={interviewerDay1} required>
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer_Available_Day_Level_2__c"
+                                        name="Interviewer_Available_Day_Level_2__c" value={interviewerDay2} required>
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer_1_Slot_Timezone_R1__c"
+                                        name="Interviewer_2_Slot_Level_1__c" value={interviewer2Slot1} required>
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer_2_Slot_Timezone_R1__c"
+                                        name="Interviewer_2_Slot_Level_1__c" value={interviewer2Slot1} required>
+                                    </lightning-output-field>
+                                </div>
+                                
+                                <!--<div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer_1_Timezone__c"
+                                        name="Interviewer_1_Timezone__c">
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer_2_R1Timezone__c"
+                                        name="Interviewer_2_R1Timezone__c">
+                                    </lightning-output-field>
+                                </div>-->
+                            </div>
+                        </lightning-accordion-section>
+
+                        <!--section 2-->
+                        <lightning-accordion-section name="Round 2" label="Technical Panel Round 2"
+                            class="accordianColor slds-is-open">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer1_R2__c"
+                                        name="Interviewer_2_Level_1__c" value={interviewer2Level1} required>
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer2_R2__c"
+                                        name="Interviewer_2_Level_2__c" value={interviewer2Level2}>
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer_2_Available_Day_Level_1__c"
+                                        name="Interviewer_2_Available_Day_Level_1__c" value={interviewer2Day1} required>
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer_2_Available_Day_Level_2__c"
+                                        name="Interviewer_2_Available_Day_Level_2__c" value={interviewer2Day2}>
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer_1_Slot_Timezone_R2__c"
+                                        name="Interviewer_2_Slot_Level_1__c" value={interviewer2Slot1} required>
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer_2_Slot_Timezone_R2__c"
+                                        name="Interviewer_2_Slot_Level_1__c" value={interviewer2Slot1} required>
+                                    </lightning-output-field>
+                                </div>
+                                
+                                <!--<div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer_1_TimezoneR2__c"
+                                        name="Interviewer_1_TimezoneR2__c"
+                                         >
+                                    </lightning-output-field>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-output-field field-name="Interviewer_2_TimezoneR2__c"
+                                        name="Interviewer_2_TimezoneR2__c"
+                                         >
+                                    </lightning-output-field>
+                                </div>-->
+                            </div>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+
+
+                    <footer class="slds-m-top_large slds-grid slds-grid_align-center slds-align--absolute-center">
+                        <lightning-button variant="brand" label="Cancel" type="button" onclick={closeQuickAction}>
+                        </lightning-button>
+                        &nbsp;&nbsp;
+                        <lightning-button variant="brand" type="submit" name="Next" label="Next"
+                            onclick={handleNextview}>
+                        </lightning-button>
+
+                    </footer>
+                </lightning-record-view-form>
+            </template>
+        </template>
+        <!--<template if:true={editform}>
+             
+                <header class="slds-card__header slds-grid slds-grid_align-center">
+                    <h2 class="slds-card__header-title">Edit Job Role Fields</h2>
+                </header>
+            
+            <lightning-record-edit-form record-id={recordId} object-api-name="Position__c" onsubmit={handlesaveNext}>
+        <lightning-messages></lightning-messages>
+         <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input-field field-name="SF_Clouds__c" >
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                           <lightning-input-field field-name="Esse__c" >
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                           <lightning-input-field field-name="Additional_Tech_Skills__c" >
+                            </lightning-input-field>
+                        </div>
+                      
+                          <div class="slds-col slds-size_6-of-12">
+                           <lightning-input-field field-name="Additional_Administration_Skills__c" >
+                            </lightning-input-field>
+                        </div>
+                        
+                          <div class="slds-col slds-size_6-of-12">
+                           <lightning-input-field field-name="Additional_Certifications__c" >
+                            </lightning-input-field>
+                        </div>
+                        
+                         <div class="slds-col slds-size_6-of-12">
+                           <lightning-input-field field-name="Additional_Tools__c" >
+                            </lightning-input-field>
+                        </div>
+                        
+         </div>
+         <footer class="slds-m-top_large slds-grid slds-grid_align-center slds-align--absolute-center">
+                    
+              <lightning-button  variant="brand" type="submit" name="Next" label="Next" onclick={handleNextview}>
+        </lightning-button> &nbsp;&nbsp;
+         <lightning-button  variant="brand" type="Submit" name="Save & Next" label=" Save & Next" >
+        </lightning-button>
+                       
+         </footer>
+    </lightning-record-edit-form> 
+        </template>-->
+
+        <template if:false={openerror}>
+            <h4 style="color:red" class="slds-align_absolute-center">Job role not found. please contact HR/TA to add job
+                role details.</h4>
+        </template>
+    </article>
+</template>

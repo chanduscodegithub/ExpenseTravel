@@ -1,0 +1,11 @@
+.slds-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+.slds-p-around_medium {
+    padding: 15px;
+}
+.slds-m-top_medium {
+    margin-top: 20px;
+}

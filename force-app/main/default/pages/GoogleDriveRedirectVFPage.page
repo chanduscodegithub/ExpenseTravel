@@ -1,0 +1,49 @@
+<apex:page Controller="googleAuthService" showHeader="true">
+    
+    <apex:slds /> 
+  
+    <div class="slds-box slds-m-around_small slds-text-heading_small"><!--  -->
+        <div class="slds-box slds-align_absolute-center slds-m-around_small">
+            Please click on the below button to authorise access to Google API
+        </div>
+        <br/><br/>
+        <div class="slds-align_absolute-center slds-m-around_small">
+            <apex:form >
+                <apex:commandButton action="{!saveAuthCode}" value="Authorise API" disabled="{!disableAuth}"/>
+            </apex:form>
+            
+          
+        </div>
+    </div>
+      <apex:outputPanel rendered="{!authSaved}">
+                <div class="slds-align_absolute-center slds-m-around_small ">
+                    <div class="slds-box slds-text-color_inverse" style="background:#2e844a;max-width: fit-content;">
+                        Success: Authorisation was successful.
+                    </div>
+                </div>
+         </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!authNotSaved}">
+                <div class="slds-align_absolute-center slds-m-around_small ">
+                    <div class="slds-box slds-text-color_inverse" style="background:#ea001e;max-width: fit-content;">
+                        Error: Please try again.
+                    </div>
+                </div>
+         </apex:outputPanel>
+
+   <script>
+        // Function to close the window after a brief delay
+    
+        function closeWindow() {
+            setTimeout(function() {
+                window.close();
+            }, 1000); // Adjust the delay (in milliseconds) as needed
+        }
+    
+        // Check the authorization status and close the window accordingly
+        var isAuthorizationSuccess = '{!IscloseWindow}';
+        if (isAuthorizationSuccess === 'true') {
+             closeWindow();
+        }
+    </script>   
+</apex:page>

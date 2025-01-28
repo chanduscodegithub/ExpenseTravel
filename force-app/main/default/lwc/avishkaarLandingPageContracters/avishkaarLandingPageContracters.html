@@ -1,0 +1,109 @@
+<template>
+	<template if:true={isSpinner}>
+		<lightning-spinner class="slds-is-fixed" alternative-text="Loading" size="medium" variant="brand">
+		</lightning-spinner>
+	</template>
+
+	<section class="homeComponent">
+		<!--<div class="announcementWrap slds-m-bottom_x-large borderRadius">
+			<marquee class="flotingText" behavior="scroll" direction="left">{BannerTxt}</marquee>
+		</div>-->
+		<div>
+			<c-attendence-timer-cmp ></c-attendence-timer-cmp>
+		</div>
+		<div class="gridLayouts">
+			<!--<div
+				class="awards boxshadow maxheight350px minheight350px slds-p-around_medium overflowy borderRadius slds-m-left_large">
+				<h2 class="slds-text-heading_medium boldFont slds-m-bottom_medium">Awards</h2>
+				<template for:each={AwardeArray} for:item="award">
+					<div key={award.Id}>
+						<div
+							class="calenderWrap slds-grid slds-wrap boxshadow slds-m-bottom_medium slds-p-around_xx-small">
+							<div
+								class="dateWrap awardImages slds-border_right slds-text-align_center slds-col slds-size_2-of-12">
+								<img src={award.imgsource} alt="Award">
+                            </div>
+								<div
+									class="specialDayInformation slds-col slds-size_10-of-12 slds-m-top_small slds-p-left_large">
+									<h1 class="slds-text-body_regular slds-m-bottom_x-small"><b>{award.Name}</b></h1>
+									<p class="slds-text-title"><b>Award By :</b> {award.AwardedBy}</p>
+									<p class="slds-text-title"><b>Awarded Status :</b> {award.Status}</p>
+									<p class="slds-text-title"><b>Awarded On :</b> &nbsp;<lightning-formatted-date-time
+											value={award.AwardDate} month="short" day="2-digit">
+										</lightning-formatted-date-time>
+									</p>
+								</div>
+							</div>
+						</div>
+				</template>
+			</div>-->
+
+			<div class="holidayLists slds-box boxshadow borderRadius">
+				<h2 class="slds-text-heading_medium boldFont slds-m-bottom_medium">CRMIT Holidays</h2>
+				<div class="gw">
+					<lightning-combobox name="HolidayRegion" label="Holiday Region" value={selectedValue}
+						options={options} onchange={handleChangeRegion}></lightning-combobox><br/>
+					<div class="g one-whole tablet-one-third">
+						<div class="event-cards-container">
+							<template for:each={holidayArray} for:item="holiday">
+								<div key={holiday.Id}>
+									<div class="event event-card">
+										<div class="event-card-details slds-p-left_medium ">
+											<div class="event-title slds-text-heading_small slds-m-bottom_xx-small">
+												{holiday.Name}</div>
+											<div class="event-location slds-text-title"
+												if:true={holiday.Is_Restricted_Holiday__c}>
+												( Restricted Holiday )
+											</div>
+											<div class="event-location slds-text-title"
+												if:false={holiday.Is_Restricted_Holiday__c}>
+												( CRMIT Holiday )
+											</div>
+										</div>
+										<div class="event-card-date">
+											<div class="event-start">
+												<div class="event-start-date slds-text-heading_small">
+													<lightning-formatted-date-time value={holiday.Date__c} month="short"
+														day="2-digit"></lightning-formatted-date-time>
+												</div>
+												<div class="event-start-month  slds-m-bottom_xx-small">
+													<lightning-formatted-date-time value={holiday.Date__c}
+														weekday="long"></lightning-formatted-date-time>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</template>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--<div
+				class="rewards boxshadow maxheight350px slds-p-around_small overflowy borderRadius slds-m-left_large slds-m-bottom_large">
+				<h2 class="slds-text-heading_medium boldFont slds-m-bottom_medium">Rewards</h2>
+				<template for:each={rewardeArray} for:item="reward">
+					<div key={reward.Id}
+						class="slds-grid slds-grid_vertical-stretch slds-wrap boxshadow slds-m-bottom_medium slds-p-around_small">
+						<div class="slds-col height-100 slds-grow-none rewardImages slds-m-right_medium">
+							<lightning-icon size="large" icon-name='utility:favorite' title="plusIcon"
+								class={reward.Star_Type__c}>
+							</lightning-icon>
+						</div>
+						<div class="slds-col height-100">
+							<h1 class="slds-m-bottom_xx-small"><b>Star Award From :</b> {reward.CreatedBy.Name}</h1>
+							<h1 class="slds-m-bottom_xx-small"><b>Star Award To : </b> {reward.To__r.Name}</h1>
+							<h1 class="slds-m-bottom_xx-small"><b>Star Award Type : </b> {reward.Star_Type__c}</h1>
+							<h1 class="slds-m-bottom_xx-small"><b>Star Award Date : </b>
+								<lightning-formatted-date-time value={reward.CreatedDate}>
+								</lightning-formatted-date-time>
+							</h1>
+							<h5><b>Comments : </b> {reward.Comment__c}</h5>
+						</div>
+					</div>
+				</template>
+			</div>-->
+
+		</div>
+	</section>
+</template>

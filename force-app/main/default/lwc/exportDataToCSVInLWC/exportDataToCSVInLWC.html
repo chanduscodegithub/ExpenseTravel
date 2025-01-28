@@ -1,0 +1,36 @@
+<template>
+    <lightning-card title="GST Returns" icon-name="standard:account">
+
+        <div class="slds-m-around_medium">
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="6" padding="around-small"></lightning-layout-item>
+                <lightning-layout-item size="6" padding="around-small">
+                    <lightning-combobox name="Accounting Period" label="Accounting Period" value={value} 
+                    placeholder="Select Accounting Period" options={options} onchange={handleChangeap}> 
+              </lightning-combobox>
+              <lightning-combobox name="Transaction Type" label="Transaction Type" value={typevalue} 
+              placeholder="Select Transaction Type" options={optionstype} onchange={handleChangetype}> 
+        </lightning-combobox>
+    </br>
+        <lightning-button variant="brand" label="Search" title="Primary action" onclick={handleChange} class="slds-m-left_x-small"></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+            <template if:true={AccperList}>
+                <div class="slds-p-around_medium lgc-bg-inverse">
+                    <p>Do you want download data as a CSV format, Click Here &nbsp;
+                        <lightning-button icon-name="utility:download" 
+                                          label="Download as CSV" 
+                                          title="Download CSV File"
+                                          onclick={downloadCSVFile} variant="brand"></lightning-button>
+                    </p>
+                </div>
+                <lightning-datatable key-field="Id" data={AccperList} columns={columns} hide-checkbox-column="true"
+                    show-row-number-column="true" onrowaction={handleRowAction}>
+                </lightning-datatable>
+            </template>
+            <template if:true={error}>
+                {error}>
+            </template>
+        </div>
+    </lightning-card>
+</template>

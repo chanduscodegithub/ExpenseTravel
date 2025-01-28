@@ -1,0 +1,302 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #c9c9c9;
+}
+h2 {
+    font-size: 1.5rem;
+}
+.slds-table th {
+    background-color: #f3f3f3; /* Light grey header */
+    font-weight: bold;
+     font-family: 'Zoho';
+      color: black;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+ th, td {
+    border: 1px solid #ddd;
+  }
+   tr {
+    height: 40px; /* Adjust the height as needed */
+  }
+.slds-table a {
+    color: #0070d2; /* Blue link color */
+    text-decoration: none;
+}
+
+.slds-table a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+.slds-box {
+    margin-bottom: 2rem; /* Adds space between the two boxes */
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+h3 {
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    font-size: 1rem;
+}
+
+
+.offer-letter-container {
+    height: 95vh;
+    position: relative;
+    margin: 1rem auto;
+    background-color: #edf0f4;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    line-height: 1.4;
+    font-size: var(--fontSz14);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Dynamic font size */
+}
+
+.billSection{
+    margin-top: 0px !important;
+}
+
+.offer-letter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /* Adjust values as necessary */
+    /* margin-bottom: 20px; */
+    background: white;
+}
+
+.offer-letter-footer{
+    position: sticky;
+    margin-top: auto; 
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /* Adjust values as necessary */
+    /* margin-bottom: 20px; */
+    background: white;
+}
+
+.offer-letter-header::before {
+    content: "";
+    /* Creates the line */
+    position: absolute;
+    /* Allows positioning relative to the heading container */
+    left: 3.8px;
+    /* Places the line at the start */
+    width: 2px;
+    /* Adjusts the thickness of the line */
+    height: 3%;
+    /* Matches the height of the container */
+    background-color: #333333;
+    /* Sets the line color (adjust as needed) */
+    border-radius: 2px;
+    /* Optional: Add rounded edges to the line */
+}
+
+.offer-letter-header h2 {
+    font-size: 20px;
+    color: #333;
+}
+
+.status-approved {
+    background-color: #0088ff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 12px;
+    width: 60px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.custom-table-container {
+    overflow-x: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    white-space: nowrap;
+    /* Prevents text wrapping */
+    table-layout: fixed;
+}
+
+.custom-table th,
+.custom-table td {
+    text-align: left;
+    border: 1px solid #dcdcdc;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
+    vertical-align: middle;
+    word-wrap: break-word;
+    /* Ensures text wraps inside the cell */
+    overflow: hidden;
+    /* Prevents text from overflowing the cell */
+    text-overflow: ellipsis;
+    /* Adds ellipsis for truncated text */
+    white-space: nowrap;
+}
+
+.custom-table td {
+    background-color: white;
+    height: 63px;
+}
+
+.custom-table-container::-webkit-scrollbar {
+    height: 8px;
+    /* Customize horizontal scrollbar height */
+}
+
+.custom-table-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    /* Scrollbar color */
+    border-radius: 4px;
+}
+
+.custom-table th {
+    background-color: #e5e5f0;
+    font-weight: bold;
+    color: #8b919b;
+    height: 40px;
+}
+
+.custom-table .table-row:hover {
+    background-color: #e6f7ff;
+    cursor: pointer;
+}
+
+/* Checkbox Column */
+.custom-table th:first-child,
+.custom-table td:first-child {
+    text-align: center;
+    /* Adjusts width of the checkbox column */
+}
+
+/* Status Column */
+.custom-table td:nth-child(2) {
+    text-align: center;
+    width: 10%;
+    /* Adjusts width of the status column */
+}
+
+/* Candidate Name Column */
+.custom-table th:nth-child(5),
+.custom-table td:nth-child(5) {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 200px;
+    /* Sets a maximum width for the content */
+}
+
+/* Candidate Name Column */
+.custom-table th:nth-child(6),
+.custom-table td:nth-child(6) {
+    white-space: nowrap;
+    max-width: 400px;
+    /* Sets a maximum width for the content */
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .custom-table th,
+    .custom-table td {
+        font-size: 0.875rem;
+    }
+}
+
+.offer-letter-details .billSection{
+    min-height: 20%;
+}
+
+.offer-letter-details {
+    box-shadow: -4px 0px 6px rgba(0, 0, 0, 0.1);
+    /* Negative horizontal offset for left-side shadow */
+    /* grid-template-rows: 0.15fr 0.15fr; */
+    background: white;
+    margin: 0.5rem 0rem 0.5rem 1rem;
+    padding: 1rem 0rem 1rem 1rem;
+    border-radius: 8px;
+    overflow-y: auto;
+    gap: 10px;
+    grid-auto-rows: 0.1fr;
+    min-height: 35%;
+}
+
+
+@media (max-width: 768px) {
+    .offer-letter-details,.custom-table {
+        font-size: 0.6rem;
+    }
+
+    .details-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .detail-value {
+    border-bottom: 1px solid #f0f0f0;
+    line-height: 0.8rem;
+}
+
+}
+
+.firstBlock {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+
+.details-column {
+    display: grid;
+    grid-template-rows: 1fr;
+    height: fit-content;
+    gap: 10px;
+}
+
+.detail-item {
+    display: grid;
+    flex-direction: row;
+    grid-template-columns: 0.35fr 0.5fr;
+    padding-bottom: 1rem;
+    height: 100%;
+}
+
+.detail-label {
+    font-weight: bold;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #f0f0f0;
+    color: #7c7c7c;
+}
+
+.detail-value {
+    border-bottom: 1px solid #f0f0f0;
+    line-height: 1.5rem;
+}
+
+.details-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: fit-content;
+}
+
+.note {
+    padding: 5px;
+}

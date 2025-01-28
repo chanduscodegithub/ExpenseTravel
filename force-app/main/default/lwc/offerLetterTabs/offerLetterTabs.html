@@ -1,0 +1,221 @@
+<template>
+    <template if:true={showTabs}>
+        <!-- Custom Tabs -->
+        <div class="custom-tabs">
+            <div class="tab-header">
+                <button class="tab-button active" data-tab="offerLetterTab" onclick={switchTab}>
+                Offer Letter Records
+            </button>
+                <button class="tab-button" data-tab="offerUploadTab" onclick={switchTab}>
+                Offer Upload Form
+            </button>
+            </div>
+            <div class="tab-content">
+                <!-- Offer Letter Records Tab -->
+                <div class="tab-panel active" data-tab="offerLetterTab">
+                    <div class="header-actions slds-p-around_medium">
+                        <lightning-button label="Add Record" onclick={openNewOfferLetterModal} variant="brand">
+                        </lightning-button>
+                    </div>
+                    <div class="custom-table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:38px;">
+                                        <input type="checkbox" onclick={handleSelectAll}></input>
+                                    </th>
+                                    <th style="width:170px;">Status</th>
+                                    <th style="width:115px;">Date</th>
+                                    <th style="width:150px;">Formula 2</th>
+                                    <th style="width:150px;">Candidate Name</th>
+                                    <th style="width:310px;">Address of the Candidate</th>
+                                    <th style="width:210px;">Designation</th>
+                                    <th style="width:190px;">Candidate Email ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={offerLetters} for:item="record">
+                                    <tr key={record.Id} onclick={showDetails} data-record-id={record.Id} class="table-row">
+                                        <td>
+                                            <input type="checkbox" data-id={record.Id} onchange={handleRowSelection}></input>
+                                        </td>
+                                        <td>
+                                            <svg class="status-icon" fill="#0ebc6b" viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                style="width: 25px; height: 25px;background-color:white;">
+                                                <path
+                                                    d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm5.676,8.237-6,5.5a1,1,0,0,1-1.383-.03l-3-3a1,1,0,1,1,1.414-1.414l2.323,2.323,5.294-4.853a1,1,0,1,1,1.352,1.474Z">
+                                                </path>
+                                            </svg>
+                                        </td>
+                                        <td>{record.Date__c}</td>
+                                        <td>{record.formula2}</td>
+                                        <td>{record.Candidate_Name__c}</td>
+                                        <td>{record.Address__c}</td>
+                                        <td>{record.Designation__c}</td>
+                                        <td>{record.Candidate_Email__c}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Displaying the Records List View (can be toggled when required) -->
+                <template if:true={showRecords}>
+                    <!-- Add content for records list here, e.g., a table of offer letters with view buttons -->
+                    <!-- Example button to view details of an offer -->
+                    <lightning-button label="View Details" onclick={viewDetails} data-record={record.id}>
+                    </lightning-button>
+                </template>
+            </div>
+
+            <!-- Offer Upload Form Tab -->
+            <div class="tab-panel slds-hide" data-tab="offerUploadTab">
+                <lightning-input label="Candidate Name" value={candidateName} onchange={handleInputChange}>
+                </lightning-input>
+                <lightning-input label="Position" value={position} onchange={handleInputChange}></lightning-input>
+                <lightning-input label="Salary" value={salary} onchange={handleInputChange}></lightning-input>
+                <lightning-input label="Joining Date" type="date" value={joiningDate} onchange={handleInputChange}>
+                </lightning-input>
+                <lightning-button label="Submit" onclick={submitOfferLetter} variant="brand"></lightning-button>
+            </div>
+        </div>
+    </template>
+    
+    <!-- Offer Letter Details Section (Appears when row is clicked) -->
+    <template if:true={showDetailsSection}>
+        <div class="offer-letter-container">
+            <div class="offer-letter-header">
+                <h2>Offer Letter</h2>
+                <!-- <span class="status-approved"></span> -->
+                <span class="status-approved" onclick={handleApprovalModal}>View</span>
+            </div>
+            <div class="offer-letter-details">
+                <h3>Offer letter Details</h3>
+                <div class="firstBlock">
+                    <div class="details-column">
+                        <div class="detail-item">
+                            <span class="detail-label">Candidate email ID</span>
+                            <span class="detail-value">gudis488@gmail.com</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Candidate Name</span>
+                            <span class="detail-value">Suraj B Gudi</span>
+                        </div>
+                    </div>
+                    <div class="detail-item address-item">
+                        <span class="detail-label">Address of the candidate</span>
+                        <span class="detail-value">4239, 1st Floor<br>
+                        2A Main, Near Seetha Circle Petrol Bunk <br>Bengaluru 560085 Karnataka</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Date</span>
+                        <span class="detail-value">19-May-2023</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Date of Joining</span>
+                        <span class="detail-value">17-Jul-2023</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Added By</span>
+                        <span class="detail-value">C0740 - CERIN - JOHN</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Designation</span>
+                        <span class="detail-value">CX Cloud Developer - Trainee</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Added Time</span>
+                        <span class="detail-value">19-May-2023 07:55 AM</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Grade</span>
+                        <span class="detail-value">L1</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Modified By</span>
+                        <span class="detail-value">C0740 - CERIN - JOHN</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Date of Approval</span>
+                        <span class="detail-value">-</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Modified Time</span>
+                        <span class="detail-value">19-May-2023 08:04 AM</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Location</span>
+                        <span class="detail-value">CRMIT - INDIA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template if:true={approvalTab}>
+        <div class="timeline-container">
+            <div class="timeline-header">
+                <span class="request-name">Approval Timeline</span>
+            </div>
+            <div class="timelineBody">
+                <div class="timeline-line"></div>
+                <template for:each={timelineData} for:item="entry" for:index="index">
+                    
+                    <template if:true={entry.isFirst}>
+                        <div class="timeline-item1" key={entry.id}>
+                            <div class="detailsFirst">
+                                <lightning-icon icon-name="utility:user" alternative-text="User Icon" class="user-icon">
+                                </lightning-icon>
+                                <!-- <div class="vertical-container">
+                                    <img class="verticalImage" src={verticalLine} alt="Vertical Line" />
+                                </div> -->
+                                <div class="userFirst">
+                                    <span class="user-details">{entry.name}</span>
+                                    <span class="timestamp">{entry.timestamp}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <!-- Rest of the items -->
+                    <template if:false={entry.isFirst}>
+                        <div class="timeline-item" key={entry.id}>
+                            <div class="approval">
+                                <div class="timeline-dot"></div>
+                                <div class="approvalUser">
+                                    <span if:true={entry.status} class="approval-status">{entry.status}</span>
+                                    <span class="timestamp">{entry.timestamp}</span>
+                                    <div class="userContainer">
+                                        <lightning-icon icon-name="utility:user" alternative-text="User Icon"
+                                            class="user-icon"></lightning-icon>
+                                        <!-- Details for non-first items -->
+                                        <div class="details">
+                                            <span class="user-details">{entry.name}</span>
+                                            <span class="timestamp">{entry.email}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </div>
+        </div>
+    </template>
+
+
+<!-- Modal for New Record (Add Record Button) -->
+<template if:true={isModalOpen}>
+    <c-offer-letter-modal onclosemodal={closeModal}></c-offer-letter-modal>
+</template>
+</template>

@@ -1,0 +1,63 @@
+/* General Table Styling */
+.custom-table {
+    border-collapse: collapse;
+    width: 100%;
+    /* font-family: "Arial, sans-serif"; */
+}
+
+.custom-table th, .custom-table td {
+    border: 2px solid #d8dde6; /* Custom border color */
+    padding: 8px;
+    text-align: left;
+}
+
+.td-padding{
+    padding-bottom : 1px;
+}
+
+.custom-table th {
+    background-color: #f4f6f9; /* Light background for headers */
+    font-weight: bold;
+}
+
+.custom-table td {
+    background-color: #ffffff; /* White background for cells */
+}
+
+.custom-table .slds-truncate {
+    font-size: 12px; /* Adjust font size */
+}
+
+/* Custom Styling for Lightning Datatable */
+.custom-datatable .slds-table {
+    border: 1px solid #d8dde6; /* Custom border around the datatable */
+    font-family: "Arial, sans-serif";
+    font-size: 14px;
+}
+
+.custom-datatable .slds-table thead th {
+    background-color: #f4f6f9; /* Light background for datatable headers */
+    font-weight: bold;
+    border-bottom: 2px solid #d8dde6;
+}
+
+.custom-datatable .slds-table tbody tr td {
+    border-bottom: 1px solid #d8dde6; /* Border between rows */
+    background-color: #ffffff; /* White background for cells */
+}
+.bold-text {
+    font-weight: bold;
+}
+
+.no-interviews-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    height: 200px;           /* Adjust the height as needed */
+    border: 1px solid #d8dde6; /* Border color and style */
+    border-radius: 8px;      /* Optional: Rounded corners */
+    background-color: #f4f6f9; /* Optional: Background color */
+    padding: 20px;           /* Padding around the text */
+    margin: 20px;            /* Margin around the box */
+    text-align: center;      /* Center text inside the box */
+}

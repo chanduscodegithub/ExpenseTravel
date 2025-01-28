@@ -1,0 +1,65 @@
+<template>
+ 
+<div class="custom-table-container" >
+    <div class="header-container slds-grid slds-align_absolute-center slds-p-around_medium">
+     <div class="header-actions slds-p-around_medium">
+                <label class="slds-form-element__label" for="statusFilter">Filter by Status</label>
+                <div class="slds-select_container">
+                    <select class="slds-select" id="statusFilter" onchange={handleFilterChange}>
+                        
+                        <option value="Pending for Approval">Pending for Approval</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Approved">Rejected</option>
+                        <option value="Approved">All</option>
+
+                    </select>
+                </div>
+            </div>
+    </div>
+            <template lwc:if={showList}>
+      <table class="custom-table">
+        <thead>
+          <tr>
+          <th style="width:110px;">Record ID</th>
+            <th style="width:110px;">Employee</th>
+            <th style="width:110px;">Date of departure</th>
+            <th style="width:210px;">Date of return</th>
+            <th style="width:210px;">Purpose of visit</th>
+            <th style="width:210px;">Travel type</th>
+            <th style="width:210px;">Currency</th>
+            <th style="width:210px;">Requested Amount</th>
+            <th style="width:210px;">Billed to Customer</th>
+
+
+          
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={approvals} for:item="accounts" lwc:if={approvals.length}>
+            <tr key={accounts.Id} data-id={accounts.Id} onclick={handleRowSelect} data-destination={accounts.destination} data-purposeofvisit={accounts.purposeofvisit} data-billedtocustomer={accounts.billedtocustomer} data-customer={accounts.customer} data-dateofdeparture={accounts.dateofdeparture} data-dateofreturn={accounts.dateofreturn}>
+            <td>{accounts.Id}</td>
+              <td>{accounts.destination}</td>
+              <td>{accounts.purposeofvisit}</td>
+              <td>{accounts.billedtocustomer}</td>
+              <td>{accounts.customer}</td>
+              <td>{accounts.dateofdeparture}</td>
+              <td>{accounts.dateofreturn}</td>
+             
+            </tr>
+          </template>
+         
+        </tbody>
+      </table>
+            </template>
+      <template lwc:else>
+            No Records Found
+          </template>
+    </div>
+     
+    <c-traveldetails destination={dest} purpose-of-visit={purposevisit}
+                date-of-departure={datedep} date-of-return={datere} travel-type={traveltype1} mode-of-transport={modetr}
+                billed-to-customer={billcus} customer={cus} department={dep} description={des} currencu={curr} requestedamount={reqamo}
+                existingcard={existra} cardnumber={card} employee={empname} bills={billsdata} itemlist={itemList} workitemid={selectedWorkItemId} lwc:if={showRecord} onclosedetail={closeDetail} showbuttons=false>
+
+            </c-traveldetails>
+</template>

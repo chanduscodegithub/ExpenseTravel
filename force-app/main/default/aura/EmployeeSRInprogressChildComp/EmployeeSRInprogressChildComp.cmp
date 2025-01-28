@@ -1,0 +1,40 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="SRList" type="Object"/>
+    <aura:attribute name="IsTAEdit" type="boolean"/>
+    <tr class="slds-box">
+        <td class="slds-text-align_left"><div>{!v.SRList.Name}</div> </td>
+        <td class="slds-text-align_left"><div>{!v.SRList.SolutionType__c}</div> </td>
+        <td class="slds-text-align_left"><div>{!v.SRList.DueDate__c}</div> </td>
+        <td class="slds-text-align_center"><div>{!v.SRList.Project__r.Nam}</div> </td>
+        <td class="slds-text-align_center"><div><lightning:buttonIcon class ="slds-button_neutral1" iconName="utility:edit" variant="bare" value="{!v.SRList.Id}" onclick="{!c.EditSR}" alternativeText="Edit"/></div> </td>
+        
+    </tr>
+     <!-- Model Box Start for POLI-->    
+    <aura:if isTrue="{!v.IsTAEdit}">
+        
+        <div class="demo-only" style="">
+            <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick="{!c.closeModal}">
+                            <lightning:icon iconName="action:close" size="x-small" alternativeText="close"/>
+                            <span class="slds-assistive-text" >Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.POLIlist.Name}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        
+                        <lightning:recordForm
+                                              recordId="{!v.SRList.Id}"
+                                              objectApiName="SupportRequest__c"
+                                              layoutType="Full"
+                                              mode="edit"
+                                              columns="2"/>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop--open"></div>
+        </div>
+    </aura:if>
+    <!-- Modal Box ends here -->
+</aura:component>

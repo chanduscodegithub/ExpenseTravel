@@ -1,0 +1,105 @@
+<template>
+    <!-- <c-role-hirarchy-explorer></c-role-hirarchy-explorer> -->
+    <lightning-spinner if:true={isSpinner} alternative-text="Loading" size="large"></lightning-spinner>
+    <div lwc:if={myReporteesFlage}>
+
+        <lightning-card variant="Narrow" icon-name="standard:opportunity">
+            <div if:true={callDelegate}>
+                <c-delegated-manager-feedback show-pop-up={showPopUpChild} pr-id={prId} onclosepop={updatefalge}></c-delegated-manager-feedback>
+            </div>
+            <!-- <div class="slds-text-heading_medium" slot="title"> Avishkaar - Performance Management System </div> -->
+            <div slot="title"> <span class="slds-text-heading_medium">Avishkaar - DreamDrive360 -</span><span class="logo"><i>"Discover a realm where dreams unfurl and possibilities awaken"</i></span> </div>
+             <!--<div class="announcementWrap slds-m-bottom_x-large borderRadius">-->
+            <marquee class="flotingText" behavior="scroll" direction="left">Select Reportee Name To View QPR Cycles</marquee>
+             
+        </lightning-card><br>
+        <lightning-card>
+
+            <lightning-tabset variant="standard" active-tab-value="one">
+                <lightning-tab label="Reportees" value="one" onactive={handleActiveTab}>
+                    <div style="height: auto;">
+                        <!-- Table is not required as PMS-II implemented -->
+                        <!-- <table class="slds-table slds-table_cell-buffer slds-table_bordered" aria-labelledby="element-with-table-label other-element-with-table-label">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Opportunity Name">Employee Name</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Opportunity Name">Current Quarter</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Opportunity Name">Status</div>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={Employees} for:item="pms" for:index="index">
+                                    <tr key={pms.Id} style="font-family: sans-serif;" class="slds-hint-parent">
+                                        <td scope="row">
+                                            <a data-index={index} data-title="Emps" onclick={handleClick}>{pms.Employee__r.Name}</a>
+                                        </td>
+                                        <td scope="row">
+                                            <p>{wrapperData.currentQuarter}</p>
+                                        </td>
+                                        <td scope="row">
+                                            <p>{pms.Status__c}</p>
+                                        </td>
+                                    </tr>
+                                </template>
+
+                            </tbody>
+                        </table> -->
+
+                        <lightning-tree-grid lwc:if={treeData} onrowaction={handleRowAction} columns={gridColumns} data={treeData} key-field="Id" hide-checkbox-column  onrowselection={handleRowSelection}></lightning-tree-grid>
+                    </div>
+                </lightning-tab>
+                <lightning-tab label="Project Reportees" value="two" onactive={handleActiveTab}>
+                    <div style="height: auto;">
+
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered" aria-labelledby="element-with-table-label other-element-with-table-label">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Opportunity Name">Employee Name</div>
+                                    </th>
+                                     
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Opportunity Name">Current Quarter</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Opportunity Name">Status</div>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={DelegatedEmployees} for:item="pms" for:index="index">
+                                    <tr key={pms.Id} style="font-family: sans-serif;" class="slds-hint-parent">
+
+                                        <td scope="row">
+                                            <a data-index={index} data-title="DelegatedEmps" onclick={handleClick}>{pms.Employee__r.Name}</a>
+                                        </td>
+                                        
+                                        <td scope="row">
+                                            <p>{wrapperData.currentQuarter}</p>
+                                        </td>
+                                        <td scope="row">
+                                            <p>{pms.Status__c}</p>
+                                        </td>
+
+                                    </tr>
+                                </template>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </lightning-tab>
+            </lightning-tabset>
+        </lightning-card>
+    </div>
+    <div lwc:else>
+        <c-p-m-s_-rating from={type} pr-id={prId} rec-id={loggedInEmpId} mg-id={MgId} dele-mg-id={deleMgId} dele-mg-id2={deleMgId2} emp-id={EMPID} appraisal-cycle-id={wrapperData.appraisalCycleId} current-cycle={wrapperData.currentQuarter} ongoback={goBack} onpmslistview={handlemanagerrating} activetab-content={activetabContents} is-disable={isdisable} current-year={year}></c-p-m-s_-rating>
+    </div>
+</template>

@@ -1,0 +1,131 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:themeLayout,forceCommunity:availableForAllPageTypes" access="global" controller="TeamMembersApex">
+    <aura:attribute name="billableActive" type="TeamAllocation__c[]" />
+    <aura:attribute name="billableYetToAssign" type="TeamAllocation__c[]" />
+    <aura:attribute name="billableCompleted" type="TeamAllocation__c[]" />
+    <aura:attribute name="nonBillableActive" type="TeamAllocation__c[]" />
+    <aura:attribute name="nonBillableYetToAssign" type="TeamAllocation__c[]" />
+    <aura:attribute name="nonBillableCompleted" type="TeamAllocation__c[]" />
+    <aura:attribute name="avishkaarActive" type="TeamAllocation__c[]" />
+    <aura:attribute name="avishkaarYetToAssign" type="TeamAllocation__c[]" />
+    <aura:attribute name="avishkaarCompleted" type="TeamAllocation__c[]" />
+    <aura:attribute name="pazeSize" type="Integer" default="10" />
+    <aura:attribute name="communityUrl" type="String" default="" />
+
+    <aura:attribute name="activeMainSection" type="String" default="" />
+    <aura:attribute name="activeSubSectionBillable" type="String" default="" />
+    <aura:attribute name="activeSubSectionNonBillable" type="String" default="" />
+    <aura:attribute name="activeSubSectionAvishkaar" type="String" default="" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <lightning:card variant="Narrow" title="Team Allocation for this Project" iconName="custom:custom15">
+        <p class="slds-p-horizontal_small">
+            <!-- BILLABLE -->
+            <lightning:accordion allowMultipleSectionsOpen="false" activeSectionName="{!v.activeMainSection}" onsectiontoggle="{!c.handleMainAccordionToggle}">
+                <lightning:accordionSection name="billable" label="Billable">
+                    <lightning:accordion allowMultipleSectionsOpen="false" activeSectionName="{!v.activeSubSectionBillable}" onsectiontoggle="{!c.handleBillableSubAccordionToggle}">
+                        <!-- Billable - Active -->
+                        <lightning:accordionSection name="active" label="Active">
+                            <aura:if isTrue="{!not(empty(v.billableActive))}">
+                                <c:BillableTACmp billableTAList="{!v.billableActive}" pagesize="{!v.pazeSize}" />
+                            <aura:set attribute="else">
+                                <p style="background:white;text-align:center;">No active allocations found.</p>
+                            </aura:set>
+                            </aura:if>
+                        </lightning:accordionSection>
+
+                        <!-- Billable - Yet to Assign -->
+                        <lightning:accordionSection name="yetToAssign" label="Yet to Start">
+                            <aura:if isTrue="{!not(empty(v.billableYetToAssign))}">
+                                <c:BillableTACmp billableTAList="{!v.billableYetToAssign}" pagesize="{!v.pazeSize}" />
+                            <aura:set attribute="else">
+                                <p style="background:white;text-align:center;">No yet-to-start allocations found.</p>
+                            </aura:set>
+                            </aura:if>
+                        </lightning:accordionSection>
+
+                        <!-- Billable - Completed -->
+                        <lightning:accordionSection name="completed" label="Completed">
+                            <aura:if isTrue="{!not(empty(v.billableCompleted))}">
+                                <c:BillableTACmp billableTAList="{!v.billableCompleted}" pagesize="{!v.pazeSize}" />
+                            <aura:set attribute="else">
+                                <p style="background:white;text-align:center;">No completed allocations found.</p>
+                            </aura:set>
+                            </aura:if>
+                        </lightning:accordionSection>
+                    </lightning:accordion>
+                </lightning:accordionSection>
+
+                <!-- NON-BILLABLE -->
+                <lightning:accordionSection name="nonBillable" label="Shadow">
+                    <lightning:accordion allowMultipleSectionsOpen="false" activeSectionName="{!v.activeSubSectionNonBillable}" onsectiontoggle="{!c.handleNonBillableSubAccordionToggle}">
+                        <!-- Non-Billable - Active -->
+                        <lightning:accordionSection name="active" label="Active">
+                            <aura:if isTrue="{!not(empty(v.nonBillableActive))}">
+                                <c:BillableTACmp billableTAList="{!v.nonBillableActive}" pagesize="{!v.pazeSize}" />
+                            <aura:set attribute="else">
+                                <p style="background:white;text-align:center;">No active allocations found.</p>
+                            </aura:set>
+                            </aura:if>
+                        </lightning:accordionSection>
+
+                        <!-- Non-Billable - Yet to Assign -->
+                        <lightning:accordionSection name="yetToAssign" label="Yet to Start">
+                            <aura:if isTrue="{!not(empty(v.nonBillableYetToAssign))}">
+                                <c:BillableTACmp billableTAList="{!v.nonBillableYetToAssign}" pagesize="{!v.pazeSize}" />
+                            <aura:set attribute="else">
+                                <p style="background:white;text-align:center;">No yet-to-start allocations found.</p>
+                            </aura:set>
+                            </aura:if>
+                        </lightning:accordionSection>
+
+                        <!-- Non-Billable - Completed -->
+                        <lightning:accordionSection name="completed" label="Completed">
+                            <aura:if isTrue="{!not(empty(v.nonBillableCompleted))}">
+                                <c:BillableTACmp billableTAList="{!v.nonBillableCompleted}" pagesize="{!v.pazeSize}" />
+                            <aura:set attribute="else">
+                                <p style="background:white;text-align:center;">No completed allocations found.</p>
+                            </aura:set>
+                            </aura:if>
+                        </lightning:accordionSection>
+                    </lightning:accordion>
+                </lightning:accordionSection>
+
+                <!-- AVISHKAAR -->
+                <lightning:accordionSection name="avishkaar" label="Avishkaar">
+                    <lightning:accordion allowMultipleSectionsOpen="false" activeSectionName="{!v.activeSubSectionAvishkaar}" onsectiontoggle="{!c.handleAvishkaarSubAccordionToggle}">
+                        <!-- Avishkaar - Active -->
+                        <lightning:accordionSection name="active" label="Active">
+                            <aura:if isTrue="{!not(empty(v.avishkaarActive))}">
+                                <c:BillableTACmp billableTAList="{!v.avishkaarActive}" pagesize="{!v.pazeSize}" />
+                            <aura:set attribute="else">
+                                <p style="background:white;text-align:center;">No active Avishkaar allocations found.</p>
+                            </aura:set>
+                            </aura:if>
+                        </lightning:accordionSection>
+
+                        <!-- Avishkaar - Yet to Assign -->
+                        <lightning:accordionSection name="yetToAssign" label="Yet to Start">
+                            <aura:if isTrue="{!not(empty(v.avishkaarYetToAssign))}">
+                                <c:BillableTACmp billableTAList="{!v.avishkaarYetToAssign}" pagesize="{!v.pazeSize}" />
+                            <aura:set attribute="else">
+                                <p style="background:white;text-align:center;">No yet-to-start Avishkaar allocations found.</p>
+                            </aura:set>
+                            </aura:if>
+                        </lightning:accordionSection>
+
+                        <!-- Avishkaar - Completed -->
+                        <lightning:accordionSection name="completed" label="Completed">
+                            <aura:if isTrue="{!not(empty(v.avishkaarCompleted))}">
+                                <c:BillableTACmp billableTAList="{!v.avishkaarCompleted}" pagesize="{!v.pazeSize}" />
+                            <aura:set attribute="else">
+                                <p style="background:white;text-align:center;">No completed Avishkaar allocations found.</p>
+                            </aura:set>
+                            </aura:if>
+                        </lightning:accordionSection>
+                    </lightning:accordion>
+                </lightning:accordionSection>
+            </lightning:accordion>
+        </p>
+    </lightning:card>
+</aura:component>

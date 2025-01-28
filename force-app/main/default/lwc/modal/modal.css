@@ -1,0 +1,7 @@
+div.modal__checkbox {
+  display: flex;
+}
+
+div.modal__checkbox lightning-input.slds-form-element {
+  margin-left: 1em;
+}

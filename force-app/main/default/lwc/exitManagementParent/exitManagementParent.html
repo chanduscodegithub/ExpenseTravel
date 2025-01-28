@@ -1,0 +1,25 @@
+<template>
+    <template lwc:if={loaded}>
+        <div class="custom-tabs">
+            <div class="tab-header">
+                <button class="tab-button active" data-tab="myResignationTab" onclick={switchTab}>
+                    My Resignation
+                </button>
+                <button class="tab-button" data-tab="ApprovalsTab" onclick={switchTab}>
+                    Team's Resignation Approvals
+                </button>
+            </div>
+            <div class="tab-content">
+                <div class="tab-panel active" data-tab="myResignationTab">
+                    <c-exit-management-my-resignation emp-data={empData}></c-exit-management-my-resignation>
+                </div>
+                <div class="tab-panel slds-hide" data-tab="ApprovalsTab">
+                    <c-exit-management-team emp-data={empData}></c-exit-management-team>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template lwc:elseif={loaded}>
+        <lightning-spinner alternative-text="Loading" size="small" variant="base"></lightning-spinner>
+    </template>
+</template>

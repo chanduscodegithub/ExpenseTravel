@@ -1,0 +1,149 @@
+label.slds-form-element__label,
+abbr[title] {
+    display: none !important;
+}
+
+
+/* label.slds-form-element__label {
+    display: none !important;
+} */
+
+@media (min-width: 64em) {
+    .slds-accordion__summary-content {
+        overflow: visible;
+    }
+}
+
+.slds-accordion__summary-content {
+    overflow: visible;
+}
+
+.slds-button_brand,
+.slds-button_success {
+    color: #fff;
+    font-weight: bold;
+}
+
+.reportIconBtn svg {
+    height: 34px;
+    width: 27px;
+}
+
+.reportIconBtn {
+    padding: 0;
+}
+
+.reportIconBtn .slds-button_icon {
+    color: #cc6318;
+}
+
+.reportIconBtn button:hover {
+    color: #cc6318;
+}
+
+.reportIconBtn button:focus-visible {
+    outline-color: #fff;
+}
+
+.reportIconBtn lightning-primitive-icon:focus-visible {
+    outline-color: #fff;
+}
+
+lightning-carousel-image .slds-carousel__content {
+    width: 92%;
+    height: fit-content;
+    font-size: medium;
+    font-weight: 600;
+}
+
+.slds-carousel__image {
+    display: none;
+}
+
+.errorReportBtn a {
+    color: #747474;
+}
+
+.errorReportBtn a:hover,
+.errorReportBtn a:focus,
+.errorReportBtn a:active {
+    color: #cc6318;
+}
+
+.errorReportBtn a:focus-visible {
+    outline-color: #fff;
+}
+
+.slds-carousel__panel-action .slds-text-link_reset,
+.slds-carousel__panel-action .slds-text-link_reset div {
+    background-color: #cc6318;
+    color: #fff;
+}
+
+.slds-carousel__panel-action {
+    background-color: #cc6318;
+    color: #fff;
+}
+
+/* .slds-carousel__autoplay {
+    display: none;
+} */
+
+.slds-carousel__content,
+.slds-carousel__content * {
+    background-color: #cc6318;
+    color: #fff;
+}
+
+div.childElementHours {
+    position: absolute;
+    margin-left: 85%;
+    margin-top: 12px;
+    font-size: medium;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.slds-carousel__autoplay svg {
+    margin-left: -2px;
+    margin-top: -2px;
+}
+
+.slds-has-error .slds-form-element__help {
+    overflow: visible;
+}
+
+.slds-accordion__summary {
+    background-color: #FEF2EB;
+}
+
+tbody>tr::after {
+    content: attr(data-daystr);
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    rotate: -90deg;
+    transform: translate(-35px, -25px);
+    font-weight: bold;
+}
+
+tbody>tr {
+    position: relative;
+}
+
+tbody>tr[data-daystr="Mon"],
+tbody>tr[data-daystr="Wed"],
+tbody>tr[data-daystr="Fri"] {
+    background-color: aliceblue;
+}
+
+tbody>tr[data-daystr="Tue"],
+tbody>tr[data-daystr="Thu"] {
+    background-color: #fe8f8214;
+}
+
+tbody>tr[data-daystr="Sat"],
+tbody>tr[data-daystr="Sun"] {
+    background: linear-gradient(90deg, #fa80723d, #cee8ff);
+}

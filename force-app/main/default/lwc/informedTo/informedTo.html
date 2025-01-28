@@ -1,0 +1,29 @@
+<template>
+  <div class="slds-form-element__control inform__info">
+    <lightning-icon icon-name="utility:info" alternative-text="Info" size="x-small" class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default info__icon" data-message="Please search and select employees whom you want to inform, about your leave."></lightning-icon>
+    <lightning-input type="text" class="employee__input" label="Inform" onchange={handleInput} value={selectedEmployeeName} placeholder="Enter employee name..."></lightning-input>
+    <div class="add-view-container">
+      <div class={listClass}>
+        <template for:each={searchedEmp} for:item="eachEmp">
+          <div class="eachItem" onclick={empSelect} data-id={eachEmp.Id} key={eachEmp.Id}>
+            {eachEmp.Name}
+          </div>
+        </template>
+      </div>
+    </div>
+    <div class="slds-listbox_selection-group inform__to">
+      <ul class="slds-listbox slds-listbox_horizontal " role="listbox" aria-label="Selected Options:" aria-orientation="horizontal">
+        <template for:each={selectedEmployeeList} lwc:if={selectedEmployeeList.length} for:item="eachEmployee">
+          <li class="slds-listbox-item" role="presentation" key={eachEmployee.Id}>
+            <span class="slds-pill" role="option" aria-selected="true">
+              <span class="slds-pill__label" title={eachEmployee.Name}>{eachEmployee.Name}</span>
+              <span class="slds-icon_container slds-pill__remove" title="Remove">
+                <lightning-icon icon-name="utility:close" alternative-text="Close" size="x-small" data-emp={eachEmployee.Id} class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" onclick={handleRemoveEmp}></lightning-icon>
+              </span>
+            </span>
+          </li>
+        </template>
+      </ul>
+    </div>
+  </div>
+</template>

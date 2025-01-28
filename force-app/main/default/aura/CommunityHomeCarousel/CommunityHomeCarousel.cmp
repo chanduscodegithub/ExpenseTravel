@@ -1,0 +1,34 @@
+<aura:component access="global"
+                implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes">
+    
+	<lightning:carousel disableAutoRefresh="false" disableAutoScroll="false">
+        <lightning:carouselImage 
+                                 src = "{!$Resource.ManagedServices}"
+                                 header="Continious Improvement"
+                                 description = "Your business doesn't stand still. Neither should your Salesforce Ecosystem"
+                                 alternativeText = "continious"
+                                 href ="https://www.crmit.com/services/salesforce-managed-services.html">
+        </lightning:carouselImage>
+        <lightning:carouselImage 
+                                 src = "{!$Resource.ActNow}"
+                                 header="Act Now"
+                                 description = "WorkPlace wellness plug-in for Salesforce"
+                                 alternativeText = "actnow"
+                                 href ="https://www.crmit.com/workplace-wellness-vaccination-salesforce.html">
+        </lightning:carouselImage>
+        <lightning:carouselImage 
+                                 src = "{!$Resource.HealthCare}"
+                                 header="Health Care"
+                                 description = "A personalized Patient Experience Solution"
+                                 alternativeText = "healthCare"
+                                 href ="https://www.thehealthcare360.in/">
+        </lightning:carouselImage>
+        <lightning:carouselImage 
+                                 src = "{!$Resource.BI}"
+                                 header="Business Intelligence and Analytics"
+                                 description = "Turn your data into business Value"
+                                 alternativeText = "bi"
+                                 href ="https://www.crmit.com/analytics/">
+        </lightning:carouselImage>
+    </lightning:carousel>
+</aura:component>

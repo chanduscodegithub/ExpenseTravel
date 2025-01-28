@@ -1,0 +1,191 @@
+.icon-color{
+	--sds-c-icon-color-foreground-default: white;
+}
+.button-color{
+	color: white;
+}
+.back-ground{
+	background-color: white;
+}
+.bg-color{
+	background-color: white;
+}
+.bg-details{
+	width: 20%;
+	height:30%;
+	background-color: rgb(229, 229, 229);
+	border: 0.5px solid black;
+	padding-top: 3%;
+}
+
+/*New timer css */
+
+.bodytest{
+	background: linear-gradient(45deg, #1870ed 0, #f18f88 100%);
+  font-family: 'Montserrat', 'sans-serif';
+  min-height: 100vh; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: none;
+}
+
+.body{
+	font-family: 'Montserrat', 'sans-serif';
+}
+
+.width{
+    width: 91%;
+    margin: 0;
+}
+
+.clock-container{
+    margin: 0;
+    font-family: 'Montserrat', 'sans-serif';
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    margin-top: 0px;
+    margin-bottom: 5%;
+    background-color: white;
+    border-radius: 5px;
+    padding: 2px 5px;
+    //box-shadow: 1px 1px 5px rgba(255, 255, 255, 0.15), 0 15px 90px 30px rgba(0, 0, 0, 0.25);
+    display: flex;
+    width: 91%;
+}
+
+.clock-containerNew{
+    margin: 0;
+    font-family: 'Montserrat', 'sans-serif';
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    margin-top: 1%;
+    margin-bottom: 0px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 2px 5px;
+    box-shadow: 1px 1px 5px rgba(255, 255, 255, 0.15), 0 15px 90px 30px rgba(0, 0, 0, 0.25);
+    display: flex;
+    width: 91%;
+    border-bottom: 1px solid black;
+}
+
+.icon-rotate{
+    animation: rotation 2s infinite linear;
+}
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+.clock-col{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    text-align: center;
+    margin-right: 10px;
+    margin-left: 10px;
+    min-width: 40px;
+    position: relative;
+}
+
+.clock-day{
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+.clock-daynew{
+    text-align: center;
+    margin-left: 35%;
+    margin-right: 5%;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    font-size: 1.1rem;
+    vertical-align: baseline;
+    
+}
+
+.clock-daynew2{
+    text-align: center;
+    margin-right: 0%;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    
+}
+
+.clock-timer{
+	color : black;
+	font-size: 1.1rem;
+}
+.clock-timer1{
+	color : black;
+	font-size: 1.4rem;
+}
+.clock-label{
+	color: black;
+    text-transform: uppercase;
+    font-size: .7rem;
+    margin-top: 10px;
+}
+
+.colon-jack{
+	color: rgb(72, 70, 70);
+	font-size: 1.4rem;
+}
+
+.widthAdjust{
+   width: 115%;
+}
+
+.line {
+  border: 1px solid Black;
+  border-radius: 5px;
+}
+
+.bgColor {
+    background-color : #4576c6;
+}
+
+.container {
+    display: flex;
+}
+
+.timer{
+    flex: 3.1;
+}
+
+.emp-Search{
+    flex: 4.3;
+    margin-top: 1%;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.width{
+    padding-top: 9px;
+}
+
+.displayText{
+    color: green;
+}
+
+div.slds-form-element__icon{
+    display: none;
+}

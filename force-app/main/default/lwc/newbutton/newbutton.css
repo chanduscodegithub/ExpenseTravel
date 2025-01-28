@@ -1,0 +1,33 @@
+.dummy {
+	color: black;
+}
+
+:host .slds-box {
+
+	border: 2px solid orange;
+
+}
+
+:host .slds-border_bottom {
+	color: black;
+	border-color: lightgreen;
+}
+
+:host .slds-form-element__icon {
+	display: none;
+}
+
+.custom-close-icon {
+	position: relative;
+	top: 23px;
+	color: red;
+}
+
+.custom-close {
+	font-size: 14px;
+	color: black;
+}
+
+.accordianColor {
+	--slds-c-accordion-summary-color-background: #ebeaeaf7;
+}

@@ -1,0 +1,262 @@
+<apex:page applyHtmlTag="false" applyBodyTag="false" docType="html-5.0" showHeader="false" standardStylesheets="false" controller="Covid19GoogleAuthPageController">
+    <apex:includescript value="{!urlfor($Resource.jQuery)}"/>
+    <apex:includescript value="{!urlfor($Resource.GoogleAuth)}"/>
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+        <head>
+            <title>Google SignIn</title>
+            
+            <meta name="google-signin-scope" content="profile email"/>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+            <meta name="google-signin-client_id" content="{!clientId}"/>
+            <script>window.onbeforeunload = function(e){
+            gapi.auth2.getAuthInstance().signOut();
+            };</script>
+            <style>
+                .siteforceStarterBody .cCenterPanel{
+                padding:0px;
+                }
+                .slds-col--padded{
+                padding:0px;
+                }
+                body {
+                
+                font-family: sans-serif;
+                }
+                .emailInputStyle {
+                width:30%;
+                }
+                .header{
+                margin-top:2%;
+                margin-bottom:1%;
+                }
+                .covidStyleHeader{
+                height: 30px;
+                width: 30px;
+                vertical-align: bottom;
+                margin-right: 8px;
+                
+                }
+                .emailInputHeaderFont{
+                font-size: x-large;
+                font-weight: 500;
+                color: #D03F3E;
+                line-height: 0rem;
+                } 
+                .card {
+                background-color: #ffffff;
+                border-radius: 0.5rem;
+                border: 1px solid #f1f1f1;
+                box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                transition: 0.3s;
+                width: 30%;
+                margin: auto;
+                margin-top: 3%;
+                height: auto;
+                }
+                
+                .card:hover {
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+                }
+                .footerStyle{
+                border-top: 1px solid #d4d4d4 !important;
+                background: #FFF7F6 !important;
+                }
+                .container {
+                width: 100%;
+                padding: 0px;
+                text-align: center;
+                }
+                .g-signin2 {
+                display:none;
+                border-radius: 0.5rem;
+                width: 100%;
+                height: 52px;
+                margin-top: 1rem;
+                }
+                .abcRioButtonLightBlue {
+                background-color: #4285F4!important;
+                color: #fff!important;
+                width: 100% !important;
+                height: 56px !important;
+                line-height: 56px !important;
+                border-radius: 0.5rem !important;
+                transition: 0.3s !important;
+                width: 30% !important;
+                margin: auto !important;
+                }
+                .abcRioButtonLightBlue:hover {
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2) !important;
+                }
+                .abcRioButtonContents { vertical-align: baseline !important; font-size: 20px !important; }
+                .abcRioButtonIcon {
+                padding: 8px;
+                background: #fff !important;
+                height: 48px;
+                width: 48px;
+                margin-top: 4px;
+                margin-left: 3px;
+                border-radius: 0.2rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                }
+                .signInMessageHeading{
+                color: #AC0100;
+                	font-weight: 550; 
+    				font-size: 1.6rem;
+                margin:0px;
+                padding-top: 2rem;
+                }
+                .signInMessage{
+                color: #AC0100; margin:0; padding: 2rem 2rem; text-align:left; line-height: 2.4rem; font-size: 1.5rem;
+                } 
+                .company-logo {text-align: center; margin-top: 4rem;margin-bottom: 4rem; width: 40%;
+                margin: auto;}
+                .company-logo img {width: 50% !important;}
+                .header-assessment{margin-top:4%; margin-bottom:4%}
+                .formStyleDiv {
+                	margin: auto;
+                	text-align: center;
+                	margin-top: 2rem;
+                }
+                
+                .agree{
+                margin-left: 2%;
+                color: #AC0100;
+                }
+                
+                .agreeDiv{
+                	display:inline-flex;
+                    width: 5%;
+                }
+                .officeDiv{
+                	display:inline-flex;
+                    width:18%;
+                }
+                
+                @media screen and (max-width: 768px) {
+                .company-logo img {width: 100% !important;}
+                .card {margin-top: 14%;}
+                .emailInputHeaderFont{font-size: 2rem; color: #D03F3E; font-weight: bold;}
+                .card, .abcRioButtonLightBlue {width: 100% !important;}
+                .THIS .covidStyleHeader {
+                width: 30px; height: 30px;
+                }
+                .agree{
+                margin-top: 1px;
+                margin-left: 4%;
+                }
+                .formStyleDiv {
+                	margin: auto;
+                	text-align: center;
+                	margin-top: 2rem;
+                }
+                .agreeDiv{
+                	display:inline-flex;
+                    width: 20%;
+                }
+                .officeDiv{
+                	display:inline-flex;
+                    width: 100%;
+                }
+                }
+                
+            </style>
+            
+        </head>
+        <body>
+            <div class="company-logo"><img src="{!$Resource.CompanyLogo}"/></div>
+            <div class="card">
+                <div class="container">
+                    <div class="header">    
+                        <div class="header-assessment"><img class="covidStyleHeader" src="{!$Resource.covid_19}"/><span class="slds-modal__title slds-hyphenate emailInputHeaderFont">COVID-19 Self-Assessment</span></div>
+                    </div>                    
+                    <footer class="footerStyle">
+                        <!-- Sign-In Covid-19 Message -->
+                        <p class="signInMessageHeading" style="text-align:center;">Data Protection-Declaration <br/></p>
+                        <p class="signInMessage" >
+                            {!signInMessage1} {!signInMessage2} <br/> {!signInMessage3}<br/>{!signInMessage4}
+                        </p>
+                    </footer>
+                    
+                </div>
+            </div>
+            <div class="formStyleDiv">
+                <apex:form styleClass="formStyle" id="frm">
+                <div class="agreeDiv">
+                   <apex:inputcheckbox label="I Agree" value="{!isChecked}" id="selectrecord" styleclass="isselected" onchange="renderButton()"></apex:inputcheckbox>
+                <p class="agree" >
+                    I Agree
+                </p> 
+                </div>
+                    <br/>
+                <div class="officeDiv"> 
+                    <apex:inputcheckbox value="{!isEmployeeComingToOfficeToday}" id="selectrecord1" styleclass="isselected" onchange="updateValue()"></apex:inputcheckbox>
+                	<span class="agree" style="color: #AC0100;">
+                    Click here if you are working from Office.
+                	</span>
+                </div>
+                
+            </apex:form>
+            </div>
+            
+            <!-- Sign-In Button -->
+            <div class="g-signin2" data-onsuccess="onSignIn1" onclick="navigateToOtherScreen()"></div>
+            
+            <script>
+            var agreeDateTime;
+            var idToken;
+            var employeeComingToOfficeToday;
+            
+            function updateValue()
+            {
+                employeeComingToOfficeToday = document.getElementById("{!$Component.frm.selectrecord1}").checked;
+                console.log('employeeComingToOfficeToday - '+employeeComingToOfficeToday);
+            }
+            
+            
+            function renderButton()
+            {
+                var isChecked = document.getElementById("{!$Component.frm.selectrecord}").checked;
+                employeeComingToOfficeToday = document.getElementById("{!$Component.frm.selectrecord1}").checked;
+                console.log('employeeComingToOfficeToday - '+employeeComingToOfficeToday);
+                if (isChecked){
+                    agreeDateTime = new Date();
+                    $(".g-signin2").css("display","block");
+                }else{
+                    $(".g-signin2").css("display","none");
+                }
+            }
+            
+            function onSignIn1(googleUser){
+                //alert('Inside');
+                //debugger;
+                $(".card").css("display","none");
+                $(".formStyle").css("display","none");
+                $(".g-signin2").css("display","block");
+                debugger;
+                //Fetch the idToken of the Authenticated User.
+                idToken = googleUser.getAuthResponse().id_token;
+                console.log('idToken -'+ idToken);   
+                var assessmentURL = '{!assessmentURL}';                
+                /*$Lightning.use("FFP_NMU:Covid19AssessmentForNonSFUsersApp", function() {
+                    $Lightning.createComponent("FFP_NMU:Covid19AssessmentPageForNonSFUsers",
+                                               {email:email},
+                                               "lightning",
+                                               function(cmp) {
+                                                   console.log("button was created");
+                                                   // do some stuff
+                                               }
+                                              );
+                });*/
+                
+                //alert(JSON.stringify(encodeParams));   
+                // window.location.href="https://portaltechffpv9-developer-edition.ap15.force.com/assessmentPortal/s/service-resource-assessment-page#"+idToken;
+                //Open the Assessment page in the next tab, Also pass the idToken.
+                window.open(assessmentURL+'#'+idToken+','+agreeDateTime+','+employeeComingToOfficeToday,"_self");
+            }
+            </script>
+        </body>
+    </html>
+</apex:page>

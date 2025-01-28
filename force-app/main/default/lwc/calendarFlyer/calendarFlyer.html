@@ -1,0 +1,9 @@
+<template>
+  <div class="holiday__container">
+    <ul class="holiday__list">
+      <template for:each={formattedLeaves} for:item="eachDay">
+        <li class="holiday__list-item" key={eachDay.key}>{eachDay.dateStr} : {eachDay.name}</li>
+      </template>
+    </ul>
+  </div>
+</template>

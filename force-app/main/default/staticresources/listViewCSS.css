@@ -1,0 +1,5 @@
+.slds-combobox__input, .slds-input_faux, .slds-combobox__input-value{
+    background-color: transparent;
+    border-color: transparent;
+    padding-left: 0;
+  }

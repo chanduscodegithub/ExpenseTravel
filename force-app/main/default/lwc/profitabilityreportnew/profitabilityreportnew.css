@@ -1,0 +1,127 @@
+/* this is form summary table */
+.tthwidth, .tinnertable th, .tinnertable td {
+    text-align: center;
+    padding: 7px;
+    background-color:#acafb3;
+}
+ 
+/* this is form summary table */
+.rightside{
+text-align: right;
+padding: 7px;
+}/* this is form summary table */
+.leftside{
+text-align: left;
+padding: 7px;
+}
+/* this is form summary table */
+.backColor{
+    background-color:#93cdf4;
+    display: flex;
+    height: 65%;
+    border-bottom: 0.5px solid grey;
+    border-top: 0.5px solid grey;
+    align-items: center;
+}
+/* Last column has uncommon width so this extra css backColorLast added for last col */
+.backColorLast{                    
+    background-color:#93cdf4;
+    display: flex;
+    height: 65%;
+    border-bottom: 0.5px solid grey;
+    border-top: 0.5px solid grey;
+    width: 106%;
+}
+.month{
+    padding: 0.4rem;
+}
+.insidess{
+text-align: center;
+padding: 7px;
+}
+.responsive-table { /* for summary table I have given this one */
+width: 75%;
+table-layout: auto; /* or "fixed" depending on your preference */
+}
+td{
+word-break: break-all;
+}
+.width-38{
+width: 75%;
+}
+.break-text{
+word-break: break-word;
+white-space: break-spaces;
+}
+/* this is for monthly table----------------> */
+
+/* this is for opportunity for monthly table */
+.oppthwidth{
+    text-align: center;
+    padding: 7px;
+    background-color:#acafb3;
+    }
+
+/* this is for all monthly colour blue and text at center with padding */
+.thwidth, .innertable th, .innertable td {
+    text-align: center;
+    padding: 7px;
+    background-color:#acafb3;
+    width: 850px;
+}
+
+/* this is for showing  monthly values */  
+.insideth {
+    text-align: left;
+    padding: 7px;
+}
+/* .innertable{
+
+} */
+
+.inside th, .inside td{
+    text-align: center;
+    padding: 8px;
+}
+
+
+/* this is for scrolling right side and left side  monthly values */  
+.slds-scrollable_x {
+    overflow-x: auto;
+}
+/* .rowcolumn td{
+padding: 4px;
+} */
+
+.custom-width {
+    width: 25%; /* Set the desired width here */
+}
+.forcolour{
+   background-color:#d6d9dd; 
+   padding: 7px;
+}
+
+.bold-text {
+    font-weight: bold;
+    padding: 7px;
+}
+.insidetableclor{
+   background-color:#93cdf4; 
+   padding: 7px; 
+}
+.fixTableHead{
+    overflow-y: auto;
+}
+
+.table-blue-last tr:last-child td{
+        background-color:#d6d9dd;
+        font-weight: bold;
+        table-layout: fixed;
+
+
+}
+.button-container {
+    position: absolute;
+    top: 20px; 
+    right: 20px; 
+}

@@ -1,0 +1,16 @@
+.THIS {
+}
+.THIS .slds-card__body
+{
+   height: calc(40vh - 40px);
+    overflow-y:scroll;
+    border:2px solid gray;
+   margin:.5rem;   
+}
+.THIS .slds-card__body1
+{
+   height: calc(10vh - 10px);
+    overflow-y:scroll;
+    border:2px solid gray;
+   margin:.5rem;   
+}

@@ -1,0 +1,242 @@
+<template>
+    <article class="slds-card">
+<div class="slds-card__header slds-grid slds-p-around_none slds-m-bottom_none">
+<header class="slds-media slds-media_center slds-has-flexi-truncate">
+<div class="slds-media__figure">
+<lightning-icon icon-name="standard:lead" icon-size="small"></lightning-icon>
+<span class="slds-assistive-text">Candidate Feedback Summary</span>
+</div>
+<div class="slds-media__body">
+<h1 class="slds-card__header-title">
+<span>Candidate Feedback Summary</span>
+</h1>
+</div>
+</header>
+</div>
+<div class="slds-card__body slds-card__body_inner slds-m-around_none slds-p-around_none">
+    <lightning-accordion allow-multiple-sections-open class="slds-p-around_medium accordion-custom"
+                             onsectiontoggle={handleSectionToggle}
+                             active-section-name={activeSections}>
+            
+            <!-- Section A: Candidate Interviews -->
+            <lightning-accordion-section name="A" label="My Feedbacks" class="slds-p-around_small custom-accordian">
+                <template if:true={isDataPresentForLogUser}>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered custom-table slds-table_striped slds-p-around_small" aria-labelledby="element-with-table-label other-element-with-table-label">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th scope="col">
+                                <div class="slds-truncate" title="Interview">Interview</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Interviewer Name">Interviewer Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Status">Status</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Assessment">Assessment</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={loggedInUserCreatedData} for:item="feedBack">
+                            <tr key={feedBack.Id} class="slds-hint-parent">
+                                <td data-label="Interview">
+                                    <div class="slds-truncate" title={feedBack.Interview}>
+                                        <a href={feedBack.InterviewUrl} target="_blank">{feedBack.Interview}</a>
+                                    </div>
+                                </td>
+                                <td data-label="Interviewer Name">
+                                    <div class="slds-truncate" title={feedBack.InterviewerName}>{feedBack.InterviewerName}</div>
+                                </td>
+                                <td data-label="Status">
+                                    <div class="slds-truncate" title={feedBack.Status}>{feedBack.Status}</div>
+                                </td>
+                                <td data-label="Assessment">
+                                    <div class="slds-truncate" title={feedBack.Assessment}>{feedBack.Assessment}</div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                </template>
+                <template if:false={isDataPresentForLogUser}>
+                    <div class="no-interviews-container">
+                        <h1 class="bold-text">No Feedbacks Given By You</h1>
+                    </div>
+                </template>
+
+                <!-- Add Row Section -->
+                <div if:false={addRowSection} class="slds-m-top_medium">
+                    <lightning-button label="Add Row" icon-name="utility:add" onclick={addRow}></lightning-button>
+                </div>
+                
+                <!-- Form to Add Row -->
+                <template if:true={addRowSection}>
+                    <lightning-card title="Candidate Feedback Form" class="slds-m-around_medium">
+                        <table class="slds-table slds-table_cell-buffer custom-table slds-table_bordered" aria-labelledby="element-with-table-label other-element-with-table-label">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Status">Status</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Rating">Rating</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Assessment">Assessment</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-label="Status">
+                                        <lightning-combobox type="text" class="fields" variant="label-hidden" label="Status" name="Status" value={statusValue} placeholder="Select Status" options={candidateStatusOptions} onchange={handleFeedBackChange}></lightning-combobox>
+                                    </td>
+                                    <td data-label="Rating">
+                                        <lightning-input type="text" class="fields" variant="label-hidden" label="Rating" name="Rating" value={ratingValue} onchange={handleFeedBackChange}></lightning-input>
+                                    </td>
+                                    <td data-label="Assessment">
+                                        <lightning-input type="text" class="fields" variant="label-hidden" label="Assessment" name="Assessment" value={assessmentValue} onchange={handleFeedBackChange}></lightning-input>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="slds-m-top_medium">
+                            <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+                            <lightning-button variant="Brand" label="Submit" class="slds-button_brand" onclick={openModalBox}></lightning-button>
+                        </div>
+                    </lightning-card>
+                </template>
+            </lightning-accordion-section>
+
+            <!-- Section B: Candidate Feedbacks -->
+            <lightning-accordion-section name="B" label="Candidate Feedbacks" class="slds-p-around_small custom-accordian">
+                <template if:true={isCandidateDataPresent}>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered custom-table slds-table_striped slds-p-around_small" aria-labelledby="element-with-table-label other-element-with-table-label">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th scope="col">
+                                <div class="slds-truncate" title="Interview">Interview</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Interviewer Name">Interviewer Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Status">Status</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Assessment">Assessment</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={candidateFeedBackData} for:item="feedBack">
+                            <tr key={feedBack.Id} class="slds-hint-parent">
+                                <td data-label="Interview">
+                                    <div class="slds-truncate" title={feedBack.Interview}>
+                                        <a href={feedBack.InterviewUrl} target="_blank">{feedBack.Interview}</a>
+                                    </div>
+                                </td>
+                                <td data-label="Interviewer Name">
+                                    <div class="slds-truncate" title={feedBack.InterviewerName}>{feedBack.InterviewerName}</div>
+                                </td>
+                                <td data-label="Status">
+                                    <div class="slds-truncate" title={feedBack.Status}>{feedBack.Status}</div>
+                                </td>
+                                <td data-label="Assessment">
+                                    <div class="slds-truncate" title={feedBack.Assessment}>{feedBack.Assessment}</div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                </template>
+                <template if:false={isCandidateDataPresent}>
+                    <div class="no-interviews-container">
+                        <h1 class="bold-text">No Candidate Feedbacks</h1>
+                    </div>
+                </template>
+            </lightning-accordion-section>
+
+            <!-- Section C: My Feedbacks -->
+            <lightning-accordion-section name="C" label="Candidate Interviews" class="slds-p-around_small custom-accordian">
+                <template if:true={isDataPresent}>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered custom-table slds-table_striped slds-p-around_small" aria-labelledby="element-with-table-label other-element-with-table-label">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Interview">Interview</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Interviewer Name">Interviewer Name</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Status">Status</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Rating">Rating</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={interviewData} for:item="interview">
+                                <tr key={interview.Id} class="slds-hint-parent">
+                                    <td data-label="Interview">
+                                        <div class="slds-truncate" title={interview.Interview}>
+                                            <a href={interview.InterviewUrl} target="_blank">{interview.Interview}</a>
+                                        </div>
+                                    </td>
+                                    <td data-label="Interviewer Name">
+                                        <div class="slds-truncate" title={interview.InterviewerName}>{interview.InterviewerName}</div>
+                                    </td>
+                                    <td data-label="Status">
+                                        <div class="slds-truncate" title={interview.Status}>{interview.Status}</div>
+                                    </td>
+                                    <td data-label="Rating">
+                                        <div class="slds-truncate" title={interview.Rating}>{interview.Rating}</div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </template>
+                <template if:false={isDataPresent}>
+                    <div class="no-interviews-container">
+                        <h1 class="bold-text">No Interviews scheduled for this candidate</h1>
+                    </div>
+                </template>
+            </lightning-accordion-section>
+            
+
+        </lightning-accordion>
+</div>
+
+</article>
+
+   
+
+    <!-- Modal for Save Confirmation -->
+    <template if:true={isShowModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width: 86%;">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h1 id="modal-heading-01" class="slds-text-heading_medium">Record Save Confirmation</h1>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p>Are you sure you want to save this record?</p>
+                    <lightning-input variant="label-hidden" label="Agree" class="slds-p-left_xx-large" type="checkbox" checked={checkboxVal} onchange={handleAgreeCheck}></lightning-input>
+                    
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" disabled={disableSave} onclick={handleSave}>Save</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

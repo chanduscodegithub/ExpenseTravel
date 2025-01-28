@@ -1,0 +1,8 @@
+.dummy{
+	color : black;
+}
+
+.disabled-day {
+    pointer-events: none; /* Disable pointer events */
+    opacity: 0.5; /* Dim the text for disabled days */
+}

@@ -1,0 +1,17 @@
+<template>
+        <ul>
+            <li><p>{infocertificationmessage}</p></li>
+            <li>&nbsp;</li>
+            <li>
+                <template if:true={skillcertdata}>
+                    <ul class="slds-list_dotted">
+                        <template for:each={skillcertdata}
+                            for:item="requiredskillCertdata">
+                            <li key={requiredskillCertdata.requiredKey}>
+                               <p> {requiredskillCertdata.requiredValue} </p></li>
+                        </template>
+                    </ul>
+                </template>
+            </li>
+        </ul>
+</template>

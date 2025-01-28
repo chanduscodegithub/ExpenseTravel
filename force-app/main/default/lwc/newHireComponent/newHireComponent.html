@@ -1,0 +1,30 @@
+<template>
+    <div class ="custom-card">    
+        <lightning-card title="New Hires" class="  slds-text-heading_medium boldFont ">
+            <template if:true={employeeEvents}>
+                <div class="events-container" >
+                    <template for:each={employeeEvents} for:item="evt">
+                        <div key={evt.EmployeeID} class="new-empevt">
+                            <div class="profile-picture">
+                                <lightning-avatar variant="circle" alternative-text={evt.Name}></lightning-avatar>
+                            </div>
+                            <div class="details">
+                                <p class="EmployeeID">{evt.EmployeeID} - {evt.Name}</p>
+                                <p class="role">{evt.role} - {evt.Department}</p>
+                                <p class="Country">CRMIT - {evt.Country}  {evt.doj}</p>
+                                <p class="phone" > 
+                                    <lightning-icon 
+                                        icon-name="utility:phone_portrait" 
+                                        size="x-small" 
+                                        alternative-text="MobileNo"> 
+                                    </lightning-icon>
+                                    {evt.MobileNo}
+                                </p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </lightning-card>
+    </div>
+</template>

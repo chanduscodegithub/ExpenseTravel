@@ -1,0 +1,19 @@
+<template>
+    <article class="slds-card slds-card_boundary">
+        <template if:true={isDataAvailable}>
+            <div class="slds-card__body">
+                <lightning-datatable key-field="id" data={employeeData} show-row-number-column
+                    row-number-offset={rowOffset} hide-checkbox-column columns={columns}>
+                </lightning-datatable>
+            </div>
+        </template>
+    </article>
+    <template if:false={isDataAvailable}>
+        <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-center">
+            <div>
+                <span> {nodatamessage} </span>
+            </div>
+        </div>
+    </template>
+
+</template>

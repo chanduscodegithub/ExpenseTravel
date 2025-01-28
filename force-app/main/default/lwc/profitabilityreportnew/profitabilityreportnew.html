@@ -1,0 +1,890 @@
+<!--
+  @description       :
+  @author            : Ambika
+  @group             :
+  @last modified on  : 04-30-2024
+  @last modified by  : Ambika
+  Modifications Log
+  Ver   Date         Author   Modification
+  1.0   03-28-2024   Ambika   Initial Version
+-->
+<template>
+  <lightning-card>
+  <div class="card-container">
+  
+  <div style="width: 120px; height: 40px;">
+    <img src={CrmitLogoo} />
+ </div>
+  
+<!-- Card Header -->
+<lightning-card variant="narrow" class="slds-scrollable_x" tabindex="0">
+
+  <!-- <lightning-card variant="narrow" title="Profitability Report" icon-name="standard:account" class="slds-scrollable_x" style="height:5rem;width:24rem" tabindex="0"> -->
+    <div style= "display:flex;gap:5px;flex-flow:row wrap; display: flex; ">
+      <p id="standard" style="padding:10px" >
+          <lightning-icon size="medium" icon-name="standard:account" title="Resource Management System" ></lightning-icon>
+      </p>
+      <p style="font-weight:bold;font-size:15px;padding-top:13px">Avishkaar - Margin Attainment Tracker </p>
+      <p style="font-size:13px;padding-top:25px; margin-left:350px" >Select Year / Period</p>
+      <template if:true={summaryreoprt}>
+        
+        <lightning-combobox
+            value={selectedYear}
+            placeholder="Select Year"
+            options={yearOptions}
+            onchange={handleYearChange}
+             style="width: 150px;margin-left:10px;">
+        </lightning-combobox>  
+        </template>
+        <template if:true={monthly}>
+          <lightning-combobox
+              value={selectedYear}
+              placeholder="Select Year"
+              options={yearOptions}
+              onchange={handleYearChange}
+               style="width: 150px;margin-left:10px;">
+          </lightning-combobox>  
+          </template>
+          
+          <template if:true={showmonthperiod}>
+          <lightning-combobox
+          value={selectedmonth}
+          placeholder="Select Period"
+          options={acctngprds}
+          onchange={handleChange} style="width: 150px;margin-left:10px;">
+          </lightning-combobox> 
+         </template>
+          
+          <template if:true={costreport}>
+          <lightning-combobox
+              value={selectedYears}
+              placeholder="Select Year"
+              options={yearOptions}
+              onchange={handlcostcange}
+              style="width: 150px;margin-left:10px;">
+          </lightning-combobox>  
+          </template>
+          
+          <template if:true={showmonthperiodcost}>
+          <lightning-combobox
+          value={selectedmonths}
+          placeholder="Select Period"
+          options={acctngprds}
+          onchange={handleChanges} style="width: 150px;margin-left:10px;">
+          </lightning-combobox>  </template>
+      
+          <div class="button-container" style= "padding-top: 20px;">
+            <lightning-button label="Export" variant="brand" icon-name="utility:download" onclick={exportData} disabled={isSubmitButtonDisabled}></lightning-button>
+        </div>
+    </div>
+    
+ 
+  
+  
+  
+  <lightning-tabset active-tab-value={selectedTabValue}  >
+  
+  <lightning-tab label="Summary" value="tab1" onactive={handleTabChange}>
+  
+  
+  </br>
+  
+  <lightning-input class="slds-p-around_medium slds-p-bottom_medium" type="checkbox" label="Expand All Opportunities" onchange={handleCheckboxChange}></lightning-input>
+  <div class="spinner">
+  <template if:true={isLoading}>
+          <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+          </lightning-spinner>
+  </template>
+  </div>
+  
+  
+  <div style="overflow-x: auto; text-align: center; overflow-y: auto; max-height: 400px;">
+  <table class="slds-table_cell-buffer  " border="1px;solid" style="position: relative;width: 100%;padding-left:1%; table-layout: fixed;">
+  <thead style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 2;">
+  <tr class="forcolour" style="height: 37px;  " >
+  <th class="design" scope="col" width="0.25%"></th>
+  <th class="design" scope="col" width="1%" style="text-align: center;">Account Name</th>
+  <th class="design" scope="col" width="1%" style="text-align: center;">Account Revenue($)</th>
+  <th class="design" scope="col" width="1%" style="text-align: center;">Account Cost($)</th>
+  <th class="design" scope="col" width="1%" style="text-align: center;">Account Margin($)</th>
+  <th class="design" scope="col" width="1%" style="text-align: center;">Account Margin(%)</th>
+  
+  </tr>
+  </thead>
+  <tbody>
+  <template for:each={transformedData} for:item="account">
+  <tr key={account.AccountName} style="height: 37px;">
+  <td>
+  <img align="top" onclick={toggleTable} data-key={account.AccountName} src={plusimage}  width="15" height="15" title="Show/Hide Details" />
+  </td>
+  <td style="text-align: left;white-space:pre-wrap;word-break:break-word; padding: 7px" width="4%">{account.AccountName}</td>
+  <td style="text-align: right; padding: 7px" width="4%">{account.TotalRevenue}</td>
+  <td style="text-align: right; padding: 7px" width="4%">{account.TotalTimeSheetCost}</td>
+  <td style="text-align: right; padding: 7px" width="4%">{account.Netprofit}</td>
+  <td style="text-align: center; padding: 7px" width="4%">{account.ProfitMargin}%</td>
+  </tr>
+  <tr key={account.AccountName}  if:true={account.showSecondTable} >
+  
+  <td colspan="6">
+  <table  style="height: 37px;" border="1px;solid">
+  <thead>
+  <tr class=" insidetableclor" style="height: 35px;">
+      <!-- <th class="design" scope="col" width="1%"></th> -->
+      <th class="design" scope="col" width="4%" style="text-align: center;">Opportunity Name</th>
+      <th class="design" scope="col" width="4%" style="text-align: center;">Engagement Name</th>
+      <th class="design" scope="col" width="4%" style="text-align: center;">Engagement Revenue($)</th>
+      <th class="design" scope="col" width="4%" style="text-align: center;">Engagement Cost($)</th>
+      <th class="design" scope="col" width="4%" style="text-align: center;">Engagement Margin($)</th>
+      <th class="design" scope="col" width="4%" style="text-align: center;">Engagement Margin(%)</th>
+  </tr>
+  </thead>
+  <tbody>
+  <template for:each={account.Opportunities} for:item="opportunity">
+      <tr key={opportunity.OpportunityName} style="height: 37px;">
+          
+          <td style="text-align: left;white-space:pre-wrap;word-break:break-word; padding: 7px" width="4%">{opportunity.OpportunityName}</td>
+          <td style="text-align: left;white-space:pre-wrap;word-break:break-word; padding: 7px" width="4%">{opportunity.ProjectName}</td>
+          <td style="text-align: right; padding: 7px" width="4%">{opportunity.ActualRevenue}</td>
+          <td style="text-align: right; padding: 7px" width="4%">{opportunity.TimeSheetCost}</td>
+              <td style="text-align: right; padding: 7px" width="4%">{opportunity.Netprofit}</td>
+          <td style="text-align: center; padding: 7px" width="4%">{opportunity.ProfitMargin}%</td>
+      </tr>
+  </template>
+  <!-- <template for:each={opportunities} for:item="opportunity">
+    <template for:each={opportunity.ProjectName} for:item="projectName">
+      <tr key={opportunity.Id} style="height: 37px;">
+        <td style="text-align: left; padding: 7px" width="4%">{opportunity.OpportunityName}</td>
+            <td style="text-align: left; padding: 7px" width="4%">{projectName}</td>
+            <td style="text-align: right; padding: 7px" width="4%">{opportunity.ActualRevenue}</td>
+            <td style="text-align: right; padding: 7px" width="4%">{opportunity.TimeSheetCost}</td>
+            <td style="text-align: right; padding: 7px" width="4%">{opportunity.Netprofit}</td>
+            <td style="text-align: center; padding: 7px" width="4%">{opportunity.ProfitMargin}%</td>
+        </tr>
+    </template>
+</template> -->
+  </tbody>
+  </table>
+  </td>
+  </tr>
+  </template>
+  </tbody>
+  <tr class="forcolour" style=" height: 37px; ">
+  <td></td>
+  <td style="text-align: center;padding: 7px; font-weight: bold; ">Total</td>
+  <td style="text-align: right; padding: 7px; font-weight: bold; ">{ttlrevnue}</td>
+  <td style="text-align: right; padding: 7px; font-weight: bold;">{ttlcost}</td>
+  <td style="text-align: right; padding: 7px; font-weight: bold;">{netprft}</td>
+  <td style="text-align: center; padding: 7px; font-weight: bold;">{ttlpftmagn}%</td>
+  </tr>
+  
+  </table>
+  </div>
+  </lightning-tab>
+  
+  <lightning-tab label="Monthly Engagements" value="tab2" onactive={handleTabChange}>
+  <lightning-card>
+  <div class="slds-scrollable_x">
+  
+  
+  
+  
+  
+  <div style="overflow-x: auto; overflow-y: auto; max-height: 600px;">  
+  <!-- <table class="slds-table_cell-buffer slds-table_fixed-layout table-blue-last" style="width:600%; position: relative;  table-layout: fixed; " border="1px;solid">  -->
+  <table class="slds-table_cell-buffer slds-table_fixed-layout table-blue-last" style="table-layout: fixed;   " border="1px;solid">
+  <thead style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 2;">
+  <tr class="slds-line-height_reset forcolour">
+  <td style="width:350px;" >
+  <div class="slds-col slds-size_1-of-6" title="Opportunity Name" style="font-weight: bold; text-align: center; width:300px">Opportunity Name</div>
+  </td>
+  <td style="width:250px;" >
+  <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:250px">Account Name</div>
+  </td>
+  <td style="width:340px;" >
+  <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:340px">Engagement Name</div>
+  </td>
+  
+  
+  <td style="height: 50px;width:430px;">
+  <div style="text-align: center; font-weight: bold;" class="month" >April</div>
+  <div class="backColor" >
+  <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:170px">Account Name</div>
+  <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:180px">Project Name</div> -->
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Revenue($)</span>
+</div>  
+<div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+  <span style="display: block;">Engagement</span>
+  <span style="margin-top: 7px; display: block;">Cost($)</span>
+</div>  
+<div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+  <span style="display: block;">Engagement</span>
+  <span style="margin-top: 7px; display: block;">Margin($)</span>
+</div>  
+<div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+  <span style="display: block;">Engagement</span>
+  <span style="margin-top: 7px; display: block;">Margin(%)</span>
+</div>   
+ </div>
+  </td>
+  <td style="height: 38px;width:430px;">
+  <div style="text-align: center;font-weight: bold" class="month" >May</div>
+  <div class="backColor">
+    <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:170px">Account Name</div>
+    <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:180px">Project Name</div> -->
+    <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+      <span style="display: block;">Engagement</span>
+      <span style="margin-top: 7px; display: block;">Revenue($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Cost($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin(%)</span>
+  </div> 
+    </div>
+  </td>
+  <td style="height: 38px;width:430px;">
+  <div style="text-align: center;font-weight: bold" class="month">June</div>
+  <div class="backColor">
+    <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:170px">Account Name</div>
+    <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:180px">Project Name</div> -->
+    <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+      <span style="display: block;">Engagement</span>
+      <span style="margin-top: 7px; display: block;">Revenue($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Cost($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin(%)</span>
+  </div> 
+    </div>
+  </td>
+  <td style="height: 38px;width:430px;">
+  <div style="text-align: center;font-weight: bold" class="month">July</div>
+  <div class="backColor">
+    <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:170px">Account Name</div>
+    <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:180px">Project Name</div> -->
+    <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+      <span style="display: block;">Engagement</span>
+      <span style="margin-top: 7px; display: block;">Revenue($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Cost($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin(%)</span>
+  </div> 
+    </div>
+  </td>
+  <td style="height: 38px;width:430px;">  
+  <div style="text-align: center;font-weight: bold" class="month">August</div>
+  <div class="backColor">
+    <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:170px">Account Name</div>
+    <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:180px">Project Name</div> -->
+    <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+      <span style="display: block;">Engagement</span>
+      <span style="margin-top: 7px; display: block;">Revenue($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Cost($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin(%)</span>
+  </div> 
+    </div>
+  </td>
+  <td style="height: 38px;width:430px;">  
+  <div style="text-align: center;font-weight: bold" class="month">September</div>
+  <div class="backColor" >
+    <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:170px">Account Name</div>
+    <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:180px">Project Name</div> -->
+    <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+      <span style="display: block;">Engagement</span>
+      <span style="margin-top: 7px; display: block;">Revenue($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Cost($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin(%)</span>
+  </div> 
+    </div>
+  </td>
+  <td style="height: 38px;width:430px;">  
+  <div style="text-align: center;font-weight: bold" class="month">October</div>
+  <div class="backColor">
+    <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:170px">Account Name</div>
+    <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:180px">Project Name</div> -->
+    <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+      <span style="display: block;">Engagement</span>
+      <span style="margin-top: 7px; display: block;">Revenue($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Cost($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin(%)</span>
+  </div> 
+    </div>
+  </td>
+  <td style="height: 38px;width:430px;">  
+  <div style="text-align: center;font-weight: bold" class="month">November</div>
+  <div class="backColor">
+    <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:170px">Account Name</div>
+    <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:180px">Project Name</div> -->
+    <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+      <span style="display: block;">Engagement</span>
+      <span style="margin-top: 7px; display: block;">Revenue($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Cost($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin(%)</span>
+  </div> 
+    </div>
+  </td>
+  <td style="height: 38px;width:430px;">  
+  <div style="text-align: center;font-weight: bold" class="month" >December</div>
+  <div class="backColor">
+    <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:170px">Account Name</div>
+    <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:180px">Project Name</div> -->
+    <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+      <span style="display: block;">Engagement</span>
+      <span style="margin-top: 7px; display: block;">Revenue($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Cost($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin(%)</span>
+  </div> 
+    </div>
+  </td>
+  <td style="height: 38px;width:430px;">  
+  <div style="text-align: center;font-weight: bold" class="month">January</div>
+  <div class="backColor">
+    <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:170px">Account Name</div>
+    <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:180px">Project Name</div> -->
+    <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+      <span style="display: block;">Engagement</span>
+      <span style="margin-top: 7px; display: block;">Revenue($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Cost($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin(%)</span>
+  </div> 
+    </div>
+  </td>
+  <td style="height: 38px;width:430px;">  
+  <div style="text-align: center;font-weight: bold" class="month">February</div>
+  <div class="backColor ">
+    <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:170px">Account Name</div>
+    <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:180px">Project Name</div> -->
+    <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+      <span style="display: block;">Engagement</span>
+      <span style="margin-top: 7px; display: block;">Revenue($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Cost($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin(%)</span>
+  </div> 
+    </div>
+  </td>
+  <td style="height: 38px;width:430px;">  
+  <div style="text-align: center;font-weight: bold" class="month">March</div>
+  <div class="backColor">
+    <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:170px">Account Name</div>
+    <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:180px">Project Name</div> -->
+    <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+      <span style="display: block;">Engagement</span>
+      <span style="margin-top: 7px; display: block;">Revenue($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Cost($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Engagement</span>
+    <span style="margin-top: 7px; display: block;">Margin(%)</span>
+  </div> 
+    </div>
+  </td>
+  <td style="height: 38px;width:430px;">
+  <div style="text-align: center;font-weight: bold" class="month">Total Value</div>
+  <div class="backColorLast">
+    <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+      <span style="display: block;">Total</span>
+      <span style="margin-top: 5px;display: block;">Engagement</span>
+      <span style="margin-top: 5px; display: block;">Revenue($)</span>
+  </div>  
+  <div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+    <span style="display: block;">Total</span>
+    <span style="margin-top: 5px;display: block;">Engagement</span>
+    <span style="margin-top: 5px; display: block;">Cost($)</span>
+</div> 
+<div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+  <span style="display: block;">Total</span>
+  <span style="margin-top: 5px;display: block;">Engagement</span>
+  <span style="margin-top: 5px; display: block;">Margin($)</span>
+</div> 
+<div class="slds-col slds-size_1-of-6" style="text-align: center;width:110px; white-space:pre-wrap; word-break:break-word;">
+  <span style="display: block;">Total</span>
+  <span style="margin-top: 5px;display: block;">Engagement</span>
+  <span style="margin-top: 5px; display: block;">Margin(%)</span>
+</div>  
+  <!-- <div class=" slds-col slds-size_1-of-6"  style="text-align: center; width:150px"></div> -->
+  </div>
+  </td>
+  
+  </tr>
+  </thead>
+  <!-- white-space: break-spaces; -->
+ 
+  <template for:each={nestedMap} for:item="map">
+  <tr key={map.key}>
+  
+  <td><div class="break-text" >{map.key} </div></td>
+   <!-- <template for:each={map.value} for:item="innerrrmap"> -->
+    <td  style="width:10%">
+      <template for:each={map.value} for:item="innerrrmap" >
+        <span key={innerrrmap.key} if:true={innerrrmap.value.isFirstAccountName}>
+        <div class=" slds-col slds-size_1-of-6 " style="text-align: left; white-space: break-spaces; white-space:pre-wrap;
+        word-break:break-word;padding: 1.5em; width:230px"  >{innerrrmap.value.Accountname}</div> 
+      </span>
+      </template>
+      </td>
+    <td style="width:10%">
+      <template for:each={map.value} for:item="innerrrmap" >
+        <span key={innerrrmap.key} if:true={innerrrmap.value.isFirstprojectName}>
+        <div class=" slds-col slds-size_1-of-6 " style="text-align: left; white-space: break-spaces; white-space:pre-wrap;
+        word-break:break-word;padding: 1.5em; width:330px"  >{innerrrmap.value.projectname}</div> 
+      </span>
+      </template>    
+      </td> 
+   
+  <template for:each={map.value} for:item="innermap">
+  
+  <td key={innermap.key} style="width:10%">
+  
+  
+  <div>
+  <div class="slds-grid" style="height: 70px;">
+  <!-- <div class=" slds-col slds-size_1-of-6 " style="text-align: left; white-space: break-spaces; width:180px"  >{innermap.value.Accountname}</div> 
+  <div class=" slds-col slds-size_1-of-6 " style="text-align: left; white-space: break-spaces; width: 180px;"  >{innermap.value.projectname}</div>  -->
+  <div  class=" slds-col slds-size_1-of-6" style="text-align: center;width:100px;">{innermap.value.ActualRevenue}</div>
+  <div class=" slds-col slds-size_1-of-6" style="text-align: center;width:110px;">{innermap.value.TimeSheetCost}</div>
+  <div class=" slds-col slds-size_1-of-6" style="text-align: center;width:110px;">{innermap.value.Netprofit}</div>
+  <div  class=" slds-col slds-size_1-of-6" style="text-align: right;width:70px;">{innermap.value.ProfitMargin}%</div>
+  <!-- <div  class=" slds-col slds-size_1-of-6" style="text-align: center;">{innermap.value.Opptotalrev}</div>
+  <div  class=" slds-col slds-size_1-of-6" style="text-align: center;">{innermap.value.Opptotalcost}</div>  
+  <div  class=" slds-col slds-size_1-of-6" style="text-align: center;">{innermap.value.ttlprofitmargin} </div> -->
+  
+  </div>
+  </div>
+  </td>
+<!-- </template> -->
+  </template>
+
+  </tr>
+  </template>
+  
+  </table>
+  </div>
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  </lightning-card>
+  </lightning-tab>
+  
+  <lightning-tab label="Cost Breakup"  value="tab3" onactive={handleTabChange}>
+  <lightning-card>
+  
+  <div class="spinner">
+  <template if:true={isLoadings}>
+          <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+          </lightning-spinner>
+  </template>
+  </div>
+  <lightning-input class ="slds-p-around_medium" type = "Checkbox" variant="base" label="Expand Cost BreakUp" title="titleName" onchange={expandCostBreakUp}></lightning-input>
+  
+  <div >
+  <table  border="1px;solid" style="max-width:75%; ">
+  <thead style="background-color :#f8f9fa;">
+  <tr class="forcolour" style="height: 37px; " >
+  <th class="design" scope="col" width="1%" > </th>
+  <th class="design" scope="col" width="15%" style="text-align: center;" >Opportunity Name  </th>
+      <th class="design" scope="col" width="15%" style="text-align: center;">Engagement Name  </th>
+      <th class="design" scope="col" width="1%" style="text-align: center;">Engagement Hours </th>
+      <th class="design" scope="col" width="1%" style="text-align: center;">Engagement Cost($)   </th>
+  </tr>
+  <template for:each={costmargin} for:item="ctmmrgns">
+  <tr key={ctmmrgns.OpportunityName} style="height: 37px;">
+  <td style="text-align: center;">
+  <img align="top" onclick={toggleTables} data-key={ctmmrgns.OpportunityName} src={plusimage}  width="15" height="15" title="Show/Hide Details" />
+  </td>
+  <td style="text-align: left; padding: 7px" width="4%">{ctmmrgns.OpportunityName}</td>
+  <td style="text-align: left; padding: 7px" width="4%">{ctmmrgns.ProjectName}</td>
+  <td style="text-align: right; padding: 7px" width="4%">{ctmmrgns.Hours}</td>
+  <td style="text-align: right; padding: 7px" width="4%">{ctmmrgns.Cost}</td>
+  
+  </tr>
+  
+  <tr key={ctmmrgns.ctmmrgns} if:true={ctmmrgns.showSecondTables} >
+  
+  <td colspan="6">
+  <table  style="height: 37px;" border="1px;solid">
+  <thead>
+  <tr class=" insidetableclor" style="height: 35px;">
+     
+      <th class="design" scope="col" width="15%" style="text-align: center;white-space:pre-wrap;word-break:break-word;">Engagement Name</th>
+      <th class="design" scope="col" width="10%" style="text-align: center;white-space:pre-wrap;word-break:break-word;">Resource Name</th>
+      <th class="design" scope="col" width="10%" style="text-align: center;">Designation</th>
+      <th class="design" scope="col" width="1%" style="text-align: center;">Grade</th>
+      <th class="design" scope="col" width="1%" style="text-align: center;white-space:pre-wrap;word-break:break-word;">Resource Hours</th>
+      <th class="design" scope="col" width="1%" style="text-align: center;white-space:pre-wrap;word-break:break-word;">Resource Cost/Hour($)</th>
+      <th class="design" scope="col" width="5%" style="text-align: center;white-space:pre-wrap;word-break:break-word;">Total Resource Cost($)</th>
+  </tr>
+  </thead>
+  <tbody>
+  <template for:each={ctmmrgns.childList} for:item="childwrapper">
+  <tr key={childwrapper.ProjectName}  style="height: 37px;">
+  
+      <td style="text-align: left;white-space:pre-wrap;word-break:break-word; padding: 7px" width="4%">{childwrapper.ProjectName}</td>
+      <td style="text-align: left;white-space:pre-wrap;word-break:break-word; padding: 7px" width="4%">{childwrapper.ResourceName}</td>
+      <td style="text-align: left;white-space:pre-wrap;word-break:break-word; padding: 7px" width="4%">{childwrapper.Designation}</td>
+      <td style="text-align: left; padding: 7px" width="4%">{childwrapper.Grade}</td>
+      <td style="text-align: right; padding: 7px" width="4%">{childwrapper.Hours}</td>
+      <td style="text-align: right; padding: 7px" width="4%">{childwrapper.costperemplyi}</td>
+      <td style="text-align: right; padding: 7px" width="4%">{childwrapper.Cost}</td>
+  </tr>
+  </template>
+  </tbody>
+  </table>
+  </td>
+  </tr>
+  </template>    
+  
+  </thead>
+  </table>
+  </div>        
+  
+  </lightning-card>
+</lightning-tab>
+
+<lightning-tab label="Cost Type"  value="tab4" onactive={handleTabChange}>
+<lightning-card> 
+    <div class="spinner">
+<template if:true={costtypespinner}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+</template>
+</div>
+<div style="overflow-x: auto; overflow-y: auto; max-height: 600px;"> 
+<table class="slds-table_cell-buffer slds-table_fixed-layout table-blue-last" style="width:200%; position: relative;  table-layout: fixed; " border="1px;solid">
+<thead style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 2;">
+<tr class="slds-line-height_reset forcolour">
+<td style="width:180px;">
+<div title="Month" style="font-weight: bold; padding: 7px;"  >Month</div>
+</td>
+
+
+<td style="height: 37px;width:260px;">
+    <div style="text-align: center; font-weight: bold;">
+        April  
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_1-of-2" style="text-align: center;">Hours</div>
+            <div class="slds-col slds-size_1-of-2" style="text-align: right; ">
+                <span style="display: inline-block; margin-right: 5px;">Cost($)</span>
+            </div>
+        </div>
+    </div>
+</td>
+
+<td style="height: 37px;width:260px;">
+<div style="text-align: center;font-weight: bold" >May
+<div class="slds-grid slds-gutters">
+<div class=" slds-col slds-size_1-of-2"  style="text-align: center;">Hours</div>
+<div  class=" slds-col slds-size_1-of-2" style="text-align: right;"> 
+  <span style="display: inline-block; margin-right: 5px;">Cost($)</span></div>
+</div>
+</div>
+</td>
+<td style="height: 37px;width:260px;">
+<div style="text-align: center;font-weight: bold">June
+<div class="slds-grid slds-gutters">
+<div class=" slds-col slds-size_1-of-2"  style="text-align: center;">Hours</div>
+<div  class=" slds-col slds-size_1-of-2" style="text-align: right;">
+  <span style="display: inline-block; margin-right: 5px;">Cost($)</span>
+</div>
+</div>
+</div>
+</td>
+<td style="height: 37px;width:260px;">
+<div style="text-align: center;font-weight: bold">July
+<div class="slds-grid slds-gutters">
+<div class=" slds-col slds-size_1-of-2"  style="text-align: center; ">Hours</div>
+<div  class=" slds-col slds-size_1-of-2" style="text-align: right;"> 
+<span style="display: inline-block; margin-right: 5px;">Cost($)</span></div>
+</div>
+</div>
+</td>
+<td style="height: 37px;width:260px;">
+<div style="text-align: center;font-weight: bold" >August
+<div class="slds-grid slds-gutters">
+<div class=" slds-col slds-size_1-of-2"  style="text-align: center; ">Hours</div>
+<div  class=" slds-col slds-size_1-of-2" style="text-align: right;"> 
+  <span style="display: inline-block; margin-right: 5px;">Cost($)</span></div>
+</div>
+</div>
+</td>
+<td style="height: 37px;width:260px;">
+<div style="text-align: center;font-weight: bold">September
+<div class="slds-grid slds-gutters">
+<div class=" slds-col slds-size_1-of-2"  style="text-align: center; ">Hours</div>
+<div  class=" slds-col slds-size_1-of-2" style="text-align: right;">
+   <span style="display: inline-block; margin-right: 5px;">Cost($)</span></div>
+</div>
+</div>
+</td>
+<td style="height: 37px;width:260px;">
+<div style="text-align: center;font-weight: bold">October
+<div class="slds-grid slds-gutters">
+<div class=" slds-col slds-size_1-of-2"  style="text-align: center; ">Hours</div>
+<div  class=" slds-col slds-size_1-of-2" style="text-align: right;">
+   <span style="display: inline-block; margin-right: 5px;">Cost($)</span></div>
+</div>
+</div>
+</td>
+<td style="height: 37px;width:260px;">
+<div style="text-align: center;font-weight: bold" >November
+<div class="slds-grid slds-gutters">
+<div class=" slds-col slds-size_1-of-2"  style="text-align: center; ">Hours</div>
+<div  class=" slds-col slds-size_1-of-2" style="text-align: right;"> 
+  <span style="display: inline-block; margin-right: 5px;">Cost($)</span></div>
+</div>
+</div>
+</td>
+<td style="height: 37px;width:260px;">
+<div style="text-align: center;font-weight: bold" >December
+<div class="slds-grid slds-gutters">
+<div class=" slds-col slds-size_1-of-2"  style="text-align: center; ">Hours</div>
+<div  class=" slds-col slds-size_1-of-2" style="text-align: right;"
+> <span style="display: inline-block; margin-right: 5px;">Cost($)</span></div>
+</div>
+</div>
+</td>
+<td style="height: 37px;width:260px;">
+<div style="text-align: center;font-weight: bold">January
+<div class="slds-grid slds-gutters">
+<div class=" slds-col slds-size_1-of-2"  style="text-align: center; ">Hours</div>
+<div  class=" slds-col slds-size_1-of-2" style="text-align: right;"
+> <span style="display: inline-block; margin-right: 5px;">Cost($)</span></div>
+</div>
+</div>
+</td>
+<td style="height: 37px;width:260px;">
+<div style="text-align: center;font-weight: bold">February
+<div class="slds-grid slds-gutters ">
+<div class=" slds-col slds-size_1-of-2"  style="text-align: center; ">Hours</div>
+<div  class=" slds-col slds-size_1-of-2" style="text-align: right;"> 
+  <span style="display: inline-block; margin-right: 5px;">Cost($)</span></div>
+</div>
+</div>
+</td>
+<td style="height: 37px;width:260px;">
+<div style="text-align: center;font-weight: bold">March
+<div class="slds-grid slds-gutters">
+<div class=" slds-col slds-size_1-of-2"  style="text-align: center">Hours</div>
+<div  class=" slds-col slds-size_1-of-2" style="text-align: right;"> 
+  <span style="display: inline-block; margin-right: 5px;">Cost($)</span></div>
+</div>
+</div>
+</td>
+<td style="height: 37px;width:260px;">
+<div style="text-align: center;font-weight: bold">Total Value
+<div class="slds-grid slds-gutters">
+<div class=" slds-col slds-size_1-of-2"  style="text-align: center; ">Hours</div>
+<div  class=" slds-col slds-size_1-of-2" style="text-align: right; ">
+   <span style="display: inline-block; margin-right: 5px;">Cost($)</span></div>
+</div>
+</div>
+</td>
+
+</tr>
+</thead>
+    <template for:each={gettotalcostperhour} for:item="getcost">
+<tr key={getcost.key}>
+<td>
+    <div class="break-text" style="height: 37px;padding:5px;">
+        {getcost.key}
+    </div>
+</td>
+
+<template for:each={getcost.value} for:item="innermap">
+    <td key={innermap.key} style="width:10%">
+        <div>
+            <div class="slds-grid" style="height: 37px;">
+                <div class="slds-col slds-size_1-of-2" style="text-align: center;padding:5px;">
+                    {innermap.value.totalhours}
+                </div>
+                <div class="slds-col slds-size_1-of-2" style="text-align: right;padding:5px;">
+                    {innermap.value.totalcost}
+                </div>
+            </div>
+        </div>
+    </td>
+</template>
+</tr>
+</template>
+
+
+
+
+</table>
+</div>
+</lightning-card> 
+  </lightning-tab>
+  <!-- <lightning-tab label="Cost Type Monthly"  value="tab5" onactive={handleTabChange}> 
+   
+    <lightning-card> 
+    <div class="spinner">
+<template if:true={costbymonth}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+</template>
+</div>
+
+   <table class="slds-table_cell-buffer slds-table_fixed-layout table-blue-last" style="width:100%; position: relative; table-layout: fixed; height: 37px;" border="1px solid">
+  <thead style="position: sticky; top: 0; background-color: #f8f9fa; z-index: 2;">
+    <tr class="forcolour">
+      <td style = width:200px>  
+        <div class="slds-truncate" title="Resource" style="font-weight: bold; padding: 7px; text-align:center;">Resource Name</div>
+      </td>
+      <td style = width:200px>  
+        <div class="slds-truncate" title="Engagement Name" style="font-weight: bold; padding: 7px; text-align:center;">Project Name</div>
+      </td>
+      <td style = width:200px>  
+        <div class="slds-truncate" title="Billable Hours" style="font-weight: bold; padding: 7px; text-align:center;">Billable Hours</div>
+      </td>
+      <td style = width:200px>  
+        <div class="slds-truncate" title="Billable Cost" style="font-weight: bold; padding: 7px; text-align:center;">Billable Cost</div>
+      </td>
+      <td style = width:200px>  
+        <div class="slds-truncate" title="Non Billable Hours" style="font-weight: bold; padding: 7px; text-align:center;">Bench Hours</div>
+      </td>
+      <td style = width:200px>  
+        <div class="slds-truncate" title="Non Billable Cost" style="font-weight: bold; padding: 7px; text-align:center;">Bench Cost</div>
+      </td>
+    </tr>
+  </thead>
+  <template for:each={costmargins} for:item="getcost">
+    <template for:each={getcost.value} for:item="innermap">
+      <tr key={innermap.key}>
+        <td>
+          <div class="break-text" style="height: 37px;text-align:left;">{getcost.key}</div>
+        </td>
+        <td>
+          <div class="break-text" style="height: 37px;text-align:left;margin-left: 5px;">{innermap.key}</div>
+        </td>
+        <td>
+          <div class="break-text" style="height: 37px;text-align:right;margin-right: 5px;">{innermap.value.Billabletotalhours}</div>
+        </td>
+        <td>
+          <div class="break-text" style="height: 37px;text-align:right;margin-right: 5px;">{innermap.value.Billabletotalcost}</div>
+        </td>
+        <td>
+          <div class="break-text" style="height: 37px;text-align:right; margin-right: 5px;">{innermap.value.NonBillabletotalhours}</div>
+        </td>
+        <td>
+          <div class="break-text" style="height: 37px;text-align:right; margin-right: 5px;">{innermap.value.NonBillabletotalcost}</div>
+        </td>
+      </tr>
+    </template>
+  </template>
+</table>
+ </lightning-card> 
+    </lightning-tab> -->
+ 
+</lightning-tabset>
+</lightning-card>
+</div>
+</lightning-card> 
+
+</template>

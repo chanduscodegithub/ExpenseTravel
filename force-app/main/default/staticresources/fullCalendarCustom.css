@@ -1,0 +1,30 @@
+.fc-day-header{
+	padding : 6px;
+}
+
+.fc-content{
+	padding : 4px;
+	text-align: center;
+}
+
+.fc-title{
+	font-weight: bold;
+}
+
+.fc-day-number{
+	color : inherit;
+}
+
+.fc-week-number{
+	a { color: inherit; } 
+}
+
+td.fc-sat{
+	background-color : #f3f3f3;
+	pointer-events: none
+}
+
+td.fc-sun{
+	background-color : #f3f3f3;
+	pointer-events: none
+}

@@ -1,0 +1,111 @@
+<template>
+<div if:true={showPopUp} class="custom-modal">
+<section role="dialog" class="slds-modal slds-fade-in-open">
+
+<div class="slds-modal__container">
+    <header class="slds-modal__header">
+        <span class="slds-modal__close">
+            <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="close" onclick={closePopUp}></lightning-icon>
+        </span>
+        <h2 class="slds-text-heading_medium slds-hyphenate">Select Project Leaders</h2>
+    </header>
+    <div class="slds-modal__content slds-p-around_medium">
+        <template if:true={showLoading}>
+            <lightning-spinner alternative-text="Loading" if:true={isLoading} size="small"></lightning-spinner>
+        </template>
+    <lightning-input name="Project Associate1"  label="Project Associate1" type={type1} value={PAname} onchange={searchForManager} disabled={isManagerSubmitted}></lightning-input>
+    <div  if:true={displayDropDown1} class="slds-dropdown_left slds-dropdown_length-5 slds-dropdown_fluid dropdown isdropdown" role="listbox">            
+    <ul class="slds-listbox slds-listbox_vertical" role="presentation" >
+    <template for:each={searchedManagerResultList} for:item="searchResult">
+        <li key={searchResult.value} data-value={searchResult.value} data-label={searchResult.label} data-msg={name} role="presentation" 
+            onclick={selectDesignationFromSearchResult} class="slds-listbox__item"  onblur={onblurchange}>
+            <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                <span class="slds-media__body">
+                    <span class="slds-truncate" title={searchResult.label}>
+                        {searchResult.label}
+                    </span>
+                </span>
+            </div>
+            
+        </li>
+    </template>
+
+</ul>
+</div>
+   <!-- <c-Project-Managerfeedback display-drop-down={displayDropDown1} searched-manager-result-list={searchedManagerResultList} onmanagervalue={SearchResult} message={name}></c-Project-Managerfeedback>-->
+ <lightning-textarea  variant="standard" name="comment1" label="Comments for Project Associate 1" placeholder="type here..." value={comment1} onchange={entercomments} readonly={isManagerSubmitted}></lightning-textarea>
+<lightning-input
+                                        
+                                            name="Project Associate2"   
+                                            label="Project Associate2"
+                                            type={type1}
+                                            value={PA2name}
+                                            onchange={searchForManager}
+                                            disabled={isManagerSubmitted}
+                                            
+                                        ></lightning-input>
+ <div  if:true={displayDropDown} class="slds-dropdown_left slds-dropdown_length-5 slds-dropdown_fluid dropdown isdropdown" role="listbox">            
+<ul class="slds-listbox slds-listbox_vertical" role="presentation" >
+    <template for:each={searchedManagerResultList} for:item="searchResult">
+        <li key={searchResult.value} data-value={searchResult.value} data-label={searchResult.label} data-msg={name} role="presentation" 
+            onclick={selectDesignationFromSearchResult} class="slds-listbox__item"  onblur={onblurchange}>
+            <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                <span class="slds-media__body">
+                    <span class="slds-truncate" title={searchResult.label}>
+                        {searchResult.label}
+                    </span>
+                </span>
+            </div>
+            
+        </li>
+    </template>
+
+</ul>
+</div>                                      
+                                      
+
+                                            <lightning-textarea  type="text" variant="standard" name="comment2" label="Comments for Project Associate 2" placeholder="type here..." value={comment2} onchange={entercomments}></lightning-textarea>
+<div class="slds-var-m-top_medium" readonly={isManagerSubmitted}>
+                <lightning-button variant="brand"  label="Save" disabled={isManagerSubmitted} class="slds-float_right slds-p-left_medium"  onclick={handleSubmit}>
+                </lightning-button>
+                <lightning-button variant="brand" label="cancel" onclick={closePopUp} class="slds-float_right">
+                </lightning-button>
+            </div>
+<!--
+        <lightning-record-edit-form object-api-name="Performance_Rating__c" record-id={prId} onsubmit={handleSubmit} onsuccess={handleSuccess} onload={handleLoad}>
+            <label for="Delegated_Manager__c">Project Associate 1</label>
+
+            <lightning-input-field field-name="Delegated_Manager__c" id="Delegated_Manager__c" data-field="Delegated_Manager__c" variant="label-hidden" disabled={isManagerSubmitted}> </lightning-input-field>
+            <label for="Comments1__c">Comments for Project Associate 1</label>
+            <lightning-input-field field-name="Comments1__c" id="Comments1__c" variant="label-hidden" readonly={isManagerSubmitted}> </lightning-input-field>
+            <label for="Delegated_Manager2__c">Project Associate 2</label>
+            <lightning-input-field field-name="Delegated_Manager2__c" id="Delegated_Manager2__c" data-field="Delegated_Manager2__c" variant="label-hidden" disabled={isManagerSubmitted}> </lightning-input-field>
+            <label for="Comments1__c">Comments for Project Associate 2</label>
+            <lightning-input-field field-name="Comments2__c" id="Comments2__c" variant="label-hidden" readonly={isManagerSubmitted}> </lightning-input-field>
+            <div class="slds-var-m-top_medium">
+                <lightning-button variant="brand" type="submit" label="Save" disabled={isManagerSubmitted} class="slds-float_right slds-p-left_medium">
+                </lightning-button>
+                <lightning-button variant="brand" label="cancel" onclick={closePopUp} class="slds-float_right">
+                </lightning-button>
+            </div>
+        </lightning-record-edit-form>
+    </div>-->
+    <!-- <footer class="slds-modal__footer">
+            <lightning-button label="Cancel" title="Cancel" class="slds-m-right_small" onclick={closePopUp}></lightning-button>
+            <lightning-button variant="brand" label="Save" title="Save" onclick={submittomanager}></lightning-button>
+        </footer> -->
+</div>
+</div>
+</section>
+<div class="slds-backdrop slds-backdrop_open"></div>
+</div>
+<lightning-card>
+
+
+
+
+</lightning-card>
+
+
+
+</template>

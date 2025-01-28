@@ -1,0 +1,5 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="PdfParser" access="global">
+    
+     <c:analyzeCv recordId="{!v.recordId}" onclose="{!c.handleClose}"></c:analyzeCv>
+
+</aura:component>

@@ -1,0 +1,102 @@
+<template>
+    <lightning-card title="Interview Feedback Summary" icon-name="standard:lead">
+        <template if:true={isDataPresent}>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered custom-table" 
+                   aria-labelledby="element-with-table-label other-element-with-table-label">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th scope="col">
+                            <div class="slds-truncate" title="Candidate Name">Candidate Name</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Position Name">Position Name</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Position Number">Position Number</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="slds-hint-parent">
+                        <td data-label="Candidate Name">
+                            <div class="slds-truncate" title="CandidateName">{CandidateName}</div>
+                        </td>
+                        <td data-label="Position Name">
+                            <div class="slds-truncate" title="PositionName">{PositionName}</div>
+                        </td>
+                        <td data-label="Position Number">
+                            <div class="slds-truncate" title="PositionNumber">{PositionNumber}</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <lightning-datatable
+                class="custom-datatable"
+                key-field="Id"
+                data={interviewData}
+                columns={columns}
+                hide-checkbox-column="true"
+                wrap-text-max-lines="3">
+            </lightning-datatable>
+            <br>
+            <strong class="slds-text-title_bold">Detailed View of Interview Feedback:</strong>
+            <br><br>
+             <table class="slds-table slds-table_cell-buffer slds-table_bordered custom-table" aria-labelledby="element-with-table-label other-element-with-table-label">
+                <template for:each={interviewData} for:item="interview">
+                    <thead key={interview.Id}>
+                        <tr class="slds-line-height_reset">
+                            <th scope="col">
+                                <div class="slds-truncate" title="Interview">Interview</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Interviewer Name">Interviewer Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Status">Status</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Rating">Rating</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody key={interview.Id}>
+                        <!-- Main Row for Interview Details -->
+                        <tr key={interview.Id} class="slds-hint-parent">
+                            <td data-label="Interview">
+                                <div class="slds-truncate" title={interview.Interview}>
+                                    <a href={interview.InterviewUrl} target="_blank">{interview.Interview}</a>
+                                </div>
+                            </td>
+                            <td data-label="Interviewer Name">
+                                <div class="slds-truncate" title={interview.InterviewerName}>{interview.InterviewerName}</div>
+                            </td>
+                            <td data-label="Status">
+                                <div class="slds-truncate" title={interview.Status}>{interview.Status}</div>
+                            </td>
+                            <td data-label="Rating">
+                                <div class="slds-truncate" title={interview.Rating}>{interview.Rating}</div>
+                            </td>
+                        </tr>
+                        <!-- Nested Row for Assessment -->
+                        <tr key={interview.Id}>
+                            <td colspan="4" data-label="Assessment" class="slds-p-top_none slds-cell-wrap td-padding">
+                                <div>
+                                    <label class="slds-text-title_bold">Assessment:</label><br>
+                                    <lightning-formatted-text value={interview.Assessment}></lightning-formatted-text>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </template>
+            </table>
+            
+        </template>
+
+        <template if:false={isDataPresent}>
+            <div class="no-interviews-container">
+                <h1 class="bold-text">No Interviews scheduled for this candidate</h1>
+            </div>
+        </template>
+    </lightning-card>
+</template>

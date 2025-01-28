@@ -1,0 +1,255 @@
+<aura:component implements="lightning:isUrlAddressable,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="Covid19AssessmentPageForNonSFUsersApex">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--<aura:handler name="change" value="{!v.email}" action="{!c.doInit}"/>-->
+    
+    <aura:attribute name="todayDate" type="Date" />
+    <aura:attribute name="currentYear" type="String" />
+    <!--<aura:attribute name="picklistValues" type="String[]" default="[]"/>-->
+    <aura:attribute name="checkList" type="List"/>
+    <aura:attribute name="finalValues" type="Object" />
+    <aura:attribute name="radioValue" type="Boolean" default="false"/>
+    <aura:attribute name="radioButtonDetails" type="Map"/>
+    <aura:attribute name="keys" type="List" default="[]" />
+    <aura:attribute name="indexQuestionList" type="Object[]"/>
+    <aura:attribute name="totalWeightage" type="Integer" default="0"/>
+    <aura:attribute name="risk" type="String" />
+    <aura:attribute name="topScore" type="String"/>
+    <aura:attribute name="riskLabel" type="String" />
+    <aura:attribute name="riskScoreLabel" type="String" />
+    <aura:attribute name="riskCss" type="String" />
+    <aura:attribute name="recommendation" type="String" />
+    <aura:attribute name="resultMap" type="Map"/>
+    <aura:attribute name="isSpin" type="Boolean" default="true"/>
+    <aura:attribute name="isPopUp" type="Boolean" default="false"/>
+    <aura:attribute name="isAssessmentComplete" type="Boolean" default="false"/>
+    <aura:attribute name="serviceResourceURL" type="String"/>
+    <aura:attribute name="isCovid19Patient" type="Boolean" default="false"/>
+    <aura:attribute name="optInDateTimeString" type="String"/>
+    <aura:attribute name="employeeComingToOfficeToday" type="Boolean"/>
+    <aura:attribute name="message" type="String"/>
+    <aura:attribute name="email" type="String" default=""/>
+    <aura:attribute name="isEmail" type="Boolean" default="true"/>
+    <aura:attribute name="isServiceResource" type="Boolean" default="true"/>
+    <aura:attribute name="covid19AssessmentResultList" type="List"/>
+    <aura:attribute name="color" type="String"/>
+    <aura:attribute name="confirmAlert" type="Boolean" default="false"/>
+    <aura:attribute name="idToken" type="String"/>
+    <aura:attribute name="covidQuestionnaire" type="Covid_19_Questionnaire__c"/>
+    <aura:attribute name="headerNote" type="String"/>
+    <aura:attribute name="showRiskScore" type="Boolean" default="false"/>
+    <aura:attribute name="allowSubmit" type="Boolean" default="false"/>
+    <aura:attribute name="isPicklistExist" type="Boolean" default="false"/>
+    <aura:attribute name="questionRowStyle" type="String"/>
+    <aura:attribute name="areYouVaccinated" type="String"/>
+    
+    <!-- Asks Email for Input to proceed -->
+    <aura:if isTrue="{!v.isEmail}">
+        <div class="slds-modal__container emailInputStyle emailInputStyleMob">
+            <header class="slds-modal__header">
+                <span><img class="covidStyleHeader" src="{!$Resource.covid_19}"></img><span class="slds-modal__title slds-hyphenate emailInputHeaderFont">Covid-19 Self-Assessment</span></span>
+                <!--<h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate emailInputHeaderFont">Covid-19 Self Assessment</h2>-->
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                
+                <!--<h2>Enter your Email Id</h2>-->
+                <lightning:input aura:id="email" type="email" class="emailInput" name="email6" required="" value="" label="Enter your Email Id" />
+            </div>
+            <footer class="slds-modal__footer" style="text-align: center;">
+                <lightning:button variant="brand" label="Submit" title="Brand action" onclick="{!c.submitEmail}"/>
+            </footer>
+        </div>
+        <aura:set attribute="else">
+            <aura:if isTrue="{!v.isSpin}">
+                <div class="exampleHolder">
+                    <lightning:spinner alternativeText="Loading" size="large" />
+                </div>
+                <aura:set attribute="else">
+                    <!-- Checks if the Employee is either a Patient/Suspect. -->
+                    <aura:if isTrue="{!v.isCovid19Patient}">
+                        <div class="slds-modal__container">
+                            <header class="slds-modal__header">
+                                <span><img class="covidStyleHeader" src="{!$Resource.covid_19}"></img><span class="slds-modal__title slds-hyphenate emailInputHeaderFont">Covid-19 Self-Assessment</span></span>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                <h2 style="margin:1%;margin-top:2%;text-align:center;">{!v.message}</h2>
+                            </div>
+                            <footer class="slds-modal__footer" style="text-align:center;">
+                                <p><i>When you are finished viewing this message, please close this tab on your browser.</i></p>
+                                <!--<lightning:button variant="brand" label="Close" title="Brand action" onclick="{!c.closeModal}"/>-->
+                            </footer>
+                        </div>
+                        <aura:set attribute="else">
+                            <!-- Checks if the Employee is registered in the System or not. -->
+                            <aura:if isTrue="{!!v.isServiceResource}">
+                                <div class="slds-modal__container">
+                                    <header class="slds-modal__header">
+                                        <span><img class="covidStyleHeader" src="{!$Resource.covid_19}"></img><span class="slds-modal__title slds-hyphenate emailInputHeaderFont headerColor">Covid-19 Self-Assessment</span></span>
+                                    </header>
+                                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                        <h2 style="margin:1%;margin-top:2%;text-align:center;">{!v.message}</h2>
+                                    </div>
+                                    <footer class="slds-modal__footer" style="text-align:center;">
+                                        <p><i>When you are finished viewing this message, please close this tab on your browser.</i></p>
+                                        <!--<lightning:button variant="brand" label="Close" title="Brand action" onclick="{!c.closeModal}"/>-->
+                                    </footer>
+                                </div>
+                                <aura:set attribute="else">
+                                    <!-- Result Card once Employee submits his Assessment -->
+                                    <aura:if isTrue="{!v.isPopUp}">
+                                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                            <div class="slds-modal__container resultModal">
+                                                <header class="slds-modal__header">
+                                                    <span><img class="covidStyleHeaderPopup" src="{!$Resource.covid_19}"></img><span class="slds-modal__title slds-hyphenate emailInputHeaderFontPopup">Your Covid-19 Risk Assessment Result</span></span>
+                                                </header>
+                                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                                    <table class=" resultTable slds-table slds-table_cell-buffer slds-table_header-hidden font-medium">
+                                                        <thead>
+                                                            <tr class="bg-light-blue">
+                                                                <td class="tablerow aligncenter slds-p-around_none">
+                                                                    <lightning:icon iconName="utility:alert" class="slds-p-right_xx-small" alternativeText="false" size="small"/> Risk Rating
+                                                                </td>
+                                                                <td class="tablerow slds-p-around_none" aura:id="Risk">: <span class="{!v.riskCss}" style="{!v.color}"><strong>{!v.risk}</strong></span></td>
+                                                            </tr>
+                                                            <aura:if isTrue="{!v.showRiskScore}">
+                                                                <tr class="bg-light-blue slds-p-around_none">
+                                                                    <td class="tablerow aligncenter  slds-p-around_none">
+                                                                        <lightning:icon iconName="utility:spinner" class="slds-p-right_xx-small" alternativeText="false" size="small"/> Risk Score
+                                                                    </td>
+                                                                    <td class="tablerow slds-p-around_none" aura:id="Score">: <span class="{!v.riskCss}" style="{!v.color}">{!v.totalWeightage}<span style="color:grey;">/{!v.topScore}</span></span></td>
+                                                                </tr>
+                                                            </aura:if>
+                                                            <tr class="bg-light-blue">
+                                                                <td class="tablerow aligncenter slds-p-around_none">
+                                                                    <lightning:icon iconName="utility:date_input" class="slds-p-right_xx-small" alternativeText="false" size="small"/> Screening Date
+                                                                </td>
+                                                                <td class="tablerow slds-p-around_none">: <strong> {!v.todayDate}</strong></td>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                    <hr style="margin:1%; margin-top:2%;"></hr>
+                                                    <h2 class="recomendationStyle" style="margin:1%;margin-top:2%;"><b>Recommendation:</b>&nbsp;{!v.recommendation}</h2>
+                                                </div>
+                                                <footer class="slds-modal__footer" style="text-align:center;">
+                                                    <p><i>When you are finished viewing your results, please close this tab on your browser.</i></p>
+                                                    
+                                                    <!--<lightning:button variant="brand" label="Close" title="Brand action" onclick="{!c.closeModal}"/>-->
+                                                </footer>
+                                            </div>
+                                        </section>
+                                        <div class="slds-backdrop slds-backdrop_open"></div>
+                                        <aura:set attribute="else">
+                                            <aura:if isTrue="{!v.isAssessmentComplete}">
+                                                <aura:set attribute="else">
+                                                    <!-- Confirmation popup message for Employee to Submit his Assessment -->
+                                                    <aura:if isTrue="{!v.confirmAlert}">
+                                                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                                            <div class="slds-modal__container modalPopup">
+                                                                <header class="slds-modal__header">
+                                                                    <span><img class="covidStyleHeaderPopup" src="{!$Resource.covid_19}"></img><span class="slds-modal__title slds-hyphenate emailInputHeaderFontPopup">COVID-19 Self-Assessment</span></span>
+                                                                </header>
+                                                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="font-size: initial;">
+                                                                    <h2 style="margin:1%;margin-top:2%;text-align:center;">Are you ok to Proceed?</h2>
+                                                                </div>
+                                                                <footer class="slds-modal__footer" style="text-align:center;">
+                                                                    <lightning:button variant="brand" class="btnNo" label="No" title="Brand action" onclick="{!c.CancelMessage}"/>
+                                                                    <lightning:button variant="brand" class="btnYes" label="Yes" title="Brand action" onclick="{!c.confirmMessage}"/>
+                                                                </footer>
+                                                            </div>
+                                                        </section>
+                                                        <div class="slds-backdrop slds-backdrop_open"></div>
+                                                    </aura:if>
+                                                    <!-- Covid-19 Card Component + Table -->
+                                                    <article class="bgwhite"> 
+                                                        <div class="slds-grid slds-wrap slds-m-bottom_small headerClass">
+                                                            <!--<div class="slds-col  slds-size_1-of-1  slds-large-size_4-of-12 companyLogo-wrapper">
+                                <span><img src="{!$Resource.CompanyLogo}" class="companyLogo"></img></span>
+                            </div>-->
+                                                            <!-- <div class="slds-col slds-size_1-of-1  slds-large-size_12-of-12 main-title-wrapper slds-m-top_xx-small">
+                                                                <span><img class="covidStyle" src="{!$Resource.covid_19}"></img> <span class="headerStyle headerColor">COVID-19 Self-Screening Assessment</span></span>
+                                                            </div> -->
+                                                        </div>
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        <!-- Start: Card -->
+                                                        <!--<div class="company-logo"><img src="{!$Resource.Interface}"/></div>-->
+                                                        <div class="card">
+                                                            <div class="container">
+                                                                <div class="header">    
+                                                                    <div class="header-assessment"><img class="covidStyleHeader" src="{!$Resource.covid_19}"/><span class="slds-modal__title slds-hyphenate emailInputHeaderFont">COVID-19 Self-Assessment  <span class="dateCss"><span class="date-text">Screening Date: </span>  {!v.todayDate}</span></span></div>
+                                                                </div>                    
+                                                                <footer class="footerStyle">
+                                                                    <p class="signInMessage">
+                                                                        {!v.headerNote}
+                                                                    </p>
+                                                                </footer>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <!--/ End: Card -->
+                                                        
+                                                        
+                                                        
+                                                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_resizable-cols slds-table--fixed-layout questionTable">
+                                                            <thead>
+                                                                <tr class="slds-line-height_reset">
+                                                                    <th class="width-slno slds-text-align_right" scope="col">
+                                                                        <div class="slds-truncate" title="Opportunity Name">Sl No.</div>
+                                                                    </th>
+                                                                    <th class="width-symptom" scope="col">
+                                                                        <div class="slds-truncate pl-symptom" title="Account Name">Symptoms</div>
+                                                                    </th>
+                                                                    <th class="width-yes" scope="col">
+                                                                        <div class="slds-truncate" title="Close Date">Yes</div>
+                                                                    </th>
+                                                                    <th class="width-no" scope="col">
+                                                                        <div class="slds-truncate" title="Stage">No</div>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <aura:iteration items="{!v.indexQuestionList}" var="eachItem">
+                                                                    <tr class="slds-hint-parent">
+                                                                        <td data-label="Opportunity Name" scope="row" class="width-slno slds-text-align_right">
+                                                                            <div class="slds-truncate" title="Cloudhub">{!eachItem.index}</div>
+                                                                        </td>
+                                                                        <td data-label="Account Name">
+                                                                            <div class="pl-account" style="white-space: initial;" title="Cloudhub"><aura:unescapedHtml value="{!eachItem.question}"/></div>
+                                                                        </td>
+                                                                        <c:Covid19AssessmentPageForTechnicianCheckList isPicklistExist="{!v.isPicklistExist}" allowSubmit="{!v.allowSubmit}" areYouVaccinated="{!v.areYouVaccinated}" questionRowStyle="{!v.questionRowStyle}" resultMap="{!v.resultMap}" totalWeightage="{!v.totalWeightage}" finalValues="{!v.finalValues}" radioButtonDetails="{!v.radioButtonDetails}" key="{!eachItem.label}"/>
+                                                                    </tr>
+                                                                </aura:iteration>
+                                                            </tbody>
+                                                        </table>
+                                                        <!--<div class="serviceResourceLink">*If you are unfortunately infected with Covid-19 already, please click <a onclick="{!c.loadURL}">here</a> to report directly. We will soon reach out to you to see how we can help you best. Take Care.</div>-->
+                                                        <div class="slds-m-top_large  slds-m-bottom_large text-center">
+                                                            <!-- Brand variant: Identifies the primary action in a group of buttons -->
+                                                            <lightning:button variant="brand" label="Submit" title="Brand action" onclick="{!c.onSubmit}" class="btn-submit" />
+                                                        </div>
+                                                        
+                                                        <footer class="slds-card__footer footer  slds-m-top_small">
+                                                            <div class="slds-grid slds-wrap">
+                                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12 pb-1 ld-cm">
+                                                                    <!--<span>Powered By <a href="https://www.fieldforcepro.com/" target="_blank">FieldForcePro</a></span>-->
+                                                                </div>
+                                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12 rd-cm">
+                                                                    <span>Copyright © {!v.currentYear}. All rights reserved to CRMIT Solutions</span>
+                                                                </div>
+                                                            </div>
+                                                        </footer>
+                                                    </article>
+                                                </aura:set>
+                                            </aura:if>
+                                        </aura:set>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:set>
+                    </aura:if>
+                </aura:set>
+            </aura:if>
+        </aura:set>
+    </aura:if>
+</aura:component>

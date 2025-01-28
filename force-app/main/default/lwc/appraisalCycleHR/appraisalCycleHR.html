@@ -1,0 +1,167 @@
+<template>
+	<lightning-quick-action-panel header="Appraisal Cycle Submission Dates">
+		<template if:true={isedit}>
+			<lightning-record-form object-api-name="Appraisal__c" fields={fields} columns="4" mode="edit"
+				onsubmit={handleSuccess} oncancel={handlecancel} style="bottom: 100%" disabled={}>
+			</lightning-record-form>
+		</template>
+		<template if:false={isedit}>
+			<div class="slds-align_absolute-center">
+				<lightning-combobox label="Select the Appraisal Year" value={selectedyear} options={ratingOptions}
+					onchange={appraisalYearHandler} class="smallComboBox slds-m-around_small slds-p-top_small ">
+				</lightning-combobox>
+			</div>
+		</template>
+
+		<lightning-tabset active-tab-value="Self Rating">
+
+			<lightning-record-edit-form record-id={recordId} object-api-name="Appraisal__c">
+				<lightning-tab label="Annual Goal Setting" value="Goal Setting">
+					<div class="slds-grid slds-wrap">
+						<div class="slds-col slds-size_1-of-3">
+							<lightning-input-field class="slds-scrollable_none myclass" showdropdowns="true" field-name="Emp_goalsetting_Start_date__c" disabled={readonly}></lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_1-of-3">
+							<lightning-input-field field-name="Emp_Goalsetting_End_date__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_1-of-3">
+							<lightning-input-field field-name="Mngr_Goalsetting_End_Date__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_1-of-3">
+							<lightning-input-field field-name="CCM_End_Date__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_1-of-3">
+							<lightning-input-field field-name="Total_KPI_Limit__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+					</div>
+				</lightning-tab>
+				<lightning-tab label="Annual Weightage" value="Annual Weightage">
+					<div class="slds-grid slds-wrap">
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Self_Rating_Weightage__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Manager_Rating_Weightage__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Reviewer_Rating_Weightage__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+					</div>
+				</lightning-tab>
+				<lightning-tab label="Reviewer Rating" value="Reviewer Rating">
+					<div class="slds-grid slds-wrap">
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q4_Reviewer_Submission_Start_Date__c"
+								disabled={readonly}></lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q4_Reviewer_Submission_End_Date__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+					</div>
+				</lightning-tab>
+				<lightning-tab label="Manager Rating" value="Manager Rating">
+					<div class="slds-grid slds-wrap">
+
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q1ManagerSubmissionStartDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q1ManagerSubmissionEndDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q2_ManagerSubmissionStartDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q2_ManagerSubmissionEndDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q3_ManagerSubmissionStartDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q3_ManagerSubmissionEndDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q4_ManagerSubmissionStartDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q4_ManagerSubmissionEndDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+					</div>
+				</lightning-tab>
+				<lightning-tab label="Self Rating" value="Self Rating">
+
+
+					<div class="slds-grid slds-wrap">
+
+						<div class="slds-col slds-size_2-of-8 slds-scrollable_y">
+							<lightning-input-field field-name="Q1EmployeeSubmissionStartDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q1EmployeeSubmissionEndDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q2_EmployeeSubmissionStartDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q2_EmployeeSubmissionEndDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q3_EmployeeSubmissionStartDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q3_EmployeeSubmissionEndDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q4_EmployeeSubmissionStartDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+						<div class="slds-col slds-size_2-of-8">
+							<lightning-input-field field-name="Q4_EmployeeSubmissionEndDate__c" disabled={readonly}>
+							</lightning-input-field>
+						</div>
+					</div>
+
+					<!-- Other accordion sections for QPR2, QPR3, and QPR4 -->
+
+				</lightning-tab>
+
+
+
+
+
+
+				<div class="slds-col slds-text-align_center slds-border_top"><br>
+					<lightning-button class="slds-m-right_medium" variant="brand" type="submit" name="update"
+						label="Save" onclick={updateHandler} disabled={readonly}></lightning-button>
+					<lightning-button variant="brand" type="cancel" name="cancel" label="Cancel" onclick={handlecancel}>
+					</lightning-button>
+				</div>
+
+			</lightning-record-edit-form>
+		</lightning-tabset>
+
+	</lightning-quick-action-panel>
+
+</template>

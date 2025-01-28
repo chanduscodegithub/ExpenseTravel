@@ -1,0 +1,5 @@
+<apex:page showheader="false" sidebar="false">
+  <apex:iframe src="https://app.powerbi.com/reportEmbed?reportId=e6313f10-7a34-4f0c-82f4-8559ccb2621f&autoAuth=true&ctid=f6424d28-e2c5-4845-ac7a-08f986af350f&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLWluZGlhLWNlbnRyYWwtYS1wcmltYXJ5LXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9"
+  height="1100px" width="100%" frameborder="0">
+  </apex:iframe>
+</apex:page>

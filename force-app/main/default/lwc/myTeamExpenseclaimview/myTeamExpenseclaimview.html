@@ -1,0 +1,58 @@
+<template>
+
+   <div class="header-container slds-grid slds-align_absolute-center slds-p-around_medium">
+    <div class="header-actions slds-p-around_medium">
+      <label class="slds-form-element__label" for="statusFilter">Filter by Status</label>
+      <div class="slds-select_container">
+        <select class="slds-select" id="statusFilter" onchange={handleFilterChange}>
+
+                        <option value="Pending for Approval">Pending for Approval</option>
+                        <option value="Approved">Approved</option>
+                    </select>
+      </div>
+    </div>
+    </div>
+
+    <div class="custom-table-container" lwc:if={showList}>
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th style="width:270px;">Employee Name</th>
+            <th style="width:110px;">Department</th>
+            <th style="width:210px;">Expense Category</th>
+            <th style="width:210px;">Expense Requesting Date</th>
+            <th style="width:100px;">Bill Amount</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={approvals} for:item="accounts" lwc:if={approvals.length}>
+            <tr key={accounts.Id} data-id={accounts.Id} onclick={handleRowSelect} data-department={accounts.department}
+              data-category={accounts.category} data-expdate={accounts.expdate} data-billamount={accounts.billamount}
+              data-comments={accounts.comments} data-curr={accounts.curr}>
+              <td>{accounts.Employee_Name}</td>
+              <td>{accounts.department}</td>
+              <td>{accounts.category}</td>
+              <td>{accounts.expdate}</td>
+              <td>{accounts.billamount}</td>
+
+            </tr>
+          </template>
+
+         <template lwc:else>
+        No Records Found
+      </template>
+     
+     
+      </tbody>
+       </table>
+        </div>
+       
+   
+
+    <c-expense-details category={categry} department={depatment} employee-name={empname} total-bill-amount={tbillamount}
+      expense-date={expdate} currency={curre} employee-comments={empcomments} bills={billsdata} itemlist={itemList}
+      workitemid={selectedWorkItemId} lwc:if={showRecord} onclosedetail={closeDetail} showbuttons={button}>
+
+    </c-expense-details>
+</template>

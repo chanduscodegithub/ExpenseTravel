@@ -1,0 +1,23 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:appHostable" controller="MyQuickActionController" access="global">
+    <aura:attribute name="showButton" type="Boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <c:resourceOnboarding recordId="{!v.recordId}" showModal="{!v.showLWCModal}" />
+
+    
+    <aura:html tag="style">
+        .cuf-content {
+            padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+            padding: 0rem !important;
+        }       
+        .slds-modal__content {
+            overflow-y: hidden !important;
+            height: unset !important;
+            max-height: unset !important;
+        }
+        .slds-modal__container {
+            transform: none !important;
+        }
+    </aura:html>
+</aura:component>

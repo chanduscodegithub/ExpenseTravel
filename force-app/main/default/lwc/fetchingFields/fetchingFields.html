@@ -1,0 +1,19 @@
+<template>
+    <lightning-card>  
+        <h3 slot="title">            
+            <lightning-icon icon-name='action:email' size='small'></lightning-icon>
+            <strong class="slds-m-left--x-small">SFMC Emails</strong>
+        </h3>            
+        <template for:each={record} for:item="acc">      
+            <p key={acc.id}>                                
+                <a onclick={handleClick} key={acc.Id} data-id={acc.Id}>
+                    {acc.Name}
+                </a><br/>
+                {acc.et4ae5__FromName__c}<br/>
+                {acc.et4ae5__FromAddress__c}<br/>
+                {acc.et4ae5__SubjectLine__c}<br/>
+                {acc.et4ae5__DateSent__c}
+            </p>                      
+        </template>   
+</lightning-card>
+</template>

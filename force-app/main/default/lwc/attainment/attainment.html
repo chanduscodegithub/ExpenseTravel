@@ -1,0 +1,489 @@
+<template>
+  <div class="card-container">
+    <lightning-card variant="narrow" title="" icon-name="standard:opportunity">
+      <div class="slds-text-heading_medium" slot="title">Avishkaar - Revenue Forecast System</div>
+      <div class="slds-text-heading_small">&nbsp;&nbsp;&nbsp;{title}</div>
+    </lightning-card>
+  
+    <div class="card-gap"></div> <!-- Add a div for spacing -->
+    <lightning-card>
+      <div class="center-align">
+        <div class="year-selection">
+          <label class="large-font" style="display: inline-block;">Select Year </label>
+          <lightning-combobox
+            options={yearOptions}
+            value={selectedYear}
+            onchange={handleYearChange}
+            class="large-font"
+            style="display: inline-block;"
+          ></lightning-combobox>
+        </div>
+    
+        <br /><br />
+    
+        <lightning-tabset class="spaced-tabs">
+          <!-- Yearly Attainment Review Tab -->
+          <template if:true={selectedYear}>
+            <lightning-tab class="larger-font" label="Yearly Attainment Review">
+              <lightning-tabset class="larger-font">
+                <template for:each={financialPlanningRecords} for:item="record">
+                  <template if:true={record.showFinancialPlanningTab}>
+                    <lightning-tab key={record.Id} label={record.Name}>
+                      <lightning-tabset>
+                        <lightning-tab label="Region" onactive={loadRegionDetails}>
+                            <template if:true={record.regionDetails}>
+                              <!-- Display region details here -->
+                              <div class="slds-flexbox">
+                                <div class="slds-scrollable_x slds-mr-medium">
+                                  <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered colorful-table">
+                                    <thead>
+                                      <tr class="slds-text-title_caps">
+                                        <th colspan="5" scope="colgroup" style="text-align: center;">REVENUE</th>
+                                      </tr>
+                                      <tr class="slds-text-title_caps">
+                                        <th scope="col">Region Name</th>
+                                        <th scope="col" class="slds-text-align_right">Currency</th>
+                                        <th scope="col" class="slds-text-align_right">Target</th>
+                                        <th scope="col" class="slds-text-align_right">Actuals</th>
+                                        <th scope="col" class="slds-text-align_right">Attainment(%)</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <template for:each={record.regionDetails} for:item="region">
+                                        <tr key={region.Id}>
+                                          <td>
+                                            <div class="wrap-text">
+                                              <h1 data-id={region.Id} class="larger-font">{region.Opportunity_Region__c}</h1>
+                                            </div>
+                                          </td>
+                                          <td>
+                                            <div class="wrap-text">
+                                              <h1 data-id={region.Id} style="text-align: center;" class="larger-font">{region.Currency__c}</h1>
+                                            </div>
+                                          </td>
+                                          <td class="slds-text-align_right">
+                                            <lightning-formatted-number value={region.Yearly_Target__c}>
+                                            </lightning-formatted-number>
+                                          </td>
+                                          <td class="slds-text-align_right">
+                                            <lightning-formatted-number value={region.Yearly_Actual__c}>
+                                            </lightning-formatted-number>
+                                          </td>
+                                          
+                                          
+                                          <td class="slds-text-align_right">
+                                            <div class={region.Yearly_attainment_color__c}>
+                                              {region.Yearly_Attainment__c}%
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </template>
+                                      <tr>
+                                        <td class="slds-text-align_right" colspan="3">
+                                          <div class="wrap-text">
+                                            <h1 class="larger-font">Total Revenue (USD)</h1>
+                                          </div>
+                                        </td>
+                                        <td class="slds-text-align_right">
+                                          <lightning-formatted-number value={record.Total_Region_Amount__c}>
+                                          </lightning-formatted-number>
+                                        </td>
+                                        
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                          
+                                <div class="slds-scrollable_x">
+                                  <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered colorful-table">
+                                    <thead>
+                                      <tr class="slds-text-title_caps">
+                                        <th colspan="4" scope="colgroup" style="text-align: center;">MARGINS</th>
+                                      </tr>
+                                      <tr class="slds-text-title_caps">
+                                        <th scope="col">Region Name</th>
+                                        <th scope="col" class="slds-text-align_right">Target</th>
+                                        <th scope="col" class="slds-text-align_right">Actuals</th>
+                                        <th scope="col" class="slds-text-align_right">Attainment(%)</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <template for:each={record.regionDetails} for:item="region">
+                                        <tr key={region.Id}>
+                                          <td>
+                                            <div class="wrap-text">
+                                              <h1 data-id={region.Id} class="larger-font">{region.Opportunity_Region__c}</h1>
+                                            </div>
+                                          </td>
+                                          <td class="slds-text-align_right">{region.Annual_Gross_Margin__c}%</td>
+                                          <td class="slds-text-align_right">{region.Actual_Gross_Margin__c}</td>
+                                          <td class="slds-text-align_right">{region.Gross_Margin_Attainment__c}</td>                                   
+                                        </tr>
+                                      </template>
+                                      <tr>
+                                        <td class="slds-text-align_right" colspan="3">
+                                          <div class="wrap-text">
+                                            <h1 class="larger-font">Total Gross Margin (%)</h1>
+                                          </div>
+                                        </td>
+                                        <!-- <td class="slds-text-align_right">
+                                          <lightning-formatted-number value={region.Actual_Gross_Margin__c}>
+                                          </lightning-formatted-number>
+                                        </td> -->
+                                        
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </template>
+                            <template if:false={record.regionDetails}>
+                              <p>No region details available.</p>
+                            </template>
+                          </lightning-tab>
+                          
+      
+      
+                        <!-- Employee Tab -->
+                        <lightning-tab label="Employee" onactive={loadEmployeeDetails}>
+                            <template if:true={record.employeeDetails}>
+                              <!-- Display employee details here -->
+                              <div class="slds-flexbox">
+                                <div class="slds-scrollable_x slds-mr-medium">
+                                  <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered colorful-table">
+                                    <thead>
+                                      <tr class="slds-text-title_caps">
+                                        <th colspan="5" scope="colgroup" style="text-align: center;">REVENUE</th>
+                                      </tr>
+                                      <tr class="slds-text-title_caps">
+                                        <th scope="col">Employee Name</th>
+                                        <th scope="col" class="slds-text-align_right">Target</th>
+                                        <th scope="col" class="slds-text-align_right">Actuals</th>
+                                        <th scope="col" class="slds-text-align_right">Attainment(%)</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <template for:each={record.employeeDetails} for:item="employee">
+                                        <tr key={employee.Id}>
+                                          <td>
+                                            <div class="wrap-text">
+                                              <h1 data-id={employee.Id} class="larger-font">
+                                                <!-- Add a conditional check -->
+                                                <template if:true={employee.Employees__r}>
+                                                  {employee.Employees__r.Name}
+                                                </template>
+                                              </h1>
+                                            </div>
+                                          </td>
+                                          
+                                          <td class="slds-text-align_right">{employee.Yearly_Target__c}</td>
+                                          <td class="slds-text-align_right">{employee.Yearly_Actual__c}</td>
+                                          <td class="slds-text-align_right">
+                                            <div class={employee.Yearly_Attainment_color__c}>
+                                              {employee.Yearly_Attainment__c}%
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </template>
+                                      
+                                    </tbody>
+                                  </table>
+                                </div>
+                        
+                                <div class="slds-scrollable_x">
+                                  <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered colorful-table">
+                                    <thead>
+                                      <tr class="slds-text-title_caps">
+                                        <th colspan="4" scope="colgroup" style="text-align: center;">MARGIN</th>
+                                      </tr>
+                                      <tr class="slds-text-title_caps">
+                                        <th scope="col">Employee Name</th>
+                                        <th scope="col" class="slds-text-align_right">Target</th>
+                                        <th scope="col" class="slds-text-align_right">Actuals</th>
+                                        <th scope="col" class="slds-text-align_right">Attainment(%)</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <template for:each={record.employeeDetails} for:item="employee">
+                                        <tr key={employee.Id}>
+                                          <td>
+                                            <div class="wrap-text">
+                                              <h1 data-id={employee.Id} class="larger-font">{employee.Employees__r.Name}</h1>
+                                            </div>
+                                          </td>
+                                          <td class="slds-text-align_right">{employee.Annual_Gross_Margin__c}%</td>
+                                          <td class="slds-text-align_right">{employee.Actual_Gross_Margin__c}</td>
+                                          <td class="slds-text-align_right">{employee.Gross_Margin_Attainment__c}</td>
+                                        </tr>
+                                      </template>
+                                      <tr>
+                                        <td class="slds-text-align_right" colspan="3">
+                                          <div class="wrap-text">
+                                            <h1 class="larger-font">Total Gross Margin (%)</h1>
+                                          </div>
+                                        </td>
+                                        </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </template>
+                            <template if:false={record.employeeDetails}>
+                              <p>No employee details available.</p>
+                            </template>
+                          </lightning-tab>
+                      </lightning-tabset>
+                    </lightning-tab>
+                  </template>
+                </template>
+              </lightning-tabset>
+            </lightning-tab>
+          </template>
+  
+          <!-- Quarterly Attainment Review Tab -->
+          <template if:true={selectedYear}>
+            <lightning-tab class="larger-font" label="Quarterly Attainment Review" >
+              <lightning-tabset class="larger-font">
+                <template for:each={financialPlanningRecords} for:item="record">
+                  <template if:true={record.showFinancialPlanningTab}>
+                    <lightning-tab key={record.Id} label={record.Name}>
+                      <lightning-tabset>
+  
+                        <!-- Region Tab -->
+                        
+  <lightning-tab label="Region" onactive={loadRegionDetails}>
+  <template if:true={record.regionDetails}>
+    <!-- Display region details here -->
+    <table
+      class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered colorful-table">
+      <thead>
+        <tr>
+          <th scope="col" colspan="2"></th>
+          <th colspan="3" class="slds-text-align_center">Quarter 1- {selectedYear}</th>
+          <th colspan="3" class="slds-text-align_center">Quarter 2- {selectedYear}</th>
+          <th colspan="3" class="slds-text-align_center">Quarter 3- {selectedYear}</th>
+          <th colspan="3" class="slds-text-align_center">Quarter 4- {selectedYear}</th>
+        </tr>
+        <tr class="slds-text-title_caps">
+          <th scope="col">Region Name</th>
+          <th scope="col" style="text-align: center;">Currency</th>
+          <th scope="col" class="slds-text-align_right">Target</th>
+          <th scope="col" class="slds-text-align_right">Actuals</th>
+          <th scope="col" class="slds-text-align_right">Attainment(%)</th>
+          <th scope="col" class="slds-text-align_right">Target</th>
+          <th scope="col" class="slds-text-align_right">Actuals</th>
+          <th scope="col" class="slds-text-align_right">Attainment(%)</th>
+          <th scope="col" class="slds-text-align_right">Target</th>
+          <th scope="col" class="slds-text-align_right">Actuals</th>
+          <th scope="col" class="slds-text-align_right">Attainment(%)</th>
+          <th scope="col" class="slds-text-align_right">Target</th>
+          <th scope="col" class="slds-text-align_right">Actuals</th>
+          <th scope="col" class="slds-text-align_right">Attainment(%)</th>
+        </tr>
+      </thead>
+      
+      
+      <tbody>
+        <template for:each={record.regionDetails} for:item="region">
+          <tr key={region.Id}>
+            <td>
+              <div class="wrap-text">
+                <h1 data-id={region.Id} class="larger-font">{region.Opportunity_Region__c}</h1>
+              </div>
+            </td>
+            <td>
+              <div class="wrap-text">
+                <h1 data-id={region.Id} style="text-align: center;" class="larger-font">{region.Currency__c}</h1>
+              </div>
+            </td>
+              
+            
+            <td class="slds-text-align_right">
+              <lightning-formatted-number value={region.Quarter_1_Target__c}>
+              </lightning-formatted-number>
+            </td>
+            <td class="slds-text-align_right">
+              <lightning-formatted-number value={region.Q1_Revenue_Attainment__c}>
+              </lightning-formatted-number>
+            </td>
+            <td class="slds-text-align_right">
+              <div class={region.Q1_attainmnet_colour__c}>
+                {region.Q1_Attainment__c}%
+              </div>
+            </td>
+            <td class="slds-text-align_right">
+              <lightning-formatted-number value={region.Quarter_2_Target__c}>
+              </lightning-formatted-number>
+            </td>
+            <td class="slds-text-align_right">
+              <lightning-formatted-number value={region.Q2_Revenue_Attainment__c}>
+              </lightning-formatted-number>
+            </td>
+            <td class="slds-text-align_right">
+              <div class={region.Q2_attainmnet_colour__c}>
+                {region.Q2_Attainment__c}%
+              </div>
+            </td>
+            <td class="slds-text-align_right">
+              <lightning-formatted-number value={region.Quarter_3_Target__c}>
+              </lightning-formatted-number>
+            </td>
+            <td class="slds-text-align_right">
+              <lightning-formatted-number value={region.Q3_Revenue_Attainment__c}>
+              </lightning-formatted-number>
+            </td>
+            <td class="slds-text-align_right">
+              <div class={region.Q3_attainmnet_colour__c}>
+                {region.Q3_Attainment__c}%
+              </div>
+            </td>
+            <td class="slds-text-align_right">
+              <lightning-formatted-number value={region.Quarter_4_Target__c}>
+              </lightning-formatted-number>
+            </td>
+            <td class="slds-text-align_right">
+              <lightning-formatted-number value={region.Q4_Revenue_Attainment__c}>
+              </lightning-formatted-number>
+            </td>
+            <td class="slds-text-align_right">
+              <div class={region.Q4_attainmnet_colour__c}>
+                {region.Q4_Attainmnet__c}%
+              </div>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </template>
+  <template if:false={record.regionDetails}>
+    <p>No region details available.</p>
+  </template>
+  </lightning-tab>
+  
+                        
+  <!-- Employee Tab -->
+  <lightning-tab label="Employee" onactive={loadEmployeeDetails}>
+  <template if:true={record.employeeDetails}>
+    <!-- Display employee details here -->
+    <div class="slds-scrollable_x">
+      <table
+        class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered colorful-table">
+        <thead>
+          <tr>
+            <th scope="col" colspan="1"></th>
+            <th colspan="3" class="slds-text-align_center">Quarter 1- {selectedYear}</th>
+            <th colspan="3" class="slds-text-align_center">Quarter 2- {selectedYear}</th>
+            <th colspan="3" class="slds-text-align_center">Quarter 3- {selectedYear}</th>
+            <th colspan="3" class="slds-text-align_center">Quarter 4- {selectedYear}</th>
+          </tr>
+          <tr class="slds-text-title_caps">
+            <th scope="col">Employee Name</th>
+            
+            <th scope="col" class="slds-text-align_right"> Target</th>
+            <th scope="col" class="slds-text-align_right"> Actuals</th>
+            <th scope="col" class="slds-text-align_right"> Attainment(%)</th>
+            <th scope="col" class="slds-text-align_right"> Target</th>
+            <th scope="col" class="slds-text-align_right"> Actuals</th>
+            <th scope="col" class="slds-text-align_right"> Attainment(%)</th>
+            <th scope="col" class="slds-text-align_right"> Target</th>
+            <th scope="col" class="slds-text-align_right"> Actuals</th>
+            <th scope="col" class="slds-text-align_right"> Attainment(%)</th>
+            <th scope="col" class="slds-text-align_right"> Target</th>
+            <th scope="col" class="slds-text-align_right"> Actuals</th>
+            <th scope="col" class="slds-text-align_right"> Attainment(%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={record.employeeDetails} for:item="employee">
+            <tr key={employee.Id}>
+              <td>
+                <div class="wrap-text">
+                  <h1 data-id={employee.Id} class="larger-font">
+                    <!-- Add a conditional check -->
+                    <template if:true={employee.Employees__r}>
+                      {employee.Employees__r.Name}
+                    </template>
+                  </h1>
+                </div>
+              </td>
+              
+              
+  
+              <td class="slds-text-align_right">
+                <lightning-formatted-number value={employee.Q1_Target__c}>
+                </lightning-formatted-number>
+              </td>
+              <td class="slds-text-align_right">
+                <lightning-formatted-number value={employee.Q1_Revenue_Attainment__c}>
+                </lightning-formatted-number>
+              </td>
+              <td class="slds-text-align_right">
+                <div class={employee.Q1_Attainment__c}>
+                  {employee.Q1_Percent__c}%
+                </div>
+              </td>
+              <td class="slds-text-align_right">
+                <lightning-formatted-number value={employee.Q2_Target__c}>
+                </lightning-formatted-number>
+              </td>
+              <td class="slds-text-align_right">
+                <lightning-formatted-number value={employee.Q2_Revenue_Attainment__c}>
+                </lightning-formatted-number>
+              </td>
+              <td class="slds-text-align_right">
+                <div class={employee.Q2_Attainment__c}>
+                  {employee.Q2_Percentage__c}%
+                </div>
+              </td>
+              <td class="slds-text-align_right">
+                <lightning-formatted-number value={employee.Q3_Target__c}>
+                </lightning-formatted-number>
+              </td>
+              <td class="slds-text-align_right">
+                <lightning-formatted-number value={employee.Q3_Revenue_Attainment__c}>
+                </lightning-formatted-number>
+              </td>
+              <td class="slds-text-align_right">
+                <div class={employee.Q3_attainment_color__c}>
+                  {employee.Q3_Attainment__c}%
+                </div>
+              </td>
+              <td class="slds-text-align_right">
+                <lightning-formatted-number value={employee.Q4_Target__c}>
+                </lightning-formatted-number>
+              </td>
+              <td class="slds-text-align_right">
+                <lightning-formatted-number value={employee.Q4_Revenue_Attainment__c}>
+                </lightning-formatted-number>
+              </td>
+              <td class="slds-text-align_right">
+                <div class={employee.Q4_Attainment_color__c}>
+                  {employee.Q4_Attainmnet__c}%
+                </div>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+  
+      </table>
+    </div>
+  </template>
+  <template if:false={record.employeeDetails}>
+    <p>No employee details available.</p>
+  </template>
+  </lightning-tab>
+  
+                      </lightning-tabset>
+                    </lightning-tab>
+                  </template>
+                </template>
+              </lightning-tabset>
+            </lightning-tab>
+          </template>
+          
+        </lightning-tabset>
+  
+      </div>
+    </lightning-card>
+  </div>
+  </template>

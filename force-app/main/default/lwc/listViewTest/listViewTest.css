@@ -1,0 +1,91 @@
+.slds-page-header__name-title:hover {
+    border-bottom: 1px solid black;
+    
+  }
+
+  .slds-modal__container{
+    width: 90% !important;
+    max-width: 90% !important;
+    
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.row:nth-child(even) {
+  background-color: #fe8f8214;
+}
+.row:nth-child(odd) {
+  background-color: aliceblue;
+}
+
+.slds-modal__container table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.slds-modal__container th, .slds-modal__container td {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.slds-modal__container th {
+  background-color: #f2f2f2;
+}
+
+.css-serial {
+  counter-reset: serial-number;  /* Set the serial number counter to 0 */
+}
+
+.css-serial td:first-child:before {
+  counter-increment: serial-number;  /* Increment the serial number counter */
+  content: counter(serial-number);  /* Display the counter */
+}
+
+.white-background-spinner {
+  background-color: #FFFFFF;
+}
+
+.headerText:hover{
+  color:red!important;
+}
+.d-none{
+  display: none;
+}
+.d-block{
+  display: block;
+}
+
+.sortable {
+  position: relative;
+}
+
+.sortable:hover::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  border: solid black;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.sortable:hover .arrow-up::before {
+  content: '';
+  border-color: transparent transparent black black;
+  transform: translateY(-50%) rotate(-135deg);
+}
+
+.sortable:hover .arrow-down::before {
+  content: '';
+  border-color: black black transparent transparent;
+  transform: translateY(-50%) rotate(45deg);
+}

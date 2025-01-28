@@ -1,0 +1,75 @@
+.custom-card {
+    width: 30rem; 
+    margin: 2px; 
+    padding-top: 0.5rem;
+}
+.events-container {
+    border-radius: 5px;
+    overflow-y: auto;
+    max-height: 300px;
+    width: 28rem;
+    display: flex;
+    flex-direction: column;
+    /*gap: 8px; */
+    margin: 10px;
+    justify-content: flex-start;
+}
+.new-empevt {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+} 
+/*
+.new-empevt:hover {
+    transform: scale(1.03);
+} */
+.profile-picture {
+    margin-right: 16px;
+    width: 50px; 
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eee; 
+}
+.details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+}
+.details p {
+    margin: 5px 0;
+    color: #333;
+    font-size: 14px;
+}
+.EmployeeID {
+    font-weight: bold;
+    color: #0070d2;
+}
+.role {
+    color: #666;
+    font-size: 13px;
+}
+.Country {
+    font-size: 13px;
+    color: #444;   
+}
+
+.phone {
+    display: flex;
+    align-items: center;
+    color: #333;
+    font-size: 14px;
+}
+.phone lightning-icon {
+    margin-right: 8px;
+}

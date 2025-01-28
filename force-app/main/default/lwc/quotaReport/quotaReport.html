@@ -1,0 +1,1434 @@
+<template>
+	<template if:true={isCheckboxHidden}>
+		<div class="slds-hide">
+			<lightning-input type="checkbox" checked={isEligibleForQuota} disabled class="transparent-checkbox">
+			</lightning-input>
+		</div>
+	</template>
+	<template if:false={isCheckboxHidden}>
+		<lightning-input type="checkbox" checked={isEligibleForQuota} disabled class="transparent-checkbox">
+		</lightning-input>
+	</template>
+	<!-- Rest of the component will be conditionally rendered based on the checkbox value -->
+	<template if:true={isEligibleForQuota}>
+		<lightning-card variant="narrow" title="Avishkaar - Quota Attainment Tracker" icon-name="standard:opportunity">
+			<lightning-button variant="brand" label="Quota Target" title="Click here quota target record list view"
+				onclick={navigateToRecordList} slot="actions"></lightning-button>
+			<div class="slds-text-heading_larger" slot="title" style="font-size: 18px">
+				Avishkaar - Quota Attainment System
+			</div>
+			<div class="year-region-selection">
+				<div class="year-selection">
+					<label class="large-font" style="display: inline-block; font-size: 13.5px; padding-right: 10px;">Select Financial Year</label>
+					<lightning-combobox options={yearOptions} value={selectedYear} onchange={handleYearChange}
+						style="display: inline-block;font-size:13px;"></lightning-combobox>
+				</div>
+				<div class="region-selection">
+					<label class="large-font" style="display: inline-block; font-size: 13.5px; padding-right: 10px;">Select Region</label>
+					<lightning-combobox options={regionOptions} value={selectedRegion} onchange={handleRegionChange}
+						style="display: inline-block;font-size:13px;"></lightning-combobox>
+				</div>
+			</div>
+			<lightning-tabset class="spaced-tabs">
+				<!-- Yearly Attainment Review Tab -->
+				<template if:true={selectedYear}>
+					<lightning-tab class="parent-tab" label="Sales-Attainment-Yearly">
+						<lightning-tabset>
+							<template for:each={financialPlanningRecords} for:item="record" for:index="outerindex">
+								<template if:true={record.showFinancialPlanningTab}>
+									<lightning-tab key={record.Id} label={record.Name} onactive={handleTabSelection}>
+										<template if:true={record.employeeDetails}>
+											<!-- Display employee details here -->
+											<div class="slds-flexbox">
+												<table class="slds-table slds-table_bordered slds-table_cell-buffer">
+													<thead>
+														<tr class="slds-text-title">
+															<th scope="col" class="slds-text-align_center">Employee
+															</th>
+															<th scope="col" class="slds-text-align_center">Role </th>
+															<th scope="col" class="slds-text-align_center">Currency</th>
+
+															<th scope="col" class="slds-text-align_center">
+																<template if:true={selectedTabLabelContainsQuota}>
+																	Quota
+																</template>
+																<template if:true={selectedTabLabelContainsBudget}>
+																	Budget
+																</template>
+																<template if:true={selectedTabLabelContainsAspiration}>
+																	Aspiration
+																</template>
+															</th>
+															<th scope="col" class="slds-text-align_center">Actuals</th>
+															<th scope="col" class="slds-text-align_center">Attain(%)
+															</th>
+														</tr>
+													</thead>
+													<tbody>
+														<template for:each={record.employeeDetails} for:item="employee"
+															for:index="innerindex">
+															<tr key={employee.Id}>
+																<td>
+																	<div class="wrap-text">
+																		<h1 data-id={employee.Id} class="larger5-font">
+																			<template if:true={employee.Employees__r}>
+																				{employee.Employees__r.Name}
+																			</template>
+																		</h1>
+																	</div>
+																</td>
+																<td class="slds-text-align_left">{employee.Role__r.Name}
+																</td>
+																<td class="slds-text-align_center">
+																	{employee.Currency__c}</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number
+																		value={employee.Yearly_Target__c}>
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<a>
+																		<lightning-formatted-number
+																			value={employee.Yearly_Opportunity_Actuals__c}
+																			minimum-fraction-digits="0"
+																			data-index={outerindex} data-id={innerindex}
+																			data-msg="Year" onclick={getOpportunity}>
+																		</lightning-formatted-number>
+																	</a>
+																</td>
+																<td class="slds-text-align_right1">
+																	<div
+																		class={employee.Yearly_Opp_Attainment_Colour__c}>
+																		{employee.Yearly_Opportunity_Attainment__c}%
+																	</div>
+																</td>
+															</tr>
+														</template>
+													</tbody>
+													<!-- Summary Row -->
+													<template if:true={record.employeeDetails.length}>
+														<tr key={total} class='total-row'>
+															<td colspan="3" class="slds-text-align_right">
+																Summary
+															</td>
+															<td class="slds-text-align_right">
+																<lightning-formatted-number value={totalQuota}>
+																</lightning-formatted-number>
+															</td>
+															<td class="slds-text-align_right">
+																<lightning-formatted-number value={totalActuals}
+																	minimum-fraction-digits="0">
+																</lightning-formatted-number>
+															</td>
+															<td class={getClassForAttainment}>
+																<lightning-formatted-number value={totalAttainment}>
+																</lightning-formatted-number>%
+															</td>
+														</tr>
+													</template>
+												</table>
+											</div>
+										</template>
+										<template if:false={record.employeeDetails}>
+											<p>No employee details available.</p>
+										</template>
+									</lightning-tab>
+								</template>
+							</template>
+							<template for:each={tabLabels} for:item="tabLabel">
+								<lightning-tab key={tabLabel} label={tabLabel}>
+									<div>
+										<!-- Display employee details here -->
+										<div class="slds-flexbox">
+											<table class="slds-table slds-table_bordered slds-table_cell-buffer">
+												<thead>
+													<tr class="slds-text-title">
+														<th scope="col" class="slds-text-align_center">Employee</th>
+														<th scope="col" class="slds-text-align_center">Role</th>
+														<th scope="col" class="slds-text-align_center">Currency</th>
+
+														<th scope="col" class="slds-text-align_center">Aspiration
+														</th>
+														<th scope="col" class="slds-text-align_center">Actuals</th>
+														<th scope="col" class="slds-text-align_center">Attain(%)</th>
+													</tr>
+												</thead>
+												<tbody>
+													<!-- Iterate over each financialPlanningRecord -->
+													<template for:each={financialPlanningRecords} for:item="record"
+														key={record.Id} for:index="outerindex">
+														<!-- Iterate over each employeeDetail within the record -->
+														<template for:each={record.employeeDetails}
+															for:item="employeeDetail" key={employeeDetail.Id}
+															for:index="innerindex">
+															<tr key={employeeDetail.Id}>
+																<td>
+																	<div class="wrap-text">
+																		<h1 data-id={record.Id} class="larger5-font">
+																			{employeeDetail.Employees__r.Name}
+																		</h1>
+																	</div>
+																</td>
+																<td class="slds-text-align_left">
+																	{employeeDetail.Role__r.Name}
+																</td>
+																<td class="slds-text-align_center">
+																	{employeeDetail.Currency__c}
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number
+																		value={employeeDetail.Yearly_Aspiration_Goals__c}
+																		minimum-fraction-digits="0">
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<a>
+																		<lightning-formatted-number
+																			value={employeeDetail.Yearly_Opportunity_Actuals__c}
+																			minimum-fraction-digits="0"
+																			data-index={outerindex} data-id={innerindex}
+																			data-msg="Year" onclick={getOpportunity}>
+																		</lightning-formatted-number>
+																	</a>
+																</td>
+																<td class="slds-text-align_right1">
+																	<div
+																		class={employeeDetail.Yearly_Aspiration_Attainment_color__c}>
+																		{employeeDetail.Yearly_Aspiration_Attainment__c}%
+																	</div>
+																</td>
+															</tr>
+														</template>
+													</template>
+												</tbody>
+												<!-- Summary Row -->
+												<tr key={total} class='total-row'>
+													<td colspan="3" class="slds-text-align_center1">Summary</td>
+
+													<td class="slds-text-align_right">
+														<lightning-formatted-number value={totalyearlyaspiration}>
+														</lightning-formatted-number>
+													</td>
+													<td class="slds-text-align_right">
+														<lightning-formatted-number value={totalActuals}
+															minimum-fraction-digits="0">
+														</lightning-formatted-number>
+													</td>
+													<td class={getClassForAspirationAttainment}>
+														<lightning-formatted-number value={totalAspirationAttainment}>
+														</lightning-formatted-number>%
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</lightning-tab>
+							</template>
+						</lightning-tabset>
+					</lightning-tab>
+				</template>
+
+				<!-- Quarterly Attainment Review Tab -->
+				<template if:true={selectedYear}>
+					<lightning-tab class="parent-tab" label="Sales-Attainment-Quarterly">
+						<lightning-tabset>
+							<template for:each={financialPlanningRecords} for:item="record" for:index="outerindex">
+								<template if:true={record.showFinancialPlanningTab}>
+									<lightning-tab key={record.Id} label={record.Name} onactive={handleTabSelection}>
+										<!-- Employee Tab -->
+										<template if:true={record.employeeDetails}>
+											<!-- Display employee details here -->
+											<div class="slds-scrollable_x">
+												<table class="slds-table slds-table_bordered slds-table_cell-buffer">
+													<thead>
+														<tr>
+															<th scope="col" colspan="3"></th>
+															<th colspan="3" class="slds-text-align_center">
+																Q 1 - {selectedYear}</th>
+															<th colspan="3" class="slds-text-align_center">
+																Q 2 - {selectedYear}</th>
+															<th colspan="3" class="slds-text-align_center">
+																Q 3 - {selectedYear}</th>
+															<th colspan="3" class="slds-text-align_center">
+																Q 4 - {selectedYear}</th>
+														</tr>
+														<tr class="slds-text-title">
+															<th scope="col" class="slds-text-align_center">Employee
+															</th>
+															<th scope="col" class="slds-text-align_center"> Role</th>
+															<th scope="col" class="slds-text-align_center">Currency</th>
+															<template if:true={selectedTabLabelContainsQuota}>
+																<th scope="col" class="slds-text-align_center">Quota
+																</th>
+															</template>
+															<template if:true={selectedTabLabelContainsBudget}>
+																<th scope="col" class="slds-text-align_center">Budget
+																</th>
+															</template>
+															<template if:true={selectedTabLabelContainsAspiration}>
+																<th scope="col" class="slds-text-align_center">
+																	Aspiration
+																</th>
+															</template>
+															<th scope="col" class="slds-text-align_center">Actuals</th>
+															<th scope="col" class="slds-text-align_center">Attain(%)
+															</th>
+															<template if:true={selectedTabLabelContainsQuota}>
+																<th scope="col" class="slds-text-align_center">Quota
+																</th>
+															</template>
+															<template if:true={selectedTabLabelContainsBudget}>
+																<th scope="col" class="slds-text-align_center">Budget
+																</th>
+															</template>
+															<template if:true={selectedTabLabelContainsAspiration}>
+																<th scope="col" class="slds-text-align_center">
+																	Aspiration
+																</th>
+															</template>
+															<th scope="col" class="slds-text-align_center">Actuals</th>
+															<th scope="col" class="slds-text-align_center">Attain(%)
+															</th>
+															<template if:true={selectedTabLabelContainsQuota}>
+																<th scope="col" class="slds-text-align_center">Quota
+																</th>
+															</template>
+															<template if:true={selectedTabLabelContainsBudget}>
+																<th scope="col" class="slds-text-align_center">Budget
+																</th>
+															</template>
+															<template if:true={selectedTabLabelContainsAspiration}>
+																<th scope="col" class="slds-text-align_center">
+																	Aspiration
+																</th>
+															</template>
+															<th scope="col" class="slds-text-align_center">Actuals</th>
+															<th scope="col" class="slds-text-align_center">Attain(%)
+															</th>
+															<template if:true={selectedTabLabelContainsQuota}>
+																<th scope="col" class="slds-text-align_center">Quota
+																</th>
+															</template>
+															<template if:true={selectedTabLabelContainsBudget}>
+																<th scope="col" class="slds-text-align_center">Budget
+																</th>
+															</template>
+															<template if:true={selectedTabLabelContainsAspiration}>
+																<th scope="col" class="slds-text-align_center">
+																	Aspiration
+																</th>
+															</template>
+															<th scope="col" class="slds-text-align_center">Actuals</th>
+															<th scope="col" class="slds-text-align_center">Attain(%)
+															</th>
+														</tr>
+													</thead>
+													<tbody>
+														<template for:each={record.employeeDetails} for:item="employee"
+															for:index="innerindex">
+															<tr key={employee.Id}>
+																<td class="slds-text-align_left">
+																	<div class="wrap-text">
+																		<h1 data-id={employee.Id}
+																			style="font-size:12px;">
+																			<template if:true={employee.Employees__r}>
+																				{employee.Employees__r.Name}
+																			</template>
+																		</h1>
+																	</div>
+																</td>
+																<td class="slds-text-align_left">
+																	{employee.Role__r.Name}
+																</td>
+																<td class="slds-text-align_center">
+																	{employee.Currency__c}</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number
+																		value={employee.Q1_Target__c}>
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<a>
+																		<lightning-formatted-number
+																			data-index={outerindex} data-id={innerindex}
+																			data-msg="Quater" name="Q1"
+																			value={employee.Q1_Opportunity_Actuals__c}
+																			minimum-fraction-digits="0"
+																			onclick={getOpportunity}>
+																		</lightning-formatted-number>
+																	</a>
+																</td>
+																<td class="slds-text-align_right1">
+																	<div class={employee.Q1_Opp_Attainment_Colour__c}>
+																		{employee.Q1_Opportunity_Attainments__c}%
+																	</div>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number
+																		value={employee.Q2_Target__c}>
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<a>
+																		<lightning-formatted-number
+																			value={employee.Q2_Opportunity_Actuals__c}
+																			minimum-fraction-digits="0"
+																			data-index={outerindex} data-id={innerindex}
+																			data-msg="Quater" name="Q2"
+																			onclick={getOpportunity}>
+																		</lightning-formatted-number>
+																	</a>
+																</td>
+																<td class="slds-text-align_right1">
+																	<div class={employee.Q2_Opp_Attainment_Colour__c}>
+																		{employee.Q2_Opportunity_Attainments__c}%
+																	</div>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number
+																		value={employee.Q3_Target__c}
+																		data-index={outerindex} data-id={innerindex}
+																		data-msg="Quater" name="Q3"
+																		onclick={getOpportunity}>
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<a>
+																		<lightning-formatted-number
+																			value={employee.Q3_Opportunity_Actuals__c}
+																			minimum-fraction-digits="0">
+																		</lightning-formatted-number>
+																	</a>
+																</td>
+																<td class="slds-text-align_right1">
+																	<div class={employee.Q3_Opp_Attainment_Colour__c}>
+																		{employee.Q3_Opportunity_Attainments__c}%
+																	</div>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number
+																		value={employee.Q4_Target__c}>
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<a>
+																		<lightning-formatted-number
+																			value={employee.Q4_Opportunity_Actuals__c}
+																			minimum-fraction-digits="0"
+																			data-index={outerindex} data-id={innerindex}
+																			data-msg="Quater" name="Q4"
+																			onclick={getOpportunity}>
+																		</lightning-formatted-number>
+																	</a>
+																</td>
+																<td class="slds-text-align_right1">
+																	<div class={employee.Q4_Opp_Attainment_Colour__c}>
+																		{employee.Q4_Opportunity_Attainments__c}%
+																	</div>
+																</td>
+															</tr>
+														</template>
+														<template if:true={record.employeeDetails.length}>
+															<tr key={calculateQuarterlyTotals} class='total-row'>
+
+																<td colspan="3" class="slds-text-align_center1">Summary
+																</td>
+
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number value={totalQuotaQ1}
+																		minimum-fraction-digits="0">
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number value={totalActualsQ1}
+																		minimum-fraction-digits="0">
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number
+																		class={getClassForAttainment1}
+																		value={totalAttainment1}>
+																	</lightning-formatted-number>
+																	<span class={getClassForAttainment1}>%</span>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number value={totalQuotaQ2}
+																		minimum-fraction-digits="0">
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number value={totalActualsQ2}
+																		minimum-fraction-digits="0">
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number
+																		class={getClassForAttainment2}
+																		value={totalAttainment2}>
+																	</lightning-formatted-number>
+																	<span class={getClassForAttainment2}>%</span>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number value={totalQuotaQ3}
+																		minimum-fraction-digits="0">
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number value={totalActualsQ3}
+																		minimum-fraction-digits="0">
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number
+																		class={getClassForAttainment3}
+																		value={totalAttainment3}>
+																	</lightning-formatted-number>
+																	<span class={getClassForAttainment3}>%</span>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number value={totalQuotaQ4}
+																		minimum-fraction-digits="0">
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number value={totalActualsQ4}
+																		minimum-fraction-digits="0">
+																	</lightning-formatted-number>
+																</td>
+																<td class="slds-text-align_right">
+																	<lightning-formatted-number
+																		class={getClassForAttainment4}
+																		value={totalAttainment4}
+																		minimum-fraction-digits="0">
+																	</lightning-formatted-number>
+																	<span class={getClassForAttainment4}>%</span>
+																</td>
+															</tr>
+														</template>
+													</tbody>
+												</table>
+											</div>
+										</template>
+									</lightning-tab>
+								</template>
+							</template>
+							<template for:each={tabLabels} for:item="tabLabel">
+								<lightning-tab key={tabLabel} label={tabLabel}>
+									<div class="slds-scrollable_x">
+										<table class="slds-table slds-table_bordered slds-table_cell-buffer">
+											<thead>
+												<tr>
+													<th scope="col" colspan="3"></th>
+													<th colspan="3" class="slds-text-align_center">
+														Q 1 - {selectedYear}
+													</th>
+													<th colspan="3" class="slds-text-align_center">
+														Q 2 - {selectedYear}
+													</th>
+													<th colspan="3" class="slds-text-align_center">
+														Q 3 - {selectedYear}
+													</th>
+													<th colspan="3" class="slds-text-align_center">
+														Q 4 - {selectedYear}
+													</th>
+												</tr>
+												<tr class="slds-text-title">
+													<th scope="col" class="slds-text-align_center">Employee</th>
+													<th scope="col" class="slds-text-align_center">Role</th>
+													<th scope="col" class="slds-text-align_center">Currency</th>
+													<th scope="col" class="slds-text-align_center">Aspiration</th>
+													<th scope="col" class="slds-text-align_center">Actuals</th>
+													<th scope="col" class="slds-text-align_center">Attain(%)</th>
+													<th scope="col" class="slds-text-align_center">Aspiration </th>
+													<th scope="col" class="slds-text-align_center">Actuals</th>
+													<th scope="col" class="slds-text-align_center">Attain(%)</th>
+													<th scope="col" class="slds-text-align_center">Aspiration </th>
+													<th scope="col" class="slds-text-align_center">Actuals</th>
+													<th scope="col" class="slds-text-align_center">Attain(%)</th>
+													<th scope="col" class="slds-text-align_center">Aspiration</th>
+													<th scope="col" class="slds-text-align_center">Actuals</th>
+													<th scope="col" class="slds-text-align_center">Attain(%)</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<template for:each={financialPlanningRecords} for:item="record"
+													for:index="outerindex">
+													<template if:true={record.showFinancialPlanningTab}>
+														<!-- Add null check for record.employeeDetails -->
+														<template if:true={record.employeeDetails}>
+															<template for:each={record.employeeDetails}
+																for:item="employee" for:index="innerindex">
+																<tr key={employee.Id}>
+																	<td class="slds-text-align_left">
+																		<div class="wrap-text">
+																			<h1 data-id={employee.Id}
+																				style="font-size:12px;">
+																				<template
+																					if:true={employee.Employees__r}>
+																					{employee.Employees__r.Name}
+																				</template>
+																			</h1>
+																		</div>
+																	</td>
+																	<td class="slds-text-align_left">
+																		{employee.Role__r.Name}
+																	</td>
+																	<td class="slds-text-align_center">
+																		{employee.Currency__c}
+																	</td>
+
+																	<td class="slds-text-align_right">
+																		<lightning-formatted-number
+																			value={employee.Q1_Aspiration_Goals__c}
+																			minimum-fraction-digits="0">
+																		</lightning-formatted-number>
+																	</td>
+																	<td class="slds-text-align_right">
+																		<a>
+																			<lightning-formatted-number
+																				value={employee.Q1_Opportunity_Actuals__c}
+																				data-index={outerindex}
+																				data-id={innerindex} data-msg="Quater"
+																				name="Q1" onclick={getOpportunity}>
+																			</lightning-formatted-number>
+																		</a>
+																	</td>
+																	<td class="slds-text-align_right1">
+																		<div
+																			class={employee.Q1_Aspiration_Attainment_Colour__c}>
+																			{employee.Q1_Aspiration_Attainment__c}%
+																		</div>
+																	</td>
+																	<td class="slds-text-align_right">
+																		<lightning-formatted-number
+																			value={employee.Q2_Aspiration_Goals__c}
+																			minimum-fraction-digits="0">
+																		</lightning-formatted-number>
+																	</td>
+																	<td class="slds-text-align_right">
+																		<a>
+																			<lightning-formatted-number
+																				value={employee.Q2_Opportunity_Actuals__c}
+																				data-index={outerindex}
+																				data-id={innerindex} data-msg="Quater"
+																				name="Q2" onclick={getOpportunity}>
+																			</lightning-formatted-number>
+																		</a>
+																	</td>
+																	<td class="slds-text-align_right1">
+																		<div
+																			class={employee.Q1_Aspiration_Attainment_Colour__c}>
+																			{employee.Q2_Aspiration_Attainment__c}%
+																		</div>
+																	</td>
+																	<td class="slds-text-align_right">
+																		<lightning-formatted-number
+																			value={employee.Q3_Aspiration_Goals__c}
+																			minimum-fraction-digits="0">
+																		</lightning-formatted-number>
+																	</td>
+																	<td class="slds-text-align_right">
+																		<a>
+																			<lightning-formatted-number
+																				value={employee.Q3_Opportunity_Actuals__c}
+																				data-index={outerindex}
+																				data-id={innerindex} data-msg="Quater"
+																				name="Q3" onclick={getOpportunity}>
+																			</lightning-formatted-number>
+																		</a>
+																	</td>
+																	<td class="slds-text-align_right1">
+																		<div
+																			class={employee.Q3_Aspiration_Attainment_Colour__c}>
+																			{employee.Q3_Aspiration_Attainment__c}%
+																		</div>
+																	</td>
+																	<td class="slds-text-align_right">
+																		<lightning-formatted-number
+																			value={employee.Q4_Aspiration_Goals__c}
+																			minimum-fraction-digits="0">
+																		</lightning-formatted-number>
+																	</td>
+																	<td class="slds-text-align_right">
+																		<a>
+																			<lightning-formatted-number
+																				value={employee.Q4_Opportunity_Actuals__c}
+																				data-index={outerindex}
+																				data-id={innerindex} data-msg="Quater"
+																				name="Q4" onclick={getOpportunity}>
+																			</lightning-formatted-number>
+																		</a>
+																	</td>
+																	<td class="slds-text-align_right1">
+																		<div>
+																			class={employee.Q4_Aspiration_Attainment_Colour__c}>
+																			{employee.Q4_Aspiration_Attainment__c}%
+																		</div>
+																	</td>
+																</tr>
+															</template>
+														</template>
+													</template>
+												</template>
+												<!-- Total row -->
+												<tr key={calculateQuarterlyAspirations} class='total-row'>
+													<td colspan="3" class="slds-text-align_center">Summary</td>
+													<!-- <td class="slds-text-align_right">
+														<lightning-formatted-number value={totalQuotaQ1}
+															minimum-fraction-digits="0"></lightning-formatted-number>
+													</td> -->
+													<td class="slds-text-align_right">
+														<lightning-formatted-number value={q1Aspiration}
+															minimum-fraction-digits="0"></lightning-formatted-number>
+													</td>
+													<td class="slds-text-align_right">
+														<lightning-formatted-number value={totalActualsQ1}
+															minimum-fraction-digits="0"></lightning-formatted-number>
+													</td>
+													<td class="slds-text-align_right">
+														<lightning-formatted-number
+															class={getClassForAspirationAttainment1}
+															value={totalAspirationAttainment1}>
+														</lightning-formatted-number>
+														<span class={getClassForAspirationAttainment1}>%</span>
+													</td>
+													<td class="slds-text-align_right">
+														<lightning-formatted-number value={q2Aspiration}
+															minimum-fraction-digits="0"></lightning-formatted-number>
+													</td>
+													<td class="slds-text-align_right">
+														<lightning-formatted-number value={totalActualsQ2}
+															minimum-fraction-digits="0"></lightning-formatted-number>
+													</td>
+													<td class="slds-text-align_right">
+														<lightning-formatted-number
+															class={getClassForAspirationAttainment2}
+															value={totalAspirationAttainment2}>
+														</lightning-formatted-number>
+														<span class={getClassForAspirationAttainment2}>%</span>
+													</td>
+													<td class="slds-text-align_right">
+														<lightning-formatted-number value={q3Aspiration}
+															minimum-fraction-digits="0"></lightning-formatted-number>
+													</td>
+													<td class="slds-text-align_right">
+														<lightning-formatted-number value={totalActualsQ3}
+															minimum-fraction-digits="0"></lightning-formatted-number>
+													</td>
+													<td class="slds-text-align_right">
+														<lightning-formatted-number
+															class={getClassForAspirationAttainment3}
+															value={totalAspirationAttainment3}>
+														</lightning-formatted-number>
+														<span class={getClassForAspirationAttainment3}>%</span>
+													</td>
+													<td class="slds-text-align_right">
+														<lightning-formatted-number value={q4Aspiration}
+															minimum-fraction-digits="0"></lightning-formatted-number>
+													</td>
+													<td class="slds-text-align_right">
+														<lightning-formatted-number value={totalActualsQ4}
+															minimum-fraction-digits="0"></lightning-formatted-number>
+													</td>
+													<td class="slds-text-align_right">
+														<lightning-formatted-number
+															class={getClassForAspirationAttainment4}
+															value={totalAspirationAttainment4}>
+														</lightning-formatted-number>
+														<span class={getClassForAspirationAttainment4}>%</span>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</lightning-tab>
+							</template>
+						</lightning-tabset>
+					</lightning-tab>
+				</template>
+				<template if:true={isCheckboxHidden}>
+					<div class="slds-hide">
+						<lightning-input type="checkbox" checked={isRevenueReview} disabled
+							class="transparent-checkbox">
+						</lightning-input>
+					</div>
+				</template>
+				<template if:false={isCheckboxHidden}>
+					<lightning-input type="checkbox" checked={isRevenueReview} disabled class="transparent-checkbox">
+					</lightning-input>
+				</template>
+
+				<template if:true={isRevenueReview}>
+					<template if:true={selectedYear}>
+						<lightning-tab class="parent-tab" label="Revenue-Attainment-Yearly">
+							<div class="abbreviations-container">
+								<!--<p><strong>Abbreviations:</strong></p>-->
+								<ul style="list-style-type: none; padding-left: 0; margin-top: 0;"
+									class="slds-list_horizontal">
+									<li><strong> ECRB:</strong> Existing Customer Repeat Business</li>
+									<li><strong>&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;ECNB:</strong> Existing Customer
+										New Business</li>
+									<li><strong>&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;NCNB:</strong> New Customer New
+										Business</li>
+								</ul>
+							</div>
+							<lightning-tabset>
+								<template for:each={financialPlanningRecords} for:item="record" for:index="outerindex">
+									<template if:true={record.showFinancialPlanningTab}>
+										<lightning-tab key={record.Id} label={record.Name}
+											onactive={handleTabSelection}>
+											<!-- Employee Tab -->
+											<template if:true={record.employeeDetails}>
+												<!-- Display employee details here -->
+												<div class="slds-scrollable_x">
+													<div class="container">
+														<!-- Table content -->
+														<div class="table-container">
+															<table
+																class="slds-table slds-table_bordered slds-table_cell-buffer">
+																<thead>
+																	<tr class="slds-text-title">
+																		<th scope="col" class="slds-text-align_center">
+																			Employee
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			Currency
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			Fiscal
+																			Period</th>
+																		<th scope="col" class="slds-text-align_center">
+																			Target
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			Actuals
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			Attainment</th>
+																		<th scope="col" class="slds-text-align_center">
+																			ECRB $</th>
+																		<th scope="col" class="slds-text-align_center">
+																			ECRB %
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			ECNB $</th>
+																		<th scope="col" class="slds-text-align_center">
+																			ECNB %
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			NCNB $</th>
+																		<th scope="col" class="slds-text-align_center">
+																			NCNB %
+																		</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<template for:each={record.employeeDetails}
+																		for:item="employee" for:index="innerindex">
+																		<tr key={employee.Id}>
+																			<td class="slds-text-align_center">
+																				{employee.Employees__r.Name}</td>
+																			<td class="slds-text-align_center">
+																				{employee.Currency__c}</td>
+																			<td class="slds-text-align_center">
+																				{selectedYear}
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Total_Billing_Target__c}
+																					minimum-fraction-digits="0">
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<a>
+																					<lightning-formatted-number
+																						value={employee.Billing_Yearly_Actual__c}
+																						minimum-fraction-digits="0"
+																						data-index={outerindex}
+																						data-id={innerindex}
+																						data-msg="Year"
+																						onclick={getInvoice}>
+																					</lightning-formatted-number>
+																				</a>
+																			</td>
+																			<td class="slds-text-align_right1">
+																				<div
+																					class={employee.Yearly_Attainment_color__c}>
+																					<!-- Check if Yearly_Billing_Attainment__c is not null, if null, display 0 -->
+																					<template
+																						if:true={employee.Yearly_Billing_Attainment__c}>
+																						<lightning-formatted-number
+																							value={employee.Yearly_Billing_Attainment__c}>
+																						</lightning-formatted-number>%
+																					</template>
+																					<template
+																						if:false={employee.Yearly_Billing_Attainment__c}>
+																						<span class="red-text">0%</span>
+																					</template>
+																				</div>
+																			</td>
+
+																			<td class="slds-text-align_right1">
+																				<lightning-formatted-number
+																					value={employee.ECRB_total__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right1">
+																				<lightning-formatted-number
+																					value={employee.ECRB_percent__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																			<td class="slds-text-align_right1">
+																				<lightning-formatted-number
+																					value={employee.ECNB_total__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right1">
+																				<lightning-formatted-number
+																					value={employee.ECNB_percent__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																			<td class="slds-text-align_right1">
+																				<lightning-formatted-number
+																					value={employee.NCNB_total__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right1">
+																				<lightning-formatted-number
+																					value={employee.NCNB_percent__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																		</tr>
+																	</template>
+																</tbody>
+																<!-- Summary Row -->
+																<template if:true={record.employeeDetails.length}>
+																	<tr key={total} class='total-row'>
+																		<td colspan="3" class="slds-text-align_center1">
+																			Summary
+																		</td>
+																		<td class="slds-text-align_right">
+																			<lightning-formatted-number
+																				value={totalQuotabilling}>
+																			</lightning-formatted-number>
+																		</td>
+																		<td class="slds-text-align_right">
+																			<lightning-formatted-number
+																				value={totalActualsbillings}>
+																			</lightning-formatted-number>
+																		</td>
+																		<td class={getClassForAttainmentbilling}>
+																			<lightning-formatted-number
+																				value={totalAttainmentbillings}>
+																			</lightning-formatted-number>%
+																		</td>
+																		<td class="slds-text-align_right">
+																			<lightning-formatted-number
+																				value={totalecrb}>
+																			</lightning-formatted-number>
+																		</td>
+																		<td class={calculateTotalsforbillings}>
+																			<lightning-formatted-number
+																				value={ecrbattainment}>
+																			</lightning-formatted-number>%
+																		</td>
+																		<td class="slds-text-align_right">
+																			<lightning-formatted-number
+																				value={totalecnb}>
+																			</lightning-formatted-number>
+																		</td>
+																		<td class="slds-text-align_right">
+																			<lightning-formatted-number
+																				value={ecnbattainment}>
+																			</lightning-formatted-number>%
+																		</td>
+																		<td class="slds-text-align_right">
+																			<lightning-formatted-number
+																				value={totalncnb}>
+																			</lightning-formatted-number>
+																		</td>
+																		<td class="slds-text-align_right">
+																			<lightning-formatted-number
+																				value={ncnbattainment}>
+																			</lightning-formatted-number>%
+																		</td>
+																	</tr>
+																</template>
+															</table>
+														</div>
+
+													</div>
+												</div>
+											</template>
+										</lightning-tab>
+									</template>
+								</template>
+								<!--<div class="abbreviations-container">
+									<p><strong>Abbreviations:</strong></p>
+									<ul style="list-style-type: none; padding-left: 0; margin-top: 0;">
+										<li><strong>&#8226; ECRB:</strong> Existing Customer Repeat Business</li>
+										<li><strong>&#8226; ECNB:</strong> Existing Customer New Business</li>
+										<li><strong>&#8226; NCNB:</strong> New Customer New Business</li>
+									</ul>
+								</div>-->
+
+							</lightning-tabset>
+						</lightning-tab>
+
+					</template>
+				</template>
+
+				<!-- Revenue Review Tab -->
+				<template if:true={isRevenueReview}>
+					<template if:true={selectedYear}>
+						<lightning-tab class="parent-tab" label="Revenue-Attainment-Quarterly">
+							<div class="abbreviations-container">
+								<!--<p><strong>Abbreviations:</strong></p>-->
+								<ul style="list-style-type: none; padding-left: 0; margin-top: 0;"
+									class="slds-list_horizontal">
+									<li><strong> ECRB:</strong> Existing Customer Repeat Business</li>
+									<li><strong>&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;ECNB:</strong> Existing Customer
+										New Business</li>
+									<li><strong>&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;NCNB:</strong> New Customer New
+										Business</li>
+								</ul>
+							</div>
+							<lightning-tabset>
+								<template for:each={financialPlanningRecords} for:item="record" for:index="outerindex">
+									<template if:true={record.showFinancialPlanningTab}>
+										<lightning-tab key={record.Id} label={record.Name}
+											onactive={handleTabSelection}>
+											<!-- Employee Tab -->
+											<template if:true={record.employeeDetails}>
+												<!-- Display employee details here -->
+												<div class="slds-scrollable_x">
+													<div class="container">
+														<!-- Table content -->
+														<div class="table-container">
+															<table
+																class="slds-table slds-table_bordered slds-table_cell-buffer">
+																<thead>
+																	<tr class="slds-text-title">
+																		<th scope="col" class="slds-text-align_center">
+																			Employee
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			Currency
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			Fiscal
+																			Period
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			Target
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			Actuals
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			Attainment
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			ECRB $
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			ECRB %
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			ECNB $
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			ECNB %
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			NCNB $
+																		</th>
+																		<th scope="col" class="slds-text-align_center">
+																			NCNB %
+																		</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<!-- Example row data, replace it with dynamic data as per your requirement -->
+																	<template for:each={record.employeeDetails}
+																		for:item="employee" for:index="innerindex">
+																		<tr key={employee.Id}>
+																			<td rowspan="4"
+																				class="slds-text-align_left">
+																				<div class="wrap-text">
+																					<h1 data-id={employee.Id}
+																						style="font-size:12px;">
+																						<template
+																							if:true={employee.Employees__r}>
+																							{employee.Employees__r.Name}
+																						</template>
+																					</h1>
+																				</div>
+																			</td>
+																			<td rowspan="4"
+																				class="slds-text-align_center">
+																				{employee.Currency__c}</td>
+																			<td class="slds-text-align_center">Q 1 -
+																				{selectedYear}</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q1_Billing_Target__c}
+																					minimum-fraction-digits="0">
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<a>
+																					<lightning-formatted-number
+																						value={employee.Q1_Revenue_Attainment__c}
+																						minimum-fraction-digits="0"
+																						data-index={outerindex}
+																						data-id={innerindex}
+																						data-msg="Quater" name="Q1"
+																						onclick={getInvoice}>
+																					</lightning-formatted-number>
+																				</a>
+																			</td>
+																			<!-- <td class="slds-text-align_right1">
+																		<div
+																			class={employee.Q1_Attainment_del__c}>
+																			{employee.Q1_Percent__c}%
+																		</div> 
+																		</td>-->
+
+																			<td class="slds-text-align_right1">
+																				<div class={employee.Q1_Attainment__c}>
+																					<!-- Check if Yearly_Billing_Attainment__c is not null, if null, display 0 -->
+																					<template
+																						if:true={employee.Q1_Percent__c}>
+																						<lightning-formatted-number
+																							value={employee.Q1_Percent__c}>
+																						</lightning-formatted-number>%
+																					</template>
+																					<template
+																						if:false={employee.Q1_Percent__c}>
+																						<span class="red-text">0%</span>
+																					</template>
+																				</div>
+																			</td>
+
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q1_Exs_Renewal__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q1ECRB__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q1_Exs_New_Business__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q1ECNB__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q1_New_Cust_New_Business__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q1NCNB__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																		</tr>
+																		<tr key={employee.Id}>
+																			<td class="slds-text-align_center">Q 2 -
+																				{selectedYear}</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q2_Billing_Target__c}
+																					minimum-fraction-digits="0">
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<a>
+																					<lightning-formatted-number
+																						value={employee.Q2_Revenue_Attainment__c}
+																						minimum-fraction-digits="0"
+																						data-index={outerindex}
+																						data-id={innerindex}
+																						data-msg="Quater" name="Q2"
+																						onclick={getInvoice}>
+																					</lightning-formatted-number>
+																				</a>
+																			</td>
+																			<td class="slds-text-align_right1">
+
+																				<div class={employee.Q2_Attainment__c}>
+
+																					<!-- Check if Yearly_Billing_Attainment__c is not null, if null, display 0 -->
+																					<template
+																						if:true={employee.Q2_Percentage__c}>
+																						<lightning-formatted-number
+																							value={employee.Q2_Percentage__c}>
+																						</lightning-formatted-number>%
+																					</template>
+
+																					<template
+																						if:false={employee.Q2_Percentage__c}>
+																						<span class="red-text">0%</span>
+																					</template>
+																				</div>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q2_Exs_Renewal__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q2ECRB__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q2_Exs_New_Business__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q2ECNB__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q2_New_Cust_New_Business__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q2NCNB__c}>
+
+																				</lightning-formatted-number>%
+																			</td>
+																		</tr>
+																		<tr key={employee.Id}>
+																			<td class="slds-text-align_center">Q 3 -
+																				{selectedYear}</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q3_Billing_Target__c}
+																					minimum-fraction-digits="0">
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<a>
+																					<lightning-formatted-number
+																						value={employee.Q3_Revenue_Attainment__c}
+																						minimum-fraction-digits="0"
+																						data-index={outerindex}
+																						data-id={innerindex}
+																						data-msg="Quater" name="Q3"
+																						onclick={getInvoice}>
+																					</lightning-formatted-number>
+																				</a>
+																			</td>
+																			<td class="slds-text-align_right1">
+
+																				<div
+																					class={employee.Q3_attainment_color__c}>
+
+																					<!-- Check if Yearly_Billing_Attainment__c is not null, if null, display 0 -->
+																					<template
+																						if:true={employee.Q3_Attainment__c}>
+																						<lightning-formatted-number
+																							value={employee.Q3_Attainment__c}>
+																						</lightning-formatted-number>%
+																					</template>
+																					<template
+																						if:false={employee.Q3_Attainmnet__c}>
+																						<span class="red-text">0%</span>
+																					</template>
+
+																				</div>
+
+
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q3_Exs_Renewal__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q3ECRB__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q3_Exs_New_Business__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q3ECNB__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q3_New_Cust_New_Business__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q3NCNB__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																		</tr>
+																		<tr key={employee.Id}>
+																			<td class="slds-text-align_center">Q 4 -
+																				{selectedYear}</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q4_Billing_Target__c}
+																					minimum-fraction-digits="0">
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<a>
+																					<lightning-formatted-number
+																						value={employee.Q4_Revenue_Attainment__c}
+																						data-index={outerindex}
+																						data-id={innerindex}
+																						data-msg="Quater" name="Q4"
+																						onclick={getInvoice}>
+																					</lightning-formatted-number>
+																				</a>
+																			</td>
+
+																			<td class="slds-text-align_right1">
+
+
+
+																				<div
+																					class={employee.Q4_Attainment_color_del__c}>
+
+																					<!-- Check if Yearly_Billing_Attainment__c is not null, if null, display 0 -->
+																					<template
+																						if:true={employee.Q4_Attainmnet__c}>
+																						<lightning-formatted-number
+																							value={employee.Q4_Attainmnet__c}>
+																						</lightning-formatted-number>%
+																					</template>
+																					<template
+																						if:false={employee.Q4_Attainmnet__c}>
+																						<span class="red-text">0%</span>
+																					</template>
+																				</div>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q4_Exs_Renewal__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q4ECRB__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q4_Exs_New_Business__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q4ECNB__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q4_New_Cust_New_Business__c}>
+																				</lightning-formatted-number>
+																			</td>
+																			<td class="slds-text-align_right">
+																				<lightning-formatted-number
+																					value={employee.Q4NCNB__c}>
+																				</lightning-formatted-number>%
+																			</td>
+																		</tr>
+																	</template>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+
+											</template>
+										</lightning-tab>
+									</template>
+								</template>
+								<!--<div class="abbreviations-container">
+									<p><strong>Abbreviations:</strong></p>
+									<ul style="list-style-type: none; padding-left: 0; margin-top: 0;">
+										<li><strong>&#8226; ECRB:</strong> Existing Customer Repeat Business</li>
+										<li><strong>&#8226; ECNB:</strong> Existing Customer New Business</li>
+										<li><strong>&#8226; NCNB:</strong> New Customer New Business</li>
+									</ul>
+								</div>-->
+
+
+							</lightning-tabset>
+						</lightning-tab>
+					</template>
+
+					<template if:false={isEligibleForQuota}>
+						<!-- Display a message or alternative content when not eligible -->
+						<div class="slds-m-around_larger">
+							<p class="larger1-font">You do not have access to this feature.</p>
+						</div>
+					</template>
+				</template>
+				<!------------------Forecast------------------------------->
+				<template if:false={isEligibleForForecast}>
+					<lightning-tab class="parent-tab" label="Forecast Visibility Yearly">
+
+					</lightning-tab>
+				</template>
+			</lightning-tabset>
+
+			<template if:true={showOpportunities}>
+				<div class="slds-box">
+					<div>
+						<lightning-button variant="brand" label="Hide Table" title="Primary action"
+							onclick={handleClickHide} class="slds-float_right slds-m-left_x-small"></lightning-button>
+
+					</div><br/><br/>
+					<div>
+						<lightning-datatable data={opportunities} columns={columns} key-field="id" sorted-by={sortBy}
+							sorted-direction={sortDirection} onsort={doSorting} hide-checkbox-column="true" name="opt">
+						</lightning-datatable>
+					</div>
+				</div>
+			</template>
+			<template if:true={showInvoice}>
+				<div class="slds-box">
+					<div>
+						<lightning-button variant="brand" label="Hide Table" title="Primary action"
+							onclick={handleClickHideInvoice} class="slds-float_right slds-m-left_x-small">
+						</lightning-button>
+
+					</div><br/><br/>
+					<div>
+						<lightning-datatable data={invoiceList} columns={columnsInvoice} key-field="id"
+							sorted-by={sortBy} sorted-direction={sortDirection} onsort={doSorting}
+							hide-checkbox-column="true" name="inv">
+						</lightning-datatable>
+					</div>
+				</div>
+			</template>
+		</lightning-card>
+	</template>
+</template>

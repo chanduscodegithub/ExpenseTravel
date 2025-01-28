@@ -1,0 +1,212 @@
+<template>
+	<lightning-card>
+		<div if:true={isLoaded} class="spinner">
+			<lightning-spinner alternative-text="Loading" variant="brand" size="large">
+			</lightning-spinner>
+		</div>
+		<lightning-tabset variant="standard" active-tab-value={defaultTabValue}>
+			<lightning-tab label="Goal Setting Reportees" value="one">
+				<template if:true={reportingData}>
+					<lightning-accordion class="" onsectiontoggle={handleToggleSection} allow-multiple-sections-open
+						active-section-name={defaultAccordian}>
+						<lightning-accordion-section name="A" label="My Reportees">
+							<template if:false={reportingData.noRM}>
+								<table class="slds-table slds-table_cell-buffer slds-table_bordered"
+									aria-labelledby="element-with-table-label other-element-with-table-label">
+									<thead>
+										<tr class="slds-line-height_reset">
+											<th class="" scope="col" style="width:25%;">
+												<a class="slds-th__action slds-text-link_reset"
+													href="javascript:void(0);" role="button" tabindex="0"
+													onclick={sortRecsRM} name="Name" data-msg="RM">
+													Employee Name
+													<lightning-icon icon-name={nameSortIcon} size="xx-small">
+													</lightning-icon>
+												</a>
+											</th>
+											<th class="" scope="col" style="width:25%;">
+												<a class="slds-th__action slds-text-link_reset"
+													href="javascript:void(0);" role="button" tabindex="0"
+													onclick={sortRecsRM} name="EmployeeID__c" data-msg="RM">
+													Employee ID
+													<lightning-icon icon-name={nameSortIcon} size="xx-small">
+													</lightning-icon>
+												</a>
+											</th>
+											<th class="" scope="col" style="width:25%;">
+												<a class="slds-th__action slds-text-link_reset"
+													href="javascript:void(0);" role="button" tabindex="0"
+													onclick={sortRecsRM} name="ReportingTo__r.Name" data-msg="RM">
+													Reporting Manager
+													<lightning-icon icon-name={nameSortIcon} size="xx-small">
+													</lightning-icon>
+												</a>
+											</th>
+											<th class="" scope="col" style="width:25%;">
+												<a class="slds-th__action slds-text-link_reset"
+													href="javascript:void(0);" role="button" tabindex="0"
+													onclick={sortRecsRM} name="Goal_Settings__r.Status__c"
+													data-msg="RM">
+													Status
+													<lightning-icon icon-name={nameSortIcon} size="xx-small">
+													</lightning-icon>
+												</a>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<template for:each={reportingData.ReportingManager} for:item="data"
+											for:index="index">
+											<tr key={data.Id} style="font-family: sans-serif;" class="slds-hint-parent">
+												<td scope="row">
+													<a data-index={index} name="RM" data-title="Reporting Mangaer"
+														onclick={handleSelectedEmp} title={data.Name}>{data.Name}</a>
+												</td>
+												<td scope="row">
+													{data.EmployeeID__c}
+												</td>
+												<td scope="row">
+													<template if:true={data.ReportingTo__c}>
+														{data.ReportingTo__r.Name}
+													</template>
+												</td>
+												<td scope="row">
+													<template if:true={data.Goal_Settings__r}>
+														<template for:each={data.Goal_Settings__r}
+															for:item="goalSetting">
+															{goalSetting.Status__c}
+														</template>
+													</template>
+													<template if:false={data.Goal_Settings__r}>
+														Not Submitted
+													</template>
+												</td>
+											</tr>
+										</template>
+									</tbody>
+								</table>
+							</template>
+							<template if:true={reportingData.noRM}>
+								<p class="slds-text-heading_small slds-required">You don't have any reportees here
+								</p>
+							</template>
+						</lightning-accordion-section>
+
+						<lightning-accordion-section name="B" label="CCM for Reportees">
+							<template if:false={reportingData.noCCM}>
+								<table class="slds-table slds-table_cell-buffer slds-table_bordered"
+									aria-labelledby="element-with-table-label other-element-with-table-label">
+									<thead>
+										<tr class="slds-line-height_reset">
+											<th class="" scope="col" style="width:25%;">
+												<a class="slds-th__action slds-text-link_reset"
+													href="javascript:void(0);" role="button" tabindex="0"
+													onclick={sortRecsCCM} name="Name" data-msg="CCM">
+													Employee Name
+													<lightning-icon icon-name={nameSortIconCCM} size="xx-small">
+													</lightning-icon>
+												</a>
+											</th>
+											<th class="" scope="col" style="width:25%;">
+												<a class="slds-th__action slds-text-link_reset"
+													href="javascript:void(0);" role="button" tabindex="0"
+													onclick={sortRecsCCM} name="EmployeeID__c" data-msg="CCM">
+													Employee ID
+													<lightning-icon icon-name={nameSortIconCCM} size="xx-small">
+													</lightning-icon>
+												</a>
+											</th>
+											<th class="" scope="col" style="width:25%;">
+												<a class="slds-th__action slds-text-link_reset"
+													href="javascript:void(0);" role="button" tabindex="0"
+													onclick={sortRecsCCM} name="ReportingTo__r.Name" data-msg="CCM">
+													Reporting Manager
+													<lightning-icon icon-name={nameSortIconCCM} size="xx-small">
+													</lightning-icon>
+												</a>
+											</th>
+											<th class="" scope="col" style="width:25%;">
+												<a class="slds-th__action slds-text-link_reset"
+													href="javascript:void(0);" role="button" tabindex="0"
+													onclick={sortRecsCCM} name="Goal_Settings__r.Status__c"
+													data-msg="CCM">
+													Status
+													<lightning-icon icon-name={nameSortIconCCM} size="xx-small">
+													</lightning-icon>
+												</a>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<template for:each={reportingData.ReportingCCM} for:item="data"
+											for:index="index">
+											<tr key={data.Id} style="font-family: sans-serif;" class="slds-hint-parent">
+												<td scope="row">
+													<a data-index={index} name="CCM" data-title="Employee"
+														title={data.Name} onclick={handleSelectedEmp}>{data.Name}</a>
+												</td>
+												<td scope="row">
+													{data.EmployeeID__c}
+												</td>
+												<td scope="row">
+													<template if:true={data.ReportingTo__c}>
+														{data.ReportingTo__r.Name}
+													</template>
+												</td>
+												<td scope="row">
+													<template if:true={data.Goal_Settings__r}>
+														<template for:each={data.Goal_Settings__r}
+															for:item="goalSetting">
+															{goalSetting.Status__c}
+														</template>
+													</template>
+													<template if:false={data.Goal_Settings__r}>
+														Not Submitted
+													</template>
+												</td>
+											</tr>
+										</template>
+									</tbody>
+								</table>
+							</template>
+							<template if:true={reportingData.noCCM}>
+								<p class="slds-text-heading_small slds-required">You don't have any reportees here
+								</p>
+							</template>
+						</lightning-accordion-section>
+					</lightning-accordion>
+				</template>
+			</lightning-tab>
+			<lightning-tab label="My Reportees" value="two">
+				<!--<lightning-accordion allow-multiple-sections-open>
+					<template lwc:if={hierarchy}>
+						<template for:each={hierarchy} for:item="manager">
+							<lightning-accordion-section key={manager.name}>
+								{manager.name}
+							</lightning-accordion-section>
+						</template>
+					</template>
+					<template lwc:else>
+						<p class="slds-text-heading_small slds-required">You don't have any reportees
+						</p>
+					</template>
+				</lightning-accordion>-->
+				<template lwc:if={checkHierarchy}>
+					<lightning-tree-grid columns={gridColumns} data={hierarchy} key-field="EmployeeId"
+						hide-checkbox-column onheaderaction={handleHeaderAction} onrowaction={handleRowAction}>
+					</lightning-tree-grid>
+				</template>
+				<template lwc:else>
+					<p class="slds-text-heading_small slds-required slds-align_absolute-center">You don't have any
+						reportees
+					</p>
+				</template>
+
+			</lightning-tab>
+		</lightning-tabset>
+		<div slot="footer">
+			<lightning-button label="Cancel" class="" variant="brand" onclick={handleCancel} title="" slot="actions">
+			</lightning-button>
+		</div>
+	</lightning-card>
+</template>

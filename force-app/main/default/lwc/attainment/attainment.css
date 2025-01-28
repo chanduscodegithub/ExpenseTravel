@@ -1,0 +1,101 @@
+.larger-font {
+  font-size: 16px;
+  font-size: large;
+}
+
+.largers-font {
+  font-size: 16px;
+  font-size: large;
+}
+
+.spaced-tabs {
+  margin-top: 20px;
+}
+
+.card-gap {
+  height: 20px;
+}
+
+.card-gap {
+  height: 1rem;
+}
+.big-font {
+  font-size: 16px;
+}
+
+.large-font {
+   font-size: 18px;
+   margin-left: 10px;
+   font-weight: bold;
+   position: relative ;
+   left: 0%;
+  }
+
+.spaced-tabs {
+  margin-top: 1rem;
+  font-size: large;
+}
+
+.larger-font {
+  font-size: 16px;
+}
+
+
+.slds-scrollable_x {
+  overflow-x: auto;
+}
+.bgClolor1 {
+  color: green;
+}
+
+.bgClolor2 {
+  color: red;
+}
+
+.big-font{
+  font-size: 16px;
+}
+
+.lightning-tab .slds-tabs_default__link {
+  font-size: 18px;
+}
+
+.lightning-combobox {
+  width: 150px;
+  height: 25px;
+  margin-bottom: 25px; 
+  margin-top: 0; 
+}
+
+.slds-flexbox {
+  display: grid;
+    gap: 60px;
+    grid-template-columns: 1fr 1fr;
+    margin-left: 5%;
+    margin-right: 5%; /* Adjust the gap value as per your requirement */
+}
+
+.slds-mr-medium {
+  margin-right: 20px; /* Adjust the margin value as per your requirement */
+}
+
+
+
+.slds-table {
+  border: 0.5px solid black;
+  border-collapse: collapse;
+}
+
+.slds-table th,
+.slds-table td {
+  border: 0.5px solid rgb(10, 9, 9);
+  padding: 8px;
+}
+
+.slds-table th {
+  font-weight: bold;
+}
+
+.center-align {
+  text-align: center;
+}

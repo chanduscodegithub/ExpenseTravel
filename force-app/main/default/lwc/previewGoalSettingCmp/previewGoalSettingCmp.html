@@ -1,0 +1,111 @@
+<template>
+	<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+		aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+		<div class="slds-modal__container">
+			<!-- modal header start -->
+			<header class="slds-modal__header">
+				<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                <lightning-icon icon-name="utility:close"
+                   alternative-text="close"
+                   variant="inverse"
+                   size="small" onclick={hideModalBox}></lightning-icon>
+                <span class="slds-assistive-text">Close</span>
+             </button>
+				<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Preview of {empName} Goal
+					Setting</h2>
+			</header>
+
+			<!-- modal body start -->
+			<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+				<div if:true={validateRMandCCM} class="slds-box slds-box_small">
+					<b>As the reporting manager and CCM for the respective employee, once the form is submitted, the employee's goals are accepted and approved by you</b>
+				</div><br/>
+				<p>
+					<template for:each={allKRA} for:item="data" for:index="outerindex">
+						<div key={data.id}>
+							<div class="slds-border_top slds-border_left slds-border_right slds-p-around_x-small">
+								<div class="slds-grid slds-wrap">
+									<div class="slds-col slds-size_8-of-12">
+										<span><b>KRA : &nbsp;{data.goalRespository.Name}</b></span>
+									</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<div class="slds-col slds-size_3-of-12">
+										<span><b>KRA weightage : &nbsp;{data.KRAWieghtage}%</b></span>
+									</div>
+								</div>
+								<div class="slds-box slds-box_small">
+									<span><b>KRA description : &nbsp;</b></span>
+									<template lwc:if={data.checkNoZeroKPISize}>
+										<template lwc:if={data.goalSetting.Is_KRA_Edited__c}>
+											<lightning-formatted-text value={data.goalSetting.KRA_Discription__c}>
+											</lightning-formatted-text>
+										</template>
+										<template lwc:else>
+											<lightning-formatted-text value={data.goalRespository.Description__c}>
+											</lightning-formatted-text>
+										</template>
+									</template>
+									<template lwc:else>
+										<lightning-formatted-text value={data.goalRespository.Description__c}>
+										</lightning-formatted-text>
+									</template><br/>
+								</div>
+								</div>
+								<!--<div class="slds-grid slds-wrap">
+								<div class="slds-col slds-size_4-of-12">
+									<span>{data.goalRespository.Name}</span>
+								</div>
+								<div class="slds-col slds-size_4-of-12">
+									<span>{data.KRAWieghtage}%</span>
+								</div>
+							</div>-->
+								<table
+									class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right"
+									aria-label="Example table of Opportunities with vertical borders">
+									<thead>
+										<tr class="slds-line-height_reset">
+											<!--<th class="" scope="col" style="width:5%">
+											<div class="" title="KPI">No</div>
+										</th>-->
+											<th class="" scope="col" style="width:70%">
+												<div class="" title="KPI">KPI</div>
+											</th>
+											<th class="" scope="col" style="width:30%">
+												<div class="" title="KPI wieghtage(%)">KPI weightage(%)</div>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<template for:each={data.goalSettingArray} for:item="KRA" for:index="index">
+											<tr class="slds-hint-parent" key={KRA.id}>
+												<!--<td data-label="Account Name">
+												<div class="" title={index}> {index + 1} </div>
+											</td>-->
+												<td data-label="Account Name" style="width:70%">
+													<div class="">
+														<lightning-formatted-text class="slds-cell-wrap" name="kraName"
+															value={KRA.KPI}>
+														</lightning-formatted-text>
+													</div>
+												</td>
+												<td data-label="Close Date" style="width:30%">
+													<div class="" title={KRA.KPIWieghtage}>
+														{KRA.KPIWieghtage}
+													</div>
+												</td>
+											</tr>
+										</template>
+									</tbody>
+								</table>
+							</div><br key={data.id}/>
+					</template>
+				</p>
+			</div>
+			<!-- modal footer start-->
+			<footer class="slds-modal__footer">
+				<button class="slds-button slds-button_brand" onclick={submitHandler}>Submit</button>
+				<button class="slds-button slds-button_brand" onclick={hideModalBox}>Cancel</button>
+			</footer>
+		</div>
+	</section>
+	<div class="slds-backdrop slds-backdrop_open"></div>
+</template>

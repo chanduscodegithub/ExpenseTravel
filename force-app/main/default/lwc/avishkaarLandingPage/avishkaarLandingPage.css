@@ -1,0 +1,390 @@
+:host{
+    /* ===== Colors ===== */
+    --body-color: #ededed;
+    --sidebar-color: #ededed;
+    --primary-color: #f9954c;
+    --primary-color-light: #F6F5FF;
+    --toggle-color: #DDD;
+    --text-color: #707070;
+    --white-color:#ffffff;
+    --black-color:#000000;
+  
+    /* ====== Transition ====== */
+    --tran-03: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.3s ease;
+    --tran-05: all 0.3s ease;
+}
+
+.starContainer{
+  align-items: center;
+  justify-content: center;
+}
+
+.slds-backdrop{
+  z-index: -1;
+}
+
+/* Works on Firefox */
+.homeComponent{
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--white-color) ;
+    font-family:Arial, Helvetica, sans-serif;
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  .homeComponent::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+.takshasila {
+    display: flex;
+    /* grid-template-columns: 3fr 1fr 1fr 1fr 1fr; */
+    width: 99.4%;
+    background-color: var(--white-color);
+    margin-left: auto;
+    align-items: center;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+    gap: 0.5rem;
+}
+.toolTipHeading{
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+.newSection{
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    width: 100%;
+}
+.takBtn {
+    display: inline-block;
+    background-color: #28a745; /* Salesforce Success Green */
+    color: white;
+    font-size: 1rem;
+    font-family: inherit;
+    width: 12rem;
+    height: 3rem;
+    padding: 0.75rem 1.5rem; /* Padding similar to lightning-button */
+    border-radius: 0.5rem; /* Slightly rounded corners */
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+}
+
+.takBtn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.takBtn:focus,
+.takBtn:active {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(72, 180, 97, 0.4); /* Green outline for focus/active state */
+}
+
+.takUpcomingBtn {
+    display: inline-block;
+    background-color: #28a745; /* Salesforce Success Green */
+    color: white;
+    font-size: 1rem;
+    font-family: inherit;
+    width: 15rem;
+    height: 3rem;
+    padding: 0.75rem 1.5rem; /* Padding similar to lightning-button */
+    border-radius: 0.5rem; /* Slightly rounded corners */
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+}
+
+.takUpcomingBtn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.takUpcomingBtn:focus,
+.takUpcomingBtn:active {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(72, 180, 97, 0.4); /* Green outline for focus/active state */
+}
+
+.takMyProgramsBtn {
+    display: inline-block;
+    background-color: #28a745; /* Salesforce Success Green */
+    color: white;
+    font-size: 1rem;
+    font-family: inherit;
+    width: 12rem;
+    height: 3rem;
+    padding: 0.75rem 1.5rem; /* Padding similar to lightning-button */
+    border-radius: 0.5rem; /* Slightly rounded corners */
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+}
+.takUpcomingBtn,.takMyProgramsBtn,.takBtn{
+  padding: 0.4rem;
+}
+
+.takMyProgramsBtn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.takMyProgramsBtn:focus,
+.takMyProgramsBtn:active {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(72, 180, 97, 0.4); /* Green outline for focus/active state */
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    margin-left: 0.5rem; /* Space between button and icon */
+    cursor: pointer;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    width: 40rem;
+    background-color: white;
+    color: black;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+    position: absolute;
+    top: -1.8rem;
+    left: 19px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.headingTak{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    align-items: center;
+    width: 100%;
+}
+
+/* .tooltip:onclick .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+} */
+
+.visible {
+    width: 37rem;
+    background-color: white;
+    color: black;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+    position: absolute;
+    top: -1.8rem;
+    left: 19px;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out, visibility 0s;
+}
+
+.i-icon {
+    font-size: 0.75rem; /* Small font size for the "i" icon */
+    color: #0070d2; /* Salesforce blue color */
+    font-weight: bold;
+    border-radius: 50%;
+    border: 1px solid #0070d2;
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+  .programBtn{
+    padding: 0.2rem;
+  }
+  .homeComponent::-webkit-scrollbar-track {
+    background: var(--white-color) ;
+  }
+  
+  .homeComponent::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 20px;
+    border: 3px solid var(--white-color);
+  }
+  
+.borderRadius{
+    border-radius: 10px;
+}
+.crmitHoliday{
+    border-left: 10px solid var(--primary-color);
+}
+.ristrictedHoliday{
+    border-left: 10px solid var(--text-color);
+}
+.minheight350px{
+    min-height: 300px;
+}
+.maxheight350px{
+    max-height: 300px;
+}
+.boldFont{
+    
+    font-weight: bold;
+  }
+.awardImages img{
+    width: 100px;
+    height: 100px;
+    border-radius: 15%;
+}
+.overflowy{
+    overflow-y: auto;
+}
+.boxshadow{
+  box-shadow: 1px 2px 14px 1px #7372786b, 0 0 1px #0000003d;
+}
+.gridLayouts{
+    display: grid;
+    grid-template-columns: clamp(350px, 40%, 350px) auto;
+    grid-template-areas: 'holiday holiday rewards rewards'
+                          'holiday holiday awards awards'
+                          'holiday holiday paatshala paatshala'
+                          'birthday birthday birthday birthday ';
+    gap: 3cap 2cap;
+    grid-template-rows: auto;
+    /* grid-auto-flow: dense; */
+}
+.announcementWrap{
+  background-image: url('../resource/AvishkaarHomeImage/Announcement_crmit.jpg');
+  height: 240px;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  background-repeat: no-repeat;
+}
+.flotingText{
+  height: 50px;
+  align-self: end;
+  margin: 0 0 5px 0;
+  font-size: 2rem;
+  color:#e77e12;
+    
+
+}
+.height-100{
+  height: 100%;
+}
+.holidayLists{
+    grid-area: holiday;
+    max-height: 660px;
+    overflow-y: scroll;
+    background-color: var(--white-color);
+}
+.awards{
+    grid-area: awards;
+    background-color: var(--white-color);
+}
+.paatshala{
+    grid-area: paatshala;
+    margin-left: 1.4rem;
+}
+.birthdayList{
+  grid-area: birthday;
+}
+.rewards{
+    grid-area: rewards;
+    background-color: var(--white-color);
+}
+.rewardImages .Gold{
+    --sds-c-icon-color-foreground-default: gold;
+}
+.rewardImages .Silver{
+    --sds-c-icon-color-foreground-default: silver;
+}
+.rewardImages .Bronze{
+    --sds-c-icon-color-foreground-default: #CD7F32;
+}
+
+
+/* Rewards Starts */
+.event-cards-container {
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .event-cards-container .event-card {
+    color: #5d5d5d;
+    border: solid 1px #ddd;
+    border-left-width: 5px;
+    border-bottom: 0;
+    padding: 0.7rem;
+    display: grid;
+    grid-template-columns: auto 5.5rem;
+  }
+  .event-cards-container .event-card .event-title {
+    color: var(--black-color);
+    clear: both;
+  }
+  .event-cards-container .event-card .event-start,
+  .event-cards-container .event-card .event-end {
+    text-transform: uppercase;
+  }
+  .event-cards-container .event-card .event-start,
+  .event-cards-container .event-card .event-end {
+    color: var(--text-color);
+    float: left;
+  }
+  .event-cards-container .event-card .event-start-date {
+    font-size: 1rem;
+  }
+  .event-cards-container .event-card .event-end-date {
+    font-size: 0.9rem;
+    margin-bottom: -2px;
+  }
+  .event-cards-container .event-card .event-end {
+    opacity: 0.9;
+    font-size: 65%;
+    padding-left: 5px;
+  }
+  .event-cards-container .event-location{
+    color: var(--text-color);
+  } 
+  .event-cards-container .event-card:last-child {
+    border-bottom: 1px solid cornflowerblue;
+    border-left: 10px solid cornflowerblue;
+  }
+  
+  .event-cards-container div:nth-child(3n) .event-cards, .event-cards-container div:nth-child(3n-1) .event-cards{
+    border-left-color: #edab5c;
+    border-bottom: 1px solid #edab5c;
+  }
+@media only screen and (min-width: 580px) and (max-width: 980px)  {
+    .gridLayouts{
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-areas: 'holiday awards'
+                              'rewards .';
+    }
+}
+@media only screen and (max-width: 579px)  {
+    .gridLayouts{
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-areas: 'holiday'
+                             'awards'
+                              'rewards';
+    }
+}
+li:nth-child(6n), li:nth-child(6n-1), li:nth-child(6n-2) {
+  border-left-color: #edab5c;
+    border-bottom: 1px solid #edab5c;
+}

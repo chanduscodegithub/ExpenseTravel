@@ -1,0 +1,17 @@
+<template>
+<lightning-card lwc:if={isFullAccessOrHRmngLogin}  variant="Narrow"  title="Performance Rating" icon-name="standard:investment_account">
+  <div class="slds-card__body slds-card__body_inner">
+       <a  onclick={handleclick}>
+          QPR-II {Name}
+       </a>
+    <dl class="slds-dl_horizontal">
+    <dt class="slds-dl_horizontal__label " style="width:17%;font-family:sans-serif;font-size:0.9rem"><b>Status</b></dt>
+    <dd class="slds-dl_horizontal__detail"  style="font-family:sans-serif;font-size:0.9rem">:{status}</dd>
+    <dt class="slds-dl_horizontal__label"  style="width:17%;font-family:sans-serif;font-size:0.9rem"><b>Manager</b></dt>
+    <dd class="slds-dl_horizontal__detail"  style="font-family:sans-serif;font-size:0.9rem">:{manager}</dd>
+    </dl>
+  
+  </div>
+
+</lightning-card>
+</template>

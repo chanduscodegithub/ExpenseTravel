@@ -1,0 +1,15 @@
+.dummy{
+	color : black;
+}
+
+.modalBodySpinner{
+	position: relative;;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.spinnerClass{
+	background-color: white;
+}

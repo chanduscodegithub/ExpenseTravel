@@ -1,0 +1,213 @@
+<template>
+<div class="leave__stats">
+<!--Tile-->
+<div class={casualClasses} data-type={casualBind} onclick={handleCardClick}>
+  <div class="leave__logo">
+    <img alt="Casual Leave Icon" src={casualLogo} />
+  </div>
+  <div class="leave__body">
+    <div class="leave__heading">
+      Casual Leave
+    </div>
+    <div class="leave__count">
+      Total: <span class="nums">{casualLimit}</span>
+    </div>
+    <div class="leave__count">
+      Remaining: <span class="nums">{casualBalance}</span>
+    </div>
+  </div>
+</div>
+<!--Tile-->
+<div class={sickClasses} data-type={sickBind} onclick={handleCardClick}>
+  <div class="leave__logo">
+    <img alt="Sick Leave Icon" src={sickLogo} />
+  </div>
+  <div class="leave__body">
+    <div class="leave__heading">
+      Sick Leave
+    </div>
+    <div class="leave__count">
+      Total: <span class="nums">{sickLimit}</span>
+    </div>
+    <div class="leave__count">
+      Remaining: <span class="nums">{sickBalance}</span>
+    </div>
+  </div>
+</div>
+<!--Tile-->
+<div class={paidClasses} data-type={paidBind} onclick={handleCardClick}>
+      <lightning-icon icon-name="utility:info" alternative-text="Info" size="x-small" class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default info__icon" data-message="Please reserve 5 days of paid leave for the year-end holiday."></lightning-icon>
+<div class="leave__logo">
+    <img alt="Paid Leave Icon" src={privilegeLogo} />
+  </div>
+  <div class="leave__body">
+    <div class="leave__heading">
+      {regionBaseBody}
+    </div>
+    <div class="leave__count">
+      Total: <span class="nums">{privilegeLimit}</span>
+    </div>
+    <div class="leave__count">
+      Remaining: <span class="nums">{privilegeBalance}</span>
+    </div>
+  </div>
+</div>
+<!--Tile-->
+<div class={celebrationClasses} data-type={celebrationBind} onclick={handleCardClick}>
+  <div class="leave__logo">
+    <img alt="Celebration Leave Icon" src={partyLogo} />
+  </div>
+  <div class="leave__body">
+    <div class="leave__heading">
+      Celebration Leave
+    </div>
+    <div class="leave__count">
+      Total: <span class="nums">{celebrationLimit}</span>
+    </div>
+    <div class="leave__count">
+      Remaining: <span class="nums">{celebrationBalance}</span>
+    </div>
+  </div>
+</div>
+<!---Tile-->
+<div class={restrictedClasses} data-type={restrictedBind} onclick={handleCardClick}>
+  <div class="leave__logo">
+    <img alt="Celebration Leave Icon" src={restrictLogo} />
+  </div>
+  <div class="leave__body">
+    <div class="leave__heading">
+      Restricted Holidays
+    </div>
+    <div class="leave__count">
+      Total: <span class="nums">{restrictedLimit}</span>
+    </div>
+    <div class="leave__count">
+      Remaining: <span class="nums">{restrictedBalance}</span>
+    </div>
+  </div>
+  </div>
+
+<!--Tile-->
+<div class={maternityClasses} data-type={maternityBind} onclick={handleCardClick}>
+  <div class="leave__logo">
+    <img alt="Maternity Leave Icon" src={maternityLogo} />
+  </div>
+  <div class="leave__body">
+    <div class="leave__heading">
+      Maternity Leave
+    </div>
+    <div class="leave__count">
+      Total: <span class="nums">{maternityLimit}</span>
+    </div>
+    <div class="leave__count">
+      Remaining: <span class="nums">{maternityBalance}</span>
+    </div>
+  </div>
+</div>
+<!--Tile-->
+<div class={paternityClasses} data-type={paternityBind} onclick={handleCardClick}>
+  <div class="leave__logo">
+    <img alt="Paternity Leave Icon" src={paternityLogo} />
+  </div>
+  <div class="leave__body">
+    <div class="leave__heading">
+      Paternity Leave
+    </div>
+    <div class="leave__count">
+      Total: <span class="nums">{paternityLimit}</span>
+    </div>
+    <div class="leave__count">
+      Remaining: <span class="nums">{paternityBalance}</span>
+    </div>
+  </div>
+</div>
+<!--Tile-->
+<div class={bereavementClasses} data-type={bereavementBind} onclick={handleCardClick}>
+  <div class="leave__logo">
+    <img alt="Bereavement Leave Icon" src={brokenLogo} />
+  </div>
+  <div class="leave__body">
+    <div class="leave__heading">
+      Bereavement Leave
+    </div>
+    <div class="leave__count">
+      Total: <span class="nums">{bereavementLimit}</span>
+    </div>
+    <div class="leave__count">
+      Remaining: <span class="nums">{bereavementBalance}</span>
+    </div>
+  </div>
+</div>
+<!--Tile-->
+<div class={lopClasses} data-type={lopBind} onclick={handleCardClick}>
+  <div class="leave__logo">
+    <img alt="Loss of Pay Icon" src={lop} />
+  </div>
+  <div class="leave__body">
+    <div class="leave__heading">
+      Leave Without Pay
+    </div>
+    <div class="leave__count">
+      Total: <span class="nums">{lossOfPayLimit}</span>
+    </div>
+    <div class="leave__count">
+      Remaining: <span class="nums">{lossOfPayBalance}</span>
+    </div>
+<div class="leave__count">
+      Consumed: <span class="nums">{lossOfPayTook}</span>
+    </div>
+  </div>
+</div>
+<!--Tile-->
+<div class={wfhClasses} data-type={wfhBind} onclick={handleCardClick}>
+  <div class="leave__logo">
+    <img alt="wfh Leave Icon" src={wfhLogo} />
+  </div>
+  <div class="leave__body">
+    <div class="leave__heading">
+      Work From Home
+    </div>
+    <div class="leave__count">
+      Total: <span class="nums">{workFromHomeLimit}</span>
+    </div>
+    <div class="leave__count">
+      Remaining: <span class="nums">{workFromHomeBalance}</span>
+    </div>
+  </div>
+</div>
+<!--Tile-->
+<div class={paidAdjClasses} data-type={paidAdjBind} onclick={handleCardClick}>
+  <div class="leave__logo">
+    <img alt="PL Adjustment Icon" src={plAdjLogo} />
+  </div>
+  <div class="leave__body">
+    <div class="leave__heading">
+        Paid Leave Adjustment
+    </div>
+    <div class="leave__count">
+      Total: <span class="nums">{paidAdjLimit}</span>
+    </div>
+    <div class="leave__count">
+      Remaining: <span class="nums">{paidAdjustmentBalance}</span>
+    </div>
+  </div>
+</div>
+<!--Tile-->
+<div class={longClasses} data-type={longBind} onclick={handleCardClick}>
+  <div class="leave__logo">
+    <img alt="Long Leave Icon" src={longLeave} />
+  </div>
+  <div class="leave__body">
+    <div class="leave__heading">
+      Long Leave
+    </div>
+    <div class="leave__count">
+      Total: <span class="nums">{longLimit}</span>
+    </div>
+    <div class="leave__count">
+      Remaining: <span class="nums">{longBalance}</span>
+    </div>
+  </div>
+</div>
+</div>
+</template>

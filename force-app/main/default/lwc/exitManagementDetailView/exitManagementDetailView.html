@@ -1,0 +1,166 @@
+<template>
+    <template if:true={spinnerFlag}>
+        <lightning-spinner alternative-text="Loading" size="small" variant="base"></lightning-spinner>
+    </template>
+    <div class="resignation-container">
+        <div class="resignation-details">
+            <div class="header">
+                <h2>My Resignation Details</h2>
+                <div class="header-button slds-p-around_medium">
+                    <lightning-button label="Pull Back" onclick={handlePullbackModal} variant="brand"
+                        disabled={disablePullbackBtn}>
+                    </lightning-button>
+                </div>
+                <!-- PullBack Modal-->
+                <template lwc:if={isPullbackOpen}>
+                    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+                        class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container">
+                            <button class="slds-button slds-button_icon slds-modal__close"
+                                onclick={handlePullbackModal}>
+                                <lightning-icon icon-name="utility:close" alternative-text="close"
+                                    size="small"></lightning-icon>
+                                <span class="slds-assistive-text">Cancel and close</span>
+                            </button>
+                            <div class="slds-modal__header">
+                                <h1 class="slds-modal__title slds-hyphenate" tabindex="-1">Pullback Resignation Request
+                                </h1>
+                            </div>
+                            <!--Pullback Form Starts-->
+                            <div class="slds-modal__content slds-p-around_medium">
+                                <lightning-record-edit-form object-api-name="Resignation__c">
+                                    <div>
+                                        <template for:each={fields} for:item="field">
+                                            <div key={field}>
+                                                <lightning-input-field field-name={field.name} value={field.value}
+                                                    name={field.name} required={field.req} disabled={field.readonly}>
+                                                </lightning-input-field>
+                                            </div>
+                                        </template>
+                                        <div class="note">
+                                            <lightning-input type="checkbox"
+                                                label="I confirm to pull my resignation back."
+                                                onchange={handleCheckChange}></lightning-input>
+                                            <p><strong>Note: </strong>Pulling back your resignation means your
+                                                resignation will not be processed further.</p>
+
+                                        </div>
+                                    </div>
+                                </lightning-record-edit-form>
+                            </div>
+                            <!--Pullback Form Ends-->
+                            <div class="slds-modal__footer  slds-grid slds-grid_align-center">
+                                <lightning-button variant="brand" type="Submit" name="Submit" label="Submit Pullback"
+                                    onclick={handleSubmit} disabled={isSubmitDisabled}>
+                                </lightning-button>&nbsp;&nbsp;
+                                <lightning-button variant="neutral" label="Cancel" type="button"
+                                    onclick={handlePullbackModal}></lightning-button>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+                </template>
+            </div>
+            <template lwc:if={loaded}>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Resignation ID</span>
+                        <span class="detail-value">{resignation.Name}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Added By</span>
+                        <span class="detail-value">{resignation.Added_By__r.Name}</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Employee ID</span>
+                        <span class="detail-value">{resignation.Employee_ID__c}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Added Time</span>
+                        <span class="detail-value">{resignation.Added_Time__c}</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Employee Name</span>
+                        <span class="detail-value">{resignation.Employee_Name__r.Name}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Reason for Resignation</span>
+                        <span class="detail-value">{resignation.Reason__c}</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Designation</span>
+                        <span class="detail-value">{resignation.Title__c}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Separation Type</span>
+                        <span class="detail-value">{resignation.Separation_Type__c}</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Department</span>
+                        <span class="detail-value">{resignation.Department__c}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Resignation Status</span>
+                        <span class="detail-value">{resignation.Resignation_Status__c}</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Location</span>
+                        <span class="detail-value">{resignation.Location__c}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Date of Resignation</span>
+                        <span class="detail-value">{resignation.Date_of_Resignation__c}</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Date of Joining</span>
+                        <span class="detail-value">{resignation.Date_of_Joining__c}</span>
+                    </div>
+                    <div class="detail-item" if:false={conditionalDetails.withdrawn}>
+                        <span class="detail-label">Last Working Date</span>
+                        <span class="detail-value">{resignation.Last_Working_Date__c}</span>
+                    </div>
+                    <div class="detail-item" if:true={conditionalDetails.withdrawn}>
+                        <span class="detail-label">Reason for Pullback</span>
+                        <span class="detail-value">{conditionalDetails.Reason_for_Pullback__c}</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Reporting Manager</span>
+                        <span class="detail-value">{resignation.Reporting_To__c}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Final Relieving Date</span>
+                        <span class="detail-value">{resignation.Final_Relieving_Date__c}</span>
+                    </div>
+                </div>
+                <div class="details-row">
+                    <div class="detail-item">
+                        <span class="detail-label">Cost Centre Manager</span>
+                        <span class="detail-value">{resignation.Cost_Center_Manager__c}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Remarks</span>
+                        <span class="detail-value">{resignation.Remarks__c}</span>
+                    </div>
+                </div>
+            </template>
+            <footer class="slds-card__footer">
+                <lightning-button label="Close" onclick={handleCloseCard} variant="brand"></lightning-button>
+            </footer>
+        </div>
+    </div>
+
+</template>

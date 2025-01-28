@@ -1,0 +1,24 @@
+<aura:component >
+    <aura:attribute name='billableTAList' type="TeamAllocation__c[]" /> 
+    <aura:attribute name='currentBillableTAList' type="TeamAllocation__c[]" /> 
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="pageNumber" type="Integer" default ="1"/>
+    <aura:attribute name="maxpage" type="Integer"  default ="1"/>
+    <aura:attribute name="pagesize" type="Integer" />
+    
+    <aura:handler name='change' value="{!v.pageNumber}" action='{!c.renderPage}'/>
+    <aura:handler name='init' value="{!this}" action='{!c.doInit}' />
+    <!--Billable Team -->
+    <lightning:datatable
+                                 keyField="id"
+                                 data="{!v.currentBillableTAList}"
+                                 columns="{! v.columns }"
+                                 hideCheckboxColumn="true"/>
+    <br/>
+    <div  style='text-align: center'>  <!-- style='float:right' -->
+        <c:TeamMemberPaginationButtons currentpageNumber ="{!v.pageNumber}" maxpageNumber ="{!v.maxpage}"/>  
+    </div>
+            
+            
+     
+</aura:component>

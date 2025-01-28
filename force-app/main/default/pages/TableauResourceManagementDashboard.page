@@ -1,0 +1,4 @@
+<apex:page standardController="Account" showheader="false" sidebar="false">
+  <apex:iframe src="https://us-west-2b.online.tableau.com/t/crmit/views/CorporateDashboard-Production/Home?:embed=y&:showShareOptions=false&:toolbar=false&:display_count=no&:showVizHome=no&Id%20(Account)={! Account.Id }" height="1000px" width="100%" scrolling="true">
+  </apex:iframe>
+</apex:page>

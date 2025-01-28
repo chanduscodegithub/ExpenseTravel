@@ -1,0 +1,74 @@
+<template>
+  <div class="portal-container">
+    <h1>Offer Letter Submission Portal</h1>
+    <p>Follow the steps below to verify your email and submit your offer letter.</p>
+
+    <!-- Step 1: Email Verification -->
+    <!-- <template if:false={isVerified}>
+      <div class="email-section">
+        <lightning-input 
+          type="email" 
+          label="Email Address" 
+          value={email} 
+          onchange={handleEmailChange} 
+          required>
+        </lightning-input>
+        <lightning-button 
+          label="Request OTP" 
+          onclick={requestOtp} 
+          disabled={isRequestOtpDisabled}>
+        </lightning-button>
+      </div> -->
+
+      <!-- Step 2: OTP Verification -->
+      <!-- <template if:true={isOtpVisible}>
+        <div class="otp-section">
+          <lightning-input 
+            type="text" 
+            label="Enter OTP" 
+            value={otp} 
+            maxlength="6" 
+            onchange={handleOtpChange} 
+            required>
+          </lightning-input>
+          <lightning-button 
+            label="Verify OTP" 
+            onclick={verifyOtp}>
+          </lightning-button>
+        </div>
+      </template>
+    </template> -->
+
+    <!-- Info/Error Messages -->
+    <!-- <template if:true={message}>
+      <div class={messageClass}>
+        {message}
+      </div>
+    </template> -->
+
+    <!-- Step 3: File Upload -->
+    <!-- <template if:true={isVerified}>
+      <div class="upload-section">
+        <p>Welcome, Candidate! Please provide your details and upload your offer letter.</p>
+        <lightning-input 
+          type="text" 
+          label="Full Name" 
+          value={fullName} 
+          onchange={handleNameChange} 
+          required>
+        </lightning-input>
+        <lightning-input 
+          type="file" 
+          label="Upload Offer Letter (PDF only)" 
+          accept=".pdf" 
+          onchange={handleFileUpload} 
+          required>
+        </lightning-input>
+        <lightning-button 
+          label="Submit" 
+          onclick={handleSubmit}>
+        </lightning-button>
+      </div>
+    </template> -->
+  </div>
+</template>

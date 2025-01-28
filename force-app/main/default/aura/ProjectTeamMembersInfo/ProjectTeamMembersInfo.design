@@ -1,0 +1,4 @@
+<design:component>
+    <design:attribute name="pazeSize" label="Page Size" description="Please specify page size in number."/>
+
+</design:component>

@@ -1,0 +1,15 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <br/>
+    
+   
+     <div class = "slds-text-heading_large ">
+         <p class="slds-align_absolute-center"><b>WELCOME</b></p> 
+         <br/>
+         <p class="slds-align_absolute-center"><b>TO</b> </p>  
+    </div><br/>
+    <div class="slds-align_absolute-center">
+    <img src="{!$Resource.Crmit}" style="width:500px;"/>
+    </div>
+    
+	
+</aura:component>

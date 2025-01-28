@@ -1,0 +1,207 @@
+<template>
+    <article class="slds-card">
+        <div class="container">
+            <div class="slds-card__body slds-card__body_inner"> 
+                <!-- Section for displaying Career Development Plan -->
+                <section>
+                    <div class="slds-page-header">
+                        <div class="slds-page-header__row">
+                            <div class="slds-page-header__col-title">
+                                <div class="slds-media" style="align-items: center;">
+                                    <div class="slds-media__figure">
+                                        <lightning-icon icon-name="utility:graph" class="slds-icon slds-page-header__icon"  alternative-text="Career Development Plan" title="Career Development Plan"></lightning-icon>
+                                    </div>
+                                    <div class="slds-media__body" >
+                                        <div class="slds-page-header__name">
+                                            <div class="slds-page-header__name-title">
+                                                <h2>Career Development Plan</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cdp-container">
+                        
+                        <template for:each={employeeDevelopmentPlans} for:item="plan">
+                            <div class="slds-clearfix" key={plan.index}>
+                                <div class="slds-grid slds-gutters">
+                                    <div class="cdp-data-container slds-float_lefted slds-col slds-size_12-of-12">
+                                        <div class="slds-grid slds-gutters">
+                                            <div class="slds-col slds-size_1-of-4">
+                                                <lightning-input
+                                                disabled
+                                                    name="Select Proposed Growth Plan"   
+                                                    label="Proposed Growth / Role"
+                                                    placeholder="Select Proposed Growth Plan"
+                                                    type="search"
+                                                    data-index={plan.index}
+                                                    data-planfor="proposedGrowth"
+                                                    value={plan.proposedGrowth}
+                                                    onchange={searchForDesignation}
+                                                    required
+                                                    
+                                                ></lightning-input>
+                                                <div if:true={plan.displayDropDown} class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" data-index={plan.index} role="listbox">
+                                                    <ul class="slds-listbox slds-listbox_vertical" role="presentation" >
+
+                                                        <template for:each={searchedDesignationResultList} for:item="searchResult">
+                                                            <li key={searchResult.value} data-value={searchResult.value} data-label={searchResult.label} data-index={plan.index} role="presentation" 
+                                                                onclick={selectDesignationFromSearchResult} class="slds-listbox__item">
+                                                                <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                                    <span class="slds-media__body">
+                                                                        <span class="slds-truncate" title={searchResult.label}>
+                                                                            {searchResult.label}
+                                                                        </span>
+                                                                    </span>
+                                                                </div>
+                                                            </li>
+                                                        </template>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-4">
+                                                <lightning-combobox
+                                                    name="Select Proposed Proficiency Level"   
+                                                    label="Proposed Proficiency Level"
+                                                    placeholder="Select Proposed Proficiency Level"
+                                                    options={proficiencyLevels}
+                                                    value={plan.proposedProficiency}
+                                                    disabled
+                                                ></lightning-combobox>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-4">
+                                                
+                                                <div class="slds-card">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control">
+
+                                                            <lightning-input 
+                                                                label="Recomended Mentor / Coach (If any)" 
+                                                                type="search" 
+                                                                value={plan.recommenedMentorName}
+                                                                disabled
+                                                            >
+                                                            </lightning-input>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-4">
+                                                <lightning-combobox
+                                                    name="Status"   
+                                                    label="Status"   
+                                                    placeholder="Select Status"
+                                                    options={cdpStatus}
+                                                    value={plan.status}
+                                                    disabled
+                                                ></lightning-combobox>
+                                            </div>
+                                        </div>
+        
+                                        <div class="slds-grid slds-gutters">
+                                            <div class="slds-col slds-size_1-of-4">
+                                                <lightning-input 
+                                                    type="date" 
+                                                    label="Assigned Date" 
+                                                    placeholder="Select Assigned Date"
+                                                    value={plan.assignedDate}
+                                                    disabled
+                                                ></lightning-input>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-4">
+                                                <lightning-input 
+                                                    type="date" 
+                                                    label="Actual Start Date" 
+                                                    placeholder="Select Actual Start Date"
+                                                    value={plan.actualStartDate}
+                                                    disabled
+                                                ></lightning-input>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-4">
+                                                <lightning-input 
+                                                    type="date" 
+                                                    label="Expected Completion Date" 
+                                                    placeholder="Select Expected Completion Date"
+                                                    value={plan.expectedCompletionDate}
+                                                    disabled
+                                                ></lightning-input>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-4">
+                                                <lightning-input 
+                                                    type="date" 
+                                                    label="Actual Completion Date" 
+                                                    placeholder="Select Actual Completion Date"
+                                                    value={plan.actualCompletionDate}
+                                                    disabled
+                                                ></lightning-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                    </div>
+                    
+                </section>
+
+                <!-- Section for displaying Manager's Overall Comments -->
+                <section>
+                    <div class="slds-page-header">
+                        <div class="slds-page-header__row">
+                            <div class="slds-page-header__col-title">
+                                <div class="slds-media" style="align-items: center;">
+                                    <div class="slds-media__figure">
+                                        <lightning-icon icon-name="utility:textarea" class="slds-icon slds-page-header__icon"  alternative-text="Manager's Overall Comments" title="Manager's Overall Comments"></lightning-icon>
+                                    </div>
+                                    <div class="slds-media__body" >
+                                        <div class="slds-page-header__name">
+                                            <div class="slds-page-header__name-title">
+                                                <h2>Manager's Overall Comments</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <lightning-input-rich-text value={managerComments} disabled></lightning-input-rich-text>
+                </section>
+
+                <!-- Section for displaying Reviewer's Overall Comments -->
+                <section>
+                    <div class="slds-page-header">
+                        <div class="slds-page-header__row">
+                            <div class="slds-page-header__col-title">
+                                <div class="slds-media" style="align-items: center;">
+                                    <div class="slds-media__figure">
+                                        <lightning-icon icon-name="utility:textarea" class="slds-icon slds-page-header__icon"  alternative-text="Reviewer's Overall Comments (if any)" title="Reviewer's Overall Comments (if any)"></lightning-icon>
+                                    </div>
+                                    <div class="slds-media__body" >
+                                        <div class="slds-page-header__name">
+                                            <div class="slds-page-header__name-title">
+                                                <h2>Reviewer's Overall Comments (if any)</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <lightning-input-rich-text value={reviewerComments} disabled></lightning-input-rich-text>
+                </section>
+            </div>  
+        </div>
+        <footer class="slds-card__footer">
+            <!-- <lightning-button class="slds-card__footer-action" variant="brand" type="submit" label="Save As Draft" title="Save As Draft" disabled></lightning-button> -->
+            <lightning-button class="slds-card__footer-action" variant="brand" type="submit" label="Save" title="Save" disabled></lightning-button>
+            <lightning-button class="slds-card__footer-action" variant="brand" label="Cancel" title="Cancel" onclick={handelCancel}></lightning-button>
+        </footer> 
+    </article>
+</template>

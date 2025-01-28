@@ -1,0 +1,8 @@
+lightning-carousel-image .slds-carousel__content {
+    width: 92vw;
+    height: fit-content;
+}
+
+.slds-carousel__image {
+    display: none;
+}

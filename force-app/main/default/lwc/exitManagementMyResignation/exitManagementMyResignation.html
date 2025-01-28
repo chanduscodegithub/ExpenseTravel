@@ -1,0 +1,81 @@
+<template>
+  <template lwc:if={loaded}>
+    <div class="header-button slds-p-around_medium" lwc:if={showList}>
+      <lightning-button label="Raise Resignation" onclick={openModal} variant="brand" disabled={disableResignationBtn}>
+      </lightning-button>
+    </div>
+    <!--List View component-->
+    <div class="custom-table-container" lwc:if={showList}>
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th style="width:38px;">#</th>
+            <th style="width:110px;">Resignation ID</th>
+            <th style="width:110px;">Employee ID</th>
+            <th style="width:210px;">Employee Name</th>
+            <th style="width:210px;">Designation</th>
+            <th style="width:270px;">Reason for Resignation </th>
+            <th style="width:270px;">Resignation Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={resignations} for:item="resignation" lwc:if={resignations.length}>
+            <tr key={resignation.Id} data-id={resignation.Id} onclick={handleRowClick}>
+              <td>{resignation.serialNumber}</td>
+              <td>{resignation.Name}</td>
+              <td>{resignation.Employee_ID__c}</td>
+              <td>{resignation.Employee_Name__r.Name}</td>
+              <td>{resignation.Title__c}</td>
+              <td>{resignation.Reason__c}</td>
+              <td>{resignation.Resignation_Status__c}</td>
+            </tr>
+          </template>
+          <template lwc:else>
+            No Records Found
+          </template>
+        </tbody>
+      </table>
+    </div>
+    <c-exit-management-detail-view onclosedetail={closeDetail} resignation={selectedRow} emp-data={empData} onchangestatus={handleReceive}
+      lwc:if={showRecord}></c-exit-management-detail-view>
+    <!--Open Resignation Modal-->
+    <template lwc:if={isModalOpen}>
+      <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+        class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+          <button class="slds-button slds-button_icon slds-modal__close" onclick={closeModal}>
+            <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+            <span class="slds-assistive-text">Cancel and close</span>
+          </button>
+          <div class="slds-modal__header">
+            <h1 class="slds-modal__title slds-hyphenate" tabindex="-1">Raise Resignation Request</h1>
+          </div>
+          <!--Resignaion Form Starts-->
+          <div class="slds-modal__content slds-p-around_medium">
+            <lightning-record-edit-form object-api-name="Resignation__c">
+              <div class="slds-grid slds-wrap">
+                <template for:each={fields} for:item="field">
+                  <div class="slds-col slds-size_6-of-12" key={field}>
+                    <lightning-input-field field-name={field.name} value={field.value} name={field.name}
+                      required={field.req} disabled={field.readonly}>
+                    </lightning-input-field>
+                  </div>
+                </template>
+              </div>
+            </lightning-record-edit-form>
+          </div>
+          <!--Resignation Form Ends-->
+          <div class="slds-modal__footer  slds-grid slds-grid_align-center">
+            <lightning-button variant="brand" type="Submit" name="Submit" label="Submit" onclick={handleSubmit}>
+            </lightning-button>&nbsp;&nbsp;
+            <lightning-button variant="neutral" label="Cancel" type="button" onclick={closeModal}></lightning-button>
+          </div>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+  </template>
+  <template if:false={loaded}>
+    <lightning-spinner alternative-text="Loading" size="xx-small" variant="base"></lightning-spinner>
+  </template>
+</template>

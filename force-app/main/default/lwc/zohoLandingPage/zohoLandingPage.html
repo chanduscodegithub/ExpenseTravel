@@ -1,0 +1,120 @@
+<template>
+	<div style="margin-top:1.5%">
+
+		<lightning-card variant="narrow" title="" icon-name="standard:opportunity" class="slds-m-top_small">
+			<div if:true={isLoading}>
+				<lightning-spinner alternative-text="Loading" variant="brand" size="medium" class="bgColorLoader">
+				</lightning-spinner>
+			</div>
+
+			<p class="slds-p-horizontal_small slds-text-align_right">
+				<span class="slds-text-body_regular slds-text-title_bold color-pitstop" slot="actions">Need any help!! meet me at </span>
+				&nbsp;&nbsp;<lightning-button variant="brand" label="Pit Stop" title="Need help, meet me at PITSTOP" onclick={handleNavigatePitStop}
+					slot="actions" class="slds-p-right_small">
+				</lightning-button>
+			</p>
+
+			<div slot="title">
+				<span class="slds-text-heading_medium ">Zoho - Employee360 -</span><span><i class="logo">"Explore more!!"</i></span>
+			</div>
+
+		</lightning-card><br />
+
+	<!--	<lightning-card>
+			<div if:true={isLoading}>
+				<lightning-spinner alternative-text="Loading" variant="brand" size="large" class="bgColorLoader">
+				</lightning-spinner>
+			</div>
+			<div class="main-board">
+				<div class="board">
+					<template for:each={teamRecords} for:item="data" for:index="index">
+						<div key={data.id} name={index} class={data.accessLevel} onclick={handleNavigation}>
+							<div class="card-header">
+								<div if:true={data.Image_Name__c} class="image-placeholder">
+									<img class="image-size" src={data.Image_Name__c} alt="">
+									</div>
+								</div>
+								<div class="card-body slds-border_top">
+									<h3 class="title">
+										<span class="color-code1">{data.Title__c}</span><span class="color-code2">{data.Title_code__c}</span>
+									</h3>
+									<h3 class="title-tab">{data.Tab_Name__c}</h3>
+									<p class="updated-info">{data.Discription__c}</p>
+									
+							</div>
+							</div>
+					</template>
+				</div>
+			</div>
+		</lightning-card> -->
+
+	<lightning-card>
+    <div class="main-board">
+        <div class="board">
+            <div class="card" data-target="policy-documents" onclick={handleNavigation}>
+                <div class="card-header">
+                    <div class="image-placeholder">
+                        <img class="image-size" src={policiesIMG} alt="policiesIMG">
+                    </div>
+                </div>
+                <div class="card-body slds-border_top">
+                    <h3 class="title">
+                        <span class="color-code1">Zoho</span><span class="color-code2">360</span>
+                    </h3>
+                    <h3 class="title-tab">Policies</h3>
+                    <p class="updated-info">Description</p>
+                </div>
+            </div>
+            
+            <div class="card" onclick={handleNavigation}>
+                <div class="card-header">
+                    <div class="image-placeholder">
+                        <img class="image-size" src={travelRequest} alt="travelRequest">
+                    </div>
+                </div>
+                <div class="card-body slds-border_top">
+                    <h3 class="title">
+                        <span class="color-code1">Zoho</span><span class="color-code2">360</span>
+                    </h3>
+                    <h3 class="title-tab">Travel Request</h3>
+                    <p class="updated-info">Description</p>
+                </div>
+            </div>
+
+            <div class="card" data-target= "expense-claims" onclick={handleNavigation}>
+                <div class="card-header">
+                    <div class="image-placeholder">
+                        <img class="image-size" src={expenseClaim} alt="ExpenseClaim">
+                    </div>
+                </div>
+                <div class="card-body slds-border_top">
+                    <h3 class="title">
+                        <span class="color-code1">Zoho</span><span class="color-code2">360</span>
+                    </h3>
+                    <h3 class="title-tab">Expense Claim</h3>
+                    <p class="updated-info">Description</p>
+                </div>
+            </div>
+
+            <div class="card" onclick={handleNavigation}>
+                <div class="card-header">
+                    <div class="image-placeholder">
+                        <img class="image-size" src={resignation} alt="resignation">
+                    </div>
+                </div>
+                <div class="card-body slds-border_top">
+                    <h3 class="title">
+                        <span class="color-code1">Zoho</span><span class="color-code2">360</span>
+                    </h3>
+                    <h3 class="title-tab">Resignations</h3>
+                    <p class="updated-info">Description</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</lightning-card>
+
+
+
+	</div>
+</template>

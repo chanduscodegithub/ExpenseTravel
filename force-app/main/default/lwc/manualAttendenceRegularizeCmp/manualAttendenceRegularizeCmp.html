@@ -1,0 +1,191 @@
+<template>
+
+	<template if:false={isShowModal}>
+		<div class="slds-page-header slds-page-header_record-home bgColorHeader">
+			<div class="slds-page-header__row">
+				<div class="slds-page-header__col-title">
+					<div class="slds-media">
+						<div class="slds-media__figure">
+							<lightning-icon icon-name="standard:today" alternative-text="Attendence" variant="inverse"
+								size="medium"></lightning-icon>
+						</div>
+						<div class="slds-media__body">
+							<div class="slds-page-header__name">
+								<div class="slds-page-header__name-title">
+									<h1>
+										<span>Attendance</span>
+										<span class="slds-page-header__title slds-truncate" title={atdName.Name}>{atdName.Name}</span>
+									</h1>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="slds-page-header__col-actions">
+					<div class="slds-page-header__controls">
+						<div class="slds-page-header__control">
+							<ul class="slds-button-group-list">
+								<template if:true={isManager}>
+									<li>
+										<button class="slds-button slds-button_success color-icon slds-text-title_bold" onclick={handleApproveManager}>Approve/Reject</button>
+									</li>
+								</template>
+								<li>
+									<button class="slds-button slds-button_success color-icon slds-text-title_bold" onclick={handleRegularizeClick}>Regularize</button>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--<lightning-button variant="success" label="Regularize" title="Regularize attendece click here"
+			onclick={handleRegularizeClick}>
+		</lightning-button>-->
+	</template>
+
+
+	<template if:true={isShowModal}>
+		<!--
+                I Used SLDS for this code
+                Here is link https://www.lightningdesignsystem.com/components/modals/
+            -->
+		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true"
+			aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open">
+			<div class="slds-modal__container">
+				<!-- modal header start -->
+				<header class="slds-modal__header">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+					<lightning-icon icon-name="utility:close"
+                   alternative-text="close"
+                   variant="inverse"
+                   size="small" ></lightning-icon>
+					<span class="slds-assistive-text">Close</span>
+				</button>
+					<h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Attendence Regularization
+					</h2>
+				</header>
+				<!-- modal body start -->
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+					<div class="demo-only demo-only--sizing slds-grid slds-wrap">
+						<div class="slds-size_2-of-2">
+							Reporing manager : <lightning-formatted-text value={managerDetails.Name}
+								label="Reporting manager"></lightning-formatted-text>
+						</div>
+						<div class="slds-size_2-of-2">
+							<template if:true={overrideNewButton}>
+								<lightning-input type="date" name="atdDate" label="Regularzid Date"
+									value={atdRegularizedDate} onchange={handleDateCtrl} class="slds-m-around_x-small"
+									required>
+								</lightning-input>
+							</template>
+							<template if:false={overrideNewButton}>
+								Date : <lightning-formatted-date-time value={atdResult.Date__c} label="Date" required>
+								</lightning-formatted-date-time>
+							</template>
+						</div>
+						<div class="slds-size_2-of-2">
+
+							<template if:true={duration}>
+								<b> Total Duration : </b>
+								<lightning-formatted-text value={duration} class="bold-it">
+								</lightning-formatted-text>
+							</template>
+							<template if:false={duration}>
+								Total Duration : 00:00
+							</template>
+						</div>
+						<div class="slds-size_1-of-2">
+							<lightning-input type="time" name="checkInTime" label="Check IN" value={checkIn}
+								onchange={handleTimeInCtrl} class="slds-m-around_x-small" hour="2-digit"
+								secound="2-digit" hour12="true" required>
+							</lightning-input>
+						</div>
+						<div class="slds-size_1-of-2">
+							<lightning-input type="time" name="checkOutTime" label="Check OUT" value={checkOut}
+								onchange={handleTimeInCtrl} class="slds-m-around_x-small" required>
+							</lightning-input>
+						</div>
+						<div class="slds-size_1-of-2">
+							<lightning-combobox name="Reason" label="Reason" value={empReason}
+								placeholder="Select Reason" options={options} onchange={handleReasonChange}
+								dropdown-alignment="auto" class="slds-m-around_x-small" required>
+							</lightning-combobox>
+						</div>
+						<div class="slds-size_1-of-2">
+							<lightning-textarea name="EmpCommnets" label="Employee Comments"
+								placeholder="Enter Any Comments(Optional.....)" value={empCommnets}
+								onchange={handleEmpComment} class="slds-m-around_x-small" required></lightning-textarea>
+						</div>
+					</div>
+
+				</div>
+				<!-- modal footer start-->
+				<footer class="slds-modal__footer">
+					<button class="slds-button slds-button_neutral slds-m-left_x-small" onclick={beforehandleSubmit}>Submit</button>
+					<button class="slds-button slds-button_neutral slds-m-left_x-small" onclick={hideModalBox}>Cancel</button>
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</template>
+	<template if:true={showWarningMessage}>
+		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+			aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+			<div class="slds-modal__container">
+				<!-- modal header start -->
+				<header class="slds-modal__header">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBoxWarning}>
+					<lightning-icon icon-name="utility:close"
+                   alternative-text="close"
+                   variant="inverse"
+                   size="small" ></lightning-icon>
+					<span class="slds-assistive-text">Close</span>
+				</button>
+					<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+						Please confirm the entered duration: {duration}
+					</h2>
+				</header>
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+					The duration you specified is less than 9 hours. If you wish to adjust the duration, please consider
+					modifying the check-in or check-out time.
+				</div>
+				<footer class="slds-modal__footer">
+					<button class="slds-button slds-button_neutral slds-m-left_x-small" onclick={handleSubmit}>Submit</button>
+					<button class="slds-button slds-button_neutral slds-m-left_x-small" onclick={hideModalBoxWarning}>Cancel</button>
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</template>
+
+	<template if:true={showApproveReject}>
+		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-03" aria-modal="true"
+			aria-describedby="modal-content-id-3" class="slds-modal slds-fade-in-open">
+			<div class="slds-modal__container">
+				<!-- modal header start -->
+				<header class="slds-modal__header">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalApprove}>
+					<lightning-icon icon-name="utility:close"
+                   alternative-text="close"
+                   variant="inverse"
+                   size="small" ></lightning-icon>
+					<span class="slds-assistive-text">Close</span>
+				</button>
+					<h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">
+						Reject Or Apporved Regularization
+					</h2>
+				</header>
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+					<lightning-textarea label="Comments" name="Comments" value={managerCmt} onchange={handleManagerCmt}></lightning-textarea>
+				</div>
+				<footer class="slds-modal__footer">
+					<button class="slds-button slds-button_neutral slds-m-left_x-small" name="approve" onclick={handleSubmitApproved}>Approve</button>
+					<button class="slds-button slds-button_neutral slds-m-left_x-small" name="reject" onclick={handleSubmitApproved}>Reject</button>
+					<button class="slds-button slds-button_neutral slds-m-left_x-small" onclick={hideModalApprove}>Cancel</button>
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</template>
+</template>

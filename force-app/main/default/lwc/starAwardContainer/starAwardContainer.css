@@ -1,0 +1,414 @@
+lightning-combobox.star-type.input-fields.slds-form-element {
+    width: 49%;
+}
+
+.error-message {
+    color: red;
+    font-size: 1rem; /* Adjust size as needed */
+    margin:  0rem 0rem 0rem 1rem;
+    text-align: left;
+}
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.visible {
+    /* visibility: hidden; */
+    width: fit-content;
+    background-color: #3d3d3d;
+    color: white;
+    text-align: center;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+    position: absolute;
+    z-index: 1;
+    opacity: 1;
+    transition: opacity 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* border-radius: 10px; */
+    bottom: 35%;
+    left: 25%;
+}
+
+
+.underline {
+    text-decoration: underline;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    width: 40rem;
+    background-color: white;
+    color: black;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+    position: absolute;
+    top: -1.8rem;
+    left: 19px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin: 3rem 0rem 0rem 1rem;
+}
+
+.row{
+    display: grid;
+    grid-template-columns: 0.5fr 3fr 0.5fr;
+    align-items: center;
+    width: 100%;
+}
+
+/* lightning-textarea.comment.input-fields.slds-form-element{
+    margin: 2rem 0rem;
+} */
+
+.comment{
+    width: 95%;
+    border-radius: 10px;
+    min-height: 100px;
+    margin: 0rem 0rem 2rem 1rem;
+    padding: 1rem;
+
+}
+
+.comment.has-error {
+    margin: 0rem 0rem 0rem 1rem; /* Reduced bottom margin when error message is present */
+}
+
+.error-message {
+    color: red;
+    font-size: 0.875rem; /* Adjust size as needed */
+    margin:  0rem 0rem 0.5rem 1rem;
+    text-align: left;
+}
+
+.info-icon {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    width: 1rem;
+    height: 1rem;
+    fill: #424242;
+}
+
+.employee-avatar {
+    max-width: 100%;
+    max-height: 100%;
+    width: 55px;
+    height: 54px;
+    border-radius: 50%;
+    object-fit: cover;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.avatarDropdown{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.detail{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.2rem;
+}
+
+.awardedToContainer{
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 95%;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    padding: 1rem 0rem 1rem 0.3rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-left: 1rem;
+}
+
+.heading{
+    background: #f6b204;
+    border-radius: 10px;
+    border: 1px solid black;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.headerContainer {
+    background-color: #f6b204;
+    color: black;
+    position: -webkit-sticky;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0rem;
+    border-radius: 4px;
+    border-bottom: 1px solid black;
+    z-index: 1080;
+}
+
+.tdClass{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.headingComment{
+    background: #f6b204;
+    border-radius: 10px;
+    border: 1px solid black;
+    height: 2rem;
+    display: flex;
+    font-weight: 800;
+    font-size: 1rem;
+    margin-left: 1rem;
+    align-items: center;
+    padding-left: 10px;
+    width: 95%;
+}
+
+.input-label{
+    background: #f6b204;
+    border-radius: 10px;
+    border: 1px solid black;
+    height: 1.5rem;
+    display: flex;
+    font-weight: 800;
+    font-size: 1rem;
+    align-items: center;
+    justify-content: center;
+    width: 10%;
+}
+
+.inform-input-label{
+    background: #f6b204;
+    border-radius: 10px;
+    border: 1px solid black;
+    height: 1.5rem;
+    display: flex;
+    font-weight: 800;
+    font-size: 1rem;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+}
+
+.search{
+    height: 35%;
+    border-radius: 10px;
+    border: 1px solid grey;
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.input-container{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.search-:focus {
+        outline: none;
+        border-color: #0070d2; /* Optional: Salesforce Blue focus effect */
+}
+
+.remove-button {
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    justify-content: center;
+}
+
+.selected-list {
+    list-style: none;
+    padding: 0;
+    border: 1px solid gray;
+    border-radius: 10px;
+    overflow-y: auto;
+    height: 250px;
+}
+
+.insideTd{
+    position: relative;
+    width: 95%;
+}
+
+.search-input {
+    width: 100%; /* Ensure the input field takes the full width of the container */
+    box-sizing: border-box; /* Include padding and border in width */ 
+}
+
+.dropdown {
+    position: absolute; /* Position dropdown relative to input */
+    width: 100%; /* Match the input field's width */
+    max-width: 100%; /* Prevent the dropdown from exceeding the container's width */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 2px; /* Add slight spacing between input and dropdown */
+    background: white;
+    z-index: 100;
+    box-shadow: -4px 5px 6px rgba(0, 0, 0, 0.1);
+    top: 58%;
+}
+
+.dropdown-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.dropdown-list li {
+    padding: 8px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+}
+
+.dropdown-list li:hover {
+    background-color: #f5f5f5;
+}
+
+.selected-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin: 10px;
+    background-color: white;
+    border-radius: 10px;
+    /* box-shadow:-4px 0px 6px rgba(0, 0, 0, 0.1);
+     */
+    box-shadow:4px 4px 4px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    /* border: 1px solid rgba(255, 255, 255, 0.18); */
+    border: 1px solid #f1f1f1;
+    max-width: 700px; /* Optional: Define a max-width for the list item */
+}
+
+.Name{
+    font-weight: 600;
+}
+
+.footer{
+    display: flex;
+    justify-content: end;
+}
+
+.btn {
+    background: none;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+     position: relative; 
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+}
+
+.column p, .avatarDropdown{
+    pointer-events: none;
+}
+
+.employee-item{
+    display: grid;
+    grid-template-columns: 1fr 0.2fr;
+    background: #f1f1f1;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0.5rem;
+    overflow: hidden;
+}
+
+.employee-item:hover{
+    background-color: #a8a8a8;
+    border-radius: 20px;
+}
+
+.remove-button:hover{
+    background-color: #f1f1f1;
+}
+
+.suggestions-list{
+    display: grid;
+    grid-template-columns: 0fr 1fr 1fr 1fr 1fr 1fr;
+    margin: 0.5rem 0rem;
+    gap: 0.2rem;
+}
+
+.confirmationContainer{
+    height: 15%;
+    max-height: calc(100vh-42rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #ffffff;
+}
+
+.buttonContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: end;
+}
+
+.add-button{
+    font-weight: 800;
+    font-size: 0.9rem;
+}
+
+.empName{
+    white-space: nowrap; /* Prevent the content from wrapping to the next line */
+    overflow: hidden;    /* Hide any content that overflows */
+    text-overflow: ellipsis; /* Display ellipses (...) for overflowing text */
+}
+
+.suggestions-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: blue;
+    text-align: center;
+    margin: 0.5rem;
+    font-style: italic;
+}

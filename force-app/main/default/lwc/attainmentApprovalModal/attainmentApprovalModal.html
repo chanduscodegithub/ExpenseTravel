@@ -1,0 +1,24 @@
+<template>
+    <lightning-card title=" Select Quota Sheet for Approval">
+        <div class="slds-p-around_medium">
+            <lightning-combobox
+                label=" Select Financial Year"
+                options={financialYearOptions}
+                value={selectedFinancialYear}
+                onchange={handleFinancialYearChange}>
+            </lightning-combobox>
+            <lightning-dual-listbox
+                label="Select Category"
+                source-options={categoryOptions}
+                value={selectedCategories}
+                onchange={handleCategoryChange}>
+            </lightning-dual-listbox>
+            <lightning-dual-listbox
+                label="Select Regions"
+                source-options={regionOptions}
+                value={selectedRegions}
+                onchange={handleRegionChange}>
+            </lightning-dual-listbox>
+        </div>
+    </lightning-card>
+</template>

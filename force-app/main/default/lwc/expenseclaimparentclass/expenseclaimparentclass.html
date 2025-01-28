@@ -1,0 +1,25 @@
+<template>
+    <template lwc:if={loaded}>
+        <div class="custom-tabs">
+            <div class="tab-header">
+                <button class="tab-button active" data-tab="Myexpenseclaims" onclick={switchTab}>
+                    My Expense Claims
+                </button>
+                <button class="tab-button" data-tab="Myteamexpenseclaims" onclick={switchTab}>
+                  My Team's Expense Claims 
+                </button>
+            </div>
+            <div class="tab-content">
+                <div class="tab-panel active" data-tab="Myexpenseclaims">
+                    <c-my-expense-claimview ></c-my-expense-claimview >
+                </div>
+                <div class="tab-panel slds-hide" data-tab="Myteamexpenseclaims">
+                    <c-exit-management-team></c-exit-management-team>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template lwc:elseif={loaded}>
+        <lightning-spinner alternative-text="Loading" size="small" variant="base"></lightning-spinner>
+    </template>
+</template>

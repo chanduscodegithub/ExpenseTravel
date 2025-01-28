@@ -1,0 +1,178 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <div class="exampleHolder" if:true={spinnerFlag}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </div>
+    <div class="main__container" if:false={spinnerFlag}>
+        <c-calendar-flyer holiday-data={holidayData}></c-calendar-flyer>
+        <article class="slds-card">
+            <div class="slds-page-header">
+                <div class="slds-page-header__row">
+                    <div class="slds-page-header__col-title">
+                        <div class="slds-media">
+                            <div class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-standard-store" title="Leaves">
+                                    <lightning-icon icon-name="standard:store" alternative-text="Icon"></lightning-icon>
+                                    <span class="slds-assistive-text"></span>
+                                </span>
+                            </div>
+                            <div class="slds-media__body">
+                                <div class="slds-page-header__name">
+                                    <div class="slds-page-header__name-title">
+                                        <h1>
+                                            <span class="slds-page-header__title slds-truncate" title="Avishkaar - Leave Management">Avishkaar - Leave Management</span>
+                                        </h1>
+                                    </div>
+                                </div>
+                                <p class="slds-page-header__name-meta">{data.empData.Name}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-page-header__col-actions">
+                        <div class="slds-page-header__controls">
+                            <div class="slds-page-header__control">
+                                <ul class="slds-button-group-list">
+                                    <li lwc:if={reportButtonAllowed}>
+                                        <button class="slds-button slds-button_neutral" onclick={handleLeaveBalanceReport}>Get Report</button>
+                                    </li>
+                                    <li>
+                                        <button class="slds-button slds-button_neutral" onclick={handleHolidayPopUp}>Holiday List</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <div class="container">
+                    <div class="leave__heading">
+                        <div class="container__header">
+                            <header class="leave__header">Leave Balance</header>
+                            <span class="header__subtext">Click on a card to Apply.</span>
+                        </div>
+                    </div>
+                    <c-leave-cards lwc:spread={data} oncardclick={handleCardClick}></c-leave-cards>
+                    <div class="leaveapply__container">
+                        <header class="leaveapply__header">Apply Leave</header>
+                        <div class="leaveapply__body">
+                            <div class="employee__details">
+                                <!-- <div class="slds-form-element grid__items">
+                                    <label class="slds-form-element__label" for="text-input-id-697">Region</label>
+                                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                                        <lightning-icon icon-name="utility:world" alternative-text="Region" size="x-small" class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"></lightning-icon>
+                                        <input type="text" id="text-input-id-697" placeholder="Region.." class="slds-input" value={data.empData.Region__c} disabled />
+                                    </div>
+                                </div> -->
+                                <div class="slds-form-element grid__items">
+                                    <lightning-input type="date" id="start-date" data-type="start-date" name="Start Date" value={startDate} label="Start Date" onchange={handleInput} required></lightning-input>
+                                </div>
+                                <div class="slds-form-element grid__items">
+                                    <lightning-input type="date" id="end-date" data-type="end-date" name="End Date" value={endDate} label="End Date" onchange={handleInput} required></lightning-input>
+                                </div>
+                                <div class="slds-form-element grid__items">
+                                    <lightning-combobox name="Type" value={selectedType} class="selectedType" placeholder="None" options={leaveOptions} label="Leave Type" onchange={handleTypeChange} required message-when-value-missing="Field is mandatory."></lightning-combobox>
+                                </div>
+                                <div class="slds-form-element grid__items">
+                                    <label class="slds-form-element__label" for="text-input-id-17">Duration (in days)</label>
+                                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                                        <lightning-icon icon-name="utility:reminder" alternative-text="Duration" size="x-small" class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"></lightning-icon>
+                                        <input type="text" id="text-input-id-17" placeholder="Duration.." class="slds-input" value={duration} disabled />
+                                    </div>
+                                </div>
+                                <div class="slds-form-element grid__items">
+                                    <lightning-input type="text" id="reason" data-type="reason" name="Reason" value={reason} label="Reason" onchange={handleReasonInput} placeholder="Enter reason..."></lightning-input>
+                                </div>
+                                <div class="slds-form-element grid__items">
+                                    <c-informed-to rest-of-employee={restEmployees} last-leave-data={lastLeaveInformedTo} onempevt={handleInformedEmp}></c-informed-to>
+                                </div>
+                            </div>
+                            <div class="leaveapply__employeebody" lwc:if={tableView}>
+                                <table>
+                                    <caption>
+                                        Leave Info
+                                    </caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">First Half</th>
+                                            <th scope="col">Second Half</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={dayCollection} for:item="eachDay">
+                                            <tr key={eachDay.key} lwc:if={eachDay.isWeekDay} data-type={eachDay.dayType}>
+                                                <td data-style="bold">
+                                                    <lightning-icon icon-name="utility:date_input" alternative-text="Date Icon" size="x-small" class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"></lightning-icon>
+                                                    <span class="dateinp">{eachDay.dateStr}</span>
+                                                </td>
+                                                <template lwc:if={eachDay.locked}>
+                                                    <td data-style="bold" colspan="2" class="reason">
+                                                        {eachDay.lockReason}
+                                                    </td>
+                                                </template>
+                                                <template lwc:else>
+                                                    <template lwc:if={eachDay.restrictedOpted}>
+                                                        <td data-style="bold" colspan="2" class="reason">
+                                                            {eachDay.lockReason}
+                                                        </td>
+                                                    </template>
+                                                    <template lwc:else>
+                                                        <td>
+                                                            <lightning-input type="checkbox" name="First Half" data-key={eachDay.key} onchange={handleCheck} checked={eachDay.firstHalf} disabled={eachDay.firstHalfLocked}></lightning-input>
+                                                        </td>
+                                                        <td>
+                                                            <lightning-input type="checkbox" name="Second Half" data-key={eachDay.key} onchange={handleCheck} checked={eachDay.secondHalf} disabled={eachDay.secondHalfLocked}></lightning-input>
+                                                        </td>
+                                                    </template>
+                                                </template>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="leaveapply__employeebody__error" lwc:if={isDataInvalid}>
+                                <!-- Please select Start Date, End Date and Leave Type to proceed. -->
+                            </div>
+                            <div class="leaveapply__footer">
+                                <lightning-button label="Apply" variant="brand" title="Apply" onclick={handleConfirmation} class="slds-m-left_x-small" disabled={allowSaveDisable}></lightning-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Apply Confirmation Modal-->
+            <template if:true={isModalOpen}>
+                <c-modal onmodalevt={handleModalEvent} header-message="Confirmation" confirm-message="Confirm" cancel-message="Cancel" state="applying" conform-button-visible="visible">
+                    Are you sure you want to apply leave?
+                    <!--<p style="color:crimson; font-weight:bold;" if:true={additionalModalContent}>Note: There's existing leaves/holiday in between. Duration/Date will be adjusted accordingly.</p>
+                    <p style="color:crimson; font-weight:bold;" if:true={furloughWarning}>Note: Please reserve 5 days of paid leave for the year-end holiday.</p>-->
+                </c-modal>
+            </template>
+            <!--Restricted Opt Modal-->
+            <template if:true={restrictedModalFlag}>
+                <c-restricted-opt-modal oncancelmodal={handleCancelRestricted} onrestrictsubmit={handleRestrictSubmit} everyday-data={dayCollection} leave-balance={data.restrictedBalance}></c-restricted-opt-modal>
+            </template>
+            <!--Restricted List Modal-->
+            <template if:true={restrictedListFlag}>
+                <c-restricted-list-modal oncloseleavelist={handleCloseLeaveList} onsaveleavelist={handleSaveRestricted} holiday-data={holidayData} restricted-balance={data.restrictedBalance} existing-leaves={existingLeaves}></c-restricted-list-modal>
+            </template>
+            <!--Report Confirmation Modal-->
+            <template if:true={reportModalFlag}>
+                <c-modal onmodalevt={handleModalEvent} header-message="Confirmation" confirm-message="Yes" cancel-message="No" state="reports" conform-button-visible="visible">
+                    We can email you a report of your remaining leave days so that you can plan your leaves better. Would you like that?<br />
+                    <div class="modal__checkbox" style=" display: flex;">
+                        Include report of your direct reports also?
+                        <lightning-input type="checkbox" name="Include Reportees" onchange={handleCheckReportees} checked={includeReportees} style="margin-left: 1em;"></lightning-input>
+                    </div>
+                </c-modal>
+            </template>
+            <!--Holiday Confirmation Modal-->
+            <template if:true={holidayModalFlag}>
+                <c-modal onmodalevt={handleModalEvent} header-message={getHolidayHeading} confirm-message="Sed Lyf :)" cancel-message="Close" state="calendar" conform-button-visible="nope-dude">
+                    <c-holiday-component holidays={rawHolidays}></c-holiday-component>
+                </c-modal>
+            </template>
+        </article>
+    </div>
+</template>

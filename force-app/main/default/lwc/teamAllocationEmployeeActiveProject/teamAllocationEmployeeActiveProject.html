@@ -1,0 +1,25 @@
+<template>
+    <template if:true={loading}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+    <lightning-card title={cardTitle} icon-name={cardIcon}>
+        <div class="slds-section">
+            <article class="slds-card slds-card_boundary">
+                <template if:true={isDataAvailable}>
+                    <div class="slds-card__body">
+                        <lightning-datatable key-field="id" data={teamAllocationData} show-row-number-column
+                            row-number-offset={rowOffset} hide-checkbox-column columns={columns}>
+                        </lightning-datatable>
+                    </div>
+                </template>
+            </article>
+            <template if:false={isDataAvailable}>
+                <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-center">
+                    <div>
+                      <span> No Active Projects assigned.</span>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

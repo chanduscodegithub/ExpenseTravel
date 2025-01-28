@@ -1,0 +1,34 @@
+<template>
+    <lightning-card title="Project Detail" icon-name="custom:custom14" >
+     <template if:false={projectrecordid}>    
+         <div>
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </div>
+     </template>
+     <template if:true={projectrecordid}>
+            <div class="slds-m-around_medium">
+                <lightning-record-view-form object-api-name="Project__c" record-id={projectrecordid} >
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-output-field field-name="Name" class="borderbottom"></lightning-output-field>
+                            <lightning-output-field field-name="Region__c" class="borderbottom"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-output-field field-name="StartDate__c" class="borderbottom"></lightning-output-field>
+                            <lightning-output-field field-name="EndDate__c" class="borderbottom"></lightning-output-field>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap">
+                         <div class="slds-col slds-size_1-of-1">
+                            <lightning-output-field field-name="Opportunity__c" class="borderbottom"></lightning-output-field>
+                          </div>
+                          <div class="slds-col slds-size_1-of-1">
+                            <lightning-output-field field-name="ProjectManager__c" class="borderbottom"></lightning-output-field>
+                          </div>
+                    </div>
+                </lightning-record-view-form>
+            </div>
+    </template>
+   
+    </lightning-card>
+</template>

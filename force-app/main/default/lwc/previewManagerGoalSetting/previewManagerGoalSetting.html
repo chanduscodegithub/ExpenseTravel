@@ -1,0 +1,104 @@
+<template>
+	<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+		aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+		<div class="slds-modal__container">
+			<!-- modal header start -->
+			<header class="slds-modal__header">
+				<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hidemodalbox}>
+			<lightning-icon icon-name="utility:close"
+				alternative-text="close"
+				variant="inverse"
+				size="small" onclick={hidemodalbox}></lightning-icon>
+			<span class="slds-assistive-text">Close</span>
+			</button>
+				<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+					My Manager's KRA/KPI
+				</h2>
+			</header>
+
+			<!-- modal body start -->
+			<div class="slds-modal__content slds-p-around_medium modalBodySpinner slds-scrollable" id="modal-content-id-1">
+				<div if:true={isLoaded} class="spinner">
+					<lightning-spinner alternative-text="Loading" size="small" class="spinnerClass">
+					</lightning-spinner>
+				</div>
+				<template if:false={hideManagerGoal}>
+					<p class="slds-text-heading_small slds-required slds-align_absolute-center">
+						Upon the manager's approval, the data becomes viewable to you.
+					</p>
+				</template>
+				<template if:true={hideManagerGoal}>
+					<lightning-tabset>
+						<template for:each={allKRA} for:item="data" for:index="outerindex">
+							<div key={data.id}>
+								<lightning-tab label={data.goalRespository.Name}>
+									<div class="slds-box slds-m-around_xx-small">
+										<div class="slds-text-heading_x-small">
+											<b>KRA weightage : </b>{data.KRAWieghtage}
+										</div>
+										<br />
+										<div class="slds-text-heading_x-small"><b>Description</b> :&nbsp;<br/>
+											<template lwc:if={data.checkNoZeroKPISize}>
+												<template lwc:if={data.goalSetting.Is_KRA_Edited__c}>
+													<lightning-formatted-text
+														value={data.goalSetting.KRA_Discription__c}>
+													</lightning-formatted-text>
+												</template>
+												<template lwc:else>
+													<lightning-formatted-text
+														value={data.goalRespository.Description__c}>
+													</lightning-formatted-text>
+												</template>
+											</template>
+											<template lwc:else>
+												<lightning-formatted-text value={data.goalRespository.Description__c}>
+												</lightning-formatted-text>
+											</template>
+										</div>
+									</div>
+									<table class="slds-table slds-table_bordered slds-table_cell-buffer">
+										<thead>
+											<tr class="slds-text-title_caps">
+												<th scope="col" style="width:80%;">
+													<div class="slds-align_absolute-center bold">
+														<b>KPI</b>
+													</div>
+												</th>
+												<th scope="col" style="width:20%;">
+													<b><div class="slds-align_absolute-center bold">
+													KPI wieghtage
+												</div></b>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<template for:each={data.goalSettingArray} for:item="KRA" for:index="index">
+												<tr key={KRA.keyIndex}>
+													<!--Able to Update--->
+													<td>
+														<lightning-formatted-text name="kraName" value={KRA.KPI}>
+														</lightning-formatted-text>
+													</td>
+													<td class="slds-align_absolute-center">
+														<lightning-formatted-number name="kraWieghtage"
+															value={KRA.KPIWieghtage}>
+														</lightning-formatted-number>%
+													</td>
+												</tr>
+											</template>
+										</tbody>
+									</table>
+								</lightning-tab>
+							</div>
+						</template>
+					</lightning-tabset>
+				</template>
+			</div>
+			<!-- modal footer start-->
+			<footer class="slds-modal__footer">
+				<button class="slds-button slds-button_brand" onclick={hidemodalbox} >Close</button>
+			</footer>
+		</div>
+	</section>
+	<div class="slds-backdrop slds-backdrop_open"></div>
+</template>

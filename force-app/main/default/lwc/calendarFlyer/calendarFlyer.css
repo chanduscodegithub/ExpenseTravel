@@ -1,0 +1,20 @@
+.holiday__container {
+  width: 100%;
+  overflow: hidden;
+  background-color: #D36A01;
+}
+
+.holiday__list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  white-space: nowrap;
+}
+
+.holiday__list-item {
+  display: inline-block;
+  color: #fff;
+  font-size: large;
+  font-weight: bolder;
+  margin: 10px 20px 10px 0;
+}

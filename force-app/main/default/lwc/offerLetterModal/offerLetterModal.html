@@ -1,0 +1,14 @@
+<template>
+    <lightning-card title="Create Offer Letter" icon-name="standard:document">
+        <div class="slds-m-around_medium">
+            <lightning-input label="Candidate Name" onchange={handleInputChange} value={candidateName}></lightning-input>
+            <lightning-input label="Position" onchange={handleInputChange} value={position}></lightning-input>
+            <lightning-input label="Salary" onchange={handleInputChange} value={salary}></lightning-input>
+            <lightning-input label="Joining Date" type="date" onchange={handleInputChange} value={joiningDate}></lightning-input>
+            <div class="slds-m-top_medium">
+                <lightning-button variant="brand" label="Submit" onclick={handleSubmit}></lightning-button>
+                <lightning-button variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>

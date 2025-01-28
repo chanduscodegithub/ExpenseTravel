@@ -1,0 +1,58 @@
+.transparent-card .slds-card__header,
+.transparent-card .slds-card__body,
+.transparent-card .slds-card__footer {
+    background-color:#fff;
+}
+
+.card{
+    background-color: white;
+}
+.slds-page-header__title {
+    font-size: 1.5rem;
+}
+
+.slds-page-header__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slds-page-header__col-actions {
+    display: flex;
+    align-items: center;
+}
+
+.button-group__button {
+    border-radius: 0 !important;
+}
+button.slds-button.slds-button_neutral{
+    border-radius: 0;
+}
+
+.button-group__button:first-child {
+    border-radius: 0.25rem 0 0 0.25rem; /* Rounded left corners for the first button */
+    margin-left: 0; /* Remove margin for the first button */
+}
+.slds-button-group-list .slds-button {
+    border: none;
+}
+
+.button-group__button:last-child {
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.dummy{
+	color : black;
+}
+.bgColorHeader{
+	background-color: white;
+	margin-top : 2%;
+}
+
+.color-icon{
+	color : white;
+}
+
+.bold-it{
+	font-weight: bold;
+}

@@ -1,0 +1,52 @@
+<aura:component controller="CommunityHomePageCompContlr" implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,forceCommunity:themeLayout" access="global" >
+	<aura:handler name='init' value="{!this}" action='{!c.doInit}' />
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="EmpTAwithKPIsList" type="List" default=""/>
+    <aura:attribute name="IsNullFlag" type="Boolean" default="true"/>
+    <aura:attribute name="IsSpinner" type="Boolean"/>
+    <aura:if isTrue="{!v.IsSpinner}">
+        <lightning:spinner variant="brand"  size="large" />
+    </aura:if> 
+    <div class="content">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title header slds-text-title_caps">
+                        <strong>Team Allocation Without KPI's</strong>
+                    </h2>
+                </div>
+            </header>
+        </div>
+        <aura:if isTrue="{!v.IsNullFlag}">
+            <div class="slds-card__body">
+                
+                <div class="table-scroll">
+                    <table class="slds-table" style="width:100%;"> 
+                        <thead>
+                            <tr class="slds-text-title_caps slds-gray">
+                                <th class="slds-text-align_left"><div class="slds-truncate">TEAM ALLOCATION NAME</div></th>
+                                <th class="slds-text-align_left"><div class="slds-truncate">START DATE</div></th>
+                                <th class="slds-text-align_left"><div class="slds-truncate">END DATE</div></th>
+                                <th class="slds-text-align_center"><div class="slds-truncate">PROJECT NAME</div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.EmpTAwithKPIsList}" var="EmpTAwithKPs" indexvar="index">
+                                <c:EmpTAWithoutKPIsChildComp TAwithoutKPIsList="{!EmpTAwithoutKPs}"/>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <aura:set attribute="else">
+                <div class="slds-card__body1">
+                    <h2 class=" header slds-text-title_caps slds-text-align_center">
+                        <strong class="slds-text-align_center">No Records Found</strong>
+                    </h2>
+                </div>
+            </aura:set>
+            
+            
+        </aura:if>
+    </div>
+</aura:component>

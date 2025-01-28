@@ -1,0 +1,83 @@
+<!--
+The component to get Opportunity details and display for a given project.
+-->
+
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId"
+                access="global" controller="TeamMembersApex">
+    
+    <aura:attribute name='oppotunitydetails' type="Opportunity" />
+    
+    <!--<aura:attribute name='oppotunityde' type="boolean" default ="false" />-->
+    <aura:attribute name="fields" type="String[]" default="['Id','Opportunity_Region__c','Territory2Id']" />
+    
+    <aura:handler name='init' value="{!this}" action='{!c.doInit}' />
+    
+    
+    <lightning:card variant="Narrow" title="Opportunity Information" iconName="standard:opportunity" >
+        <p class="slds-p-horizontal_small">
+            <div style='width:100%'>
+                <aura:if isTrue='{!v.oppotunitydetails != null}'>
+                    
+                    <lightning:recordViewForm recordId="{!v.oppotunitydetails.Id}" 
+                                              objectApiName="Opportunity" class=''>
+                        <div class="slds-grid slds-gutters slds-s-around_medium">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning:outputField style='border-bottom: 1px solid #ccc;' fieldName="Opportunity_Region__c" />
+                                
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning:outputField style='border-bottom: 1px solid #ccc;' fieldName="Opportunity_Source__c" />
+                            </div>
+                            
+                        </div>
+                    </lightning:recordViewForm>
+                    <div class="slds-grid slds-gutters slds-s-around_medium">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning:recordViewForm recordId="{!v.oppotunitydetails.Territory2Id}" 
+                                                      objectApiName="Territory2" class=''>
+                                <div style='border-bottom: 1px solid #ccc;'>
+                                    <p class='slds-form-element__label slds-form-element slds-form-element_stacked'>Territory Name</p>
+                                    <p class='slds-form-element__label slds-form-element slds-form-element_stacked'>
+                                        <lightning:outputField style='border-bottom: 1px solid #ccc;' fieldName="Name" variant='label-hidden'  /></p>
+                                </div>
+                            </lightning:recordViewForm>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning:recordViewForm recordId="{!v.oppotunitydetails.AccountId}" 
+                                                      objectApiName="Account" class=''>
+                                 <div style='border-bottom: 1px solid #ccc;'>
+                                <p class='slds-form-element__label slds-form-element slds-form-element_stacked'>Account Name</p>
+                                
+                                
+                                <p class='slds-form-element__label slds-form-element slds-form-element_stacked'>
+                                    <lightning:outputField style='border-bottom: 1px solid #ccc;' fieldName="Name" variant='label-hidden' /></p>
+                                </div>
+                            </lightning:recordViewForm>
+                        </div>
+                    </div>
+                    
+                    <lightning:recordViewForm recordId="{!v.oppotunitydetails.Id}" 
+                                              objectApiName="Opportunity" class=''>
+                        <div class="slds-grid slds-gutters slds-s-around_medium">
+                            
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning:outputField style='border-bottom: 1px solid #ccc;' fieldName="FNA_Status__c" />
+                                
+                                
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning:outputField  style='border-bottom: 1px solid #ccc;' fieldName="Opportunity_Stream__c" />
+                            </div>
+                        </div>
+                        
+                    </lightning:recordViewForm>
+                    <aura:set attribute="else">
+                        No data found
+                    </aura:set>
+                </aura:if>
+            </div>
+        </p>
+    </lightning:card>
+    
+    
+</aura:component>

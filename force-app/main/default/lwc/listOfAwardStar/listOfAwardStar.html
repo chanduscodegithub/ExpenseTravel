@@ -1,0 +1,14 @@
+<template>
+    <div class="slds-scrollable_y" style="height: 20rem; padding-top:2rem">
+        <lightning-datatable
+        key-field="id"
+        columns={columns}
+        data={lstOfStars}
+        hide-checkbox-column
+        default-sort-direction={defaultSortDirection}
+        sorted-direction={sortDirection}
+        sorted-by={sortedBy}
+        onsort={onHandleSort}>
+</lightning-datatable>
+    </div>   
+</template>

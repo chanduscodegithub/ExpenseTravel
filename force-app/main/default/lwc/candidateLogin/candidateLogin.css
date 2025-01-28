@@ -1,0 +1,19 @@
+.portal-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.email-section, .otp-section, .upload-section {
+  margin-bottom: 20px;
+}
+
+.success-message {
+  color: green;
+  margin: 10px 0;
+}
+
+.error-message {
+  color: red;
+  margin: 10px 0;
+}

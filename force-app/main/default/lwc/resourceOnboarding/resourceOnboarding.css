@@ -1,0 +1,563 @@
+.headerContainer {
+    background-color: #f6b204;
+    color: black;
+    position: -webkit-sticky;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0rem;
+    border-radius: 4px;
+    z-index: 1080;
+}
+
+.employeeSection{
+    display: grid;
+    grid-template-columns: 1.3fr 2fr;
+    padding: 1rem;
+    gap: 50px;
+}
+.status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    width: auto;
+}
+
+.status-active {
+    background-color: forestgreen;
+}
+
+
+.status-inactive {
+    background-color: red;
+}
+
+.no-contracts-message {
+    color: red;
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.confirmationContainer{
+    height: 15%;
+    max-height: calc(100vh-42rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #ffffff;
+}
+.tabSpace{
+    padding-right: 0.7rem;
+}
+.rowDetail{
+    display: grid;
+    grid-template-columns: 0.1fr 1fr;
+}
+.slds-align_absolute-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-top: 1.5rem;
+}
+.toggleBtn{
+    font-weight: 600;
+}
+.lookupField{
+    padding: 0.5rem 1.2rem;
+}
+.slds-modal__footer {
+    justify-content: flex-end;
+    z-index:1048;
+}
+.slds-media{
+    align-items: center;
+    font-size: 1rem;
+}
+.slds-modal__content noApplication,.slds-modal__content.noApplication{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.assetYes,.sowYes{
+  border: none;
+}
+.assetNo,.sowNo{
+    border: 3px solid red;
+    border-radius: 2px;
+}
+
+.noJobApplication,.noApplication{
+    font-size: 1.1rem;
+    color: crimson;
+    font-weight: 600;
+    text-align: center;
+}
+
+.noJob{
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.addressBox{
+    display: grid;
+}
+
+.label.slds-form-element__label{
+    padding: 0px;
+}
+
+.documentsRow{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    font-weight: 600;
+    padding: 0rem 0.3rem;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    font-size: 1rem;
+	font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.btnContainer{
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.slds-table{
+    margin-bottom: 1rem;
+}
+
+.bgColorHeader{
+	background-color: white;
+	margin-top : 2%;
+}
+
+.color-icon{
+	color : white;
+}
+
+.bold-it{
+	font-weight: bold;
+}
+
+.candidateName{
+	font-size: 1rem;
+	font-weight: 500;
+    margin-bottom: 0px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.VisaType{
+   margin-top: 0.5rem;
+}
+.projectStatus{
+    width: 48%;
+}
+.flexContainer{
+    display: flex;
+    gap: 1.5rem;
+}
+.abnNumber {
+    display: grid;
+    align-items: center;
+    gap: 15px;
+    padding: 0rem 0rem 0rem 0rem;
+    grid-template-columns: 1fr 1.6fr;
+}
+
+.abnNumber label,.abnNumberLabel {
+    margin-right: 10px;
+}
+
+.abnNumberField{
+    margin: 0.5rem 0rem 1rem 0rem;
+    display: grid;
+    grid-template-columns: 1.36fr 2fr;
+}
+input[type=radio] {
+    margin-right: 10px;
+}
+.abn{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+.No{
+margin-bottom: 1px;
+}
+
+.Yes{
+    margin-bottom: 0.8px;
+}
+
+.skillsInput{
+    margin: 0.5rem 0rem;
+}
+
+.radio-group {
+    display: flex;
+    align-items: center;
+}
+
+.heading{
+	font-size: 1.2rem;
+	font-weight: 600;
+}
+.slds-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible; /* Ensure the modal is visible */
+}
+.slds-modal__content {
+	overflow: visible;
+	max-height: 100%;
+    padding: 0.5rem 3rem 2rem 2rem;
+}
+.projectContent{
+    overflow: visible;
+	max-height: 100%;
+    background: #ffffff;
+}
+.contractMessageActive{
+    font-size: 1.2rem;
+    padding: 0.2rem;
+    text-align: center;
+    font-style: italic;
+    color: forestgreen;
+}
+.contractMessageInActive{
+    font-size: 1.2rem;
+    padding: 0.2rem;
+    text-align: center;
+    font-style: italic;
+    color: red;
+}
+.scrollableClass{
+    z-index: 1050;
+}
+.slds-modal__content[c-resourceOnboarding_resourceOnboarding] .candidateName[c-resourceOnboarding_resourceOnboarding]{
+    padding-top: 0.5rem;
+}
+
+.slds-grid {
+	margin-bottom: 10px;
+}
+
+.slds-modal__content .section-header {
+    margin-top: 1rem;
+    margin-bottom: 10px;
+}
+
+.slds-modal__content .heading {
+    font-weight: bold;
+}
+
+.slds-modal__content .candidateName {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.slds-modal__content .slds-col {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+lightning-button{
+	padding: 0rem 0.2rem;
+}
+
+.downloadBtn{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+    padding: 1rem;
+}
+
+.secondModataContent{
+	padding: 0.5rem;
+	font-size: 0.8rem;
+	font-weight: 600;
+}
+
+.secondModalData{
+	padding: 1.5rem 0rem;
+}
+
+.slds-modal__content lightning-progress-bar {
+    margin-top: 0.5rem;
+}
+
+.progress-container {
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 2px;
+    position: relative;
+}
+
+.progress-bar {
+    height: 20px;
+    border-radius: 2px;
+    background-color: #0070d2;
+    transition: width 0.4s ease;
+}
+
+.progress-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    line-height: 20px;
+    color: white;
+}
+
+.slds-align_absolute-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.fileUploadRow{
+	display: flex;
+	flex-direction: space-around;
+}
+
+.circle-progress {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 5px solid grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.circle-progress-text {
+    position: absolute;
+    font-size: 14px;
+    color: black;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+}
+
+.file-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Adjust as needed */
+    margin-right: 10px;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+}
+
+.file-info .file-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; 
+    margin-right: 10px;
+}
+
+.file-info lightning-button-icon,
+.file-info lightning-button {
+    margin-left: 10px;
+}
+.custom-accordion .accordion-section {
+    border-bottom: 1px solid #ddd;
+    margin: 1rem 0rem;
+}
+
+.custom-accordion .accordion-header {
+    background-color: #f4f6f9;
+    border: none;
+    padding: 0.3rem;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.custom-accordion .accordion-header:hover {
+    background-color: #e1e5ea;
+}
+
+.custom-accordion .accordion-content {
+    display: none;
+    padding: 0.2rem 0.5rem;
+    border-top: 1px solid #ddd;
+}
+
+.custom-accordion .accordion-content.show {
+    display: block;
+}
+
+.custom-accordion .chevron-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: currentColor;
+    transition: transform 0.3s;
+}
+
+.custom-accordion .chevron-icon.rotate {
+    transform: rotate(90deg);
+}
+
+.custom-accordion .slds-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.custom-accordion .slds-table th,
+.custom-accordion .slds-table td {
+    padding: 0.5rem;
+}
+
+.custom-accordion .slds-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fileUploadRow {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%; /* Ensure full width */
+}
+
+svg{
+    width: 1rem;
+    margin-right: 0.2rem;
+}
+
+svg:hover{
+    cursor: pointer;
+}
+
+.circle-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 5px solid transparent; /* Start with a transparent border */
+    border-top-color: #4CAF50; /* Green color for the progress */
+    animation: progress-animation 1s linear forwards; /* Animation to control progress */
+}
+
+.circle-progress-text {
+    position: absolute;
+    font-size: 12px; /* Adjust font size */
+    font-weight: bold;
+    color: #4CAF50; /* Green color */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.circle-progress-container {
+    position: relative;
+    width: 40px; /* Size of the circle container */
+    height: 40px; /* Size of the circle container */
+    border-radius: 50%;
+    border: 3px solid #E0E0E0; /* Gray border for the circle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes progress-animation {
+    0% {
+        transform: rotate(0deg);
+    }
+    30% {
+        transform: rotate(90deg); /* Rotate 90 degrees at 30% progress */
+    }
+    60% {
+        transform: rotate(180deg); /* Rotate another 90 degrees at 60% progress */
+    }
+	85%{
+		transform: rotate(270deg);
+	}
+    100% {
+        transform: rotate(360deg); /* Complete full circle at 100% progress */
+    }
+}
+
+.slds-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slds-backdrop {
+    opacity: 100 !important;
+    visibility: visible !important; 
+    z-index: 1040;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.65) !important;
+}
+.fixed-footer {
+    bottom: 0;
+    background: white;
+    z-index: 1048;
+}
+.slds-modal__container {
+    display: flex;
+    flex-direction: column;
+    z-index: 1050;
+    position: fixed;
+    max-height: 90vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1rem;
+}
+.slds-modal__content.firstContent{
+    overflow: visible;
+    padding: 0.5rem 3rem 2rem 2rem;
+}
+.slds-modal__content {
+    max-height: calc(100vh - 14rem);
+    padding: 0.5rem 3rem 4rem 2rem;
+    overflow: auto;
+}
+
+.slds-modal__container {
+    overflow: visible;
+}

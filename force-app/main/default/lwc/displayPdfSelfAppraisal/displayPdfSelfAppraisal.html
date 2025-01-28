@@ -1,0 +1,52 @@
+<template>
+    <div class="slds-size_1-of-1">
+        <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small"><b>Self Overall Rating - {totalscore}</b></div>
+    </div>
+
+    <template for:each={allEmpDetails} for:item="data">
+        <div key={data.Id} class="slds-box slds-m-around_xx-small">
+            <div class="slds-text-body_regular"><b>KRA : {data.KRA}</b></div><br />
+            <table
+                class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout slds-table_striped"
+                aria-labelledby="element-with-table-label other-element-with-table-label">
+                <thead class="slds-line-height_reset">
+                    <tr>
+                        <th width="35%">
+                            <div class="slds-truncate" title="Key Performancer Indicator">Key Performance Indicator
+                            </div>
+                        </th>
+                        <th width="15%">
+                            <div class="slds-truncate slds-align_absolute-center" title="Key Performancer Indicator">
+                                Self Rating</div>
+                        </th>
+                        <th width="50%">
+                            <div class="slds-truncate slds-align_absolute-center" title="Key Performancer Indicator">
+                                Self Comments</div>
+                        </th>
+                        <!-- Add more field headers as needed -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={data.childWrapperDetails} for:item="ChildData">
+                        <tr key={ChildData.Id} class="slds-hint-parent">
+                            <td data-label="Account Name">
+                                <div class="slds-truncate" title="Cloudhub"><lightning-formatted-text
+                                        class="slds-cell-wrap" value={ChildData.KPI}></lightning-formatted-text></div>
+                            </td>
+                            <td data-label="Account Name">
+                                <div class="slds-truncate slds-text-align_center" title="Cloudhub">
+                                    <lightning-formatted-text class="slds-cell-wrap"
+                                        value={ChildData.EmpRating}></lightning-formatted-text></div>
+                            </td>
+                            <td data-label="Account Name">
+                                <div class="slds-truncate" title="Cloudhub"> <lightning-formatted-text
+                                        class="slds-cell-wrap" value={ChildData.EmpComment}></lightning-formatted-text>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </template>
+</template>

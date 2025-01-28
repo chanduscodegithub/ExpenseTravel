@@ -1,0 +1,10 @@
+<template>
+    <lightning-card title="Create Candidate" icon-name="standard:people">
+        <div class="slds-p-around_medium">
+            <lightning-input label="First Name" value={firstName} onchange={handleFirstNameChange}></lightning-input>
+            <lightning-input label="Last Name" value={lastName} onchange={handleLastNameChange}></lightning-input>
+            <lightning-input type="email" label="Email" value={email} onchange={handleEmailChange}></lightning-input>
+            <lightning-button label="Create Candidate" onclick={handleCreateCandidate}></lightning-button>
+        </div>
+    </lightning-card>
+</template>

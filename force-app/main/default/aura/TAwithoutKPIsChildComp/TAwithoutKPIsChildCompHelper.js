@@ -1,0 +1,5 @@
+({
+	getCommunityUrl: function (component) {
+        
+    }
+})

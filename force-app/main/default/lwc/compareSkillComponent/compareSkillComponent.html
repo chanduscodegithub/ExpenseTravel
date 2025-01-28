@@ -1,0 +1,24 @@
+<template>
+    <lightning-card title={cardTitle} icon-name={cardIcon}>
+        <div class="slds-m-around_medium">
+            <lightning-accordion onsectiontoggle={handleToggleSection} active-section-name="A">
+                <lightning-accordion-section name="A" label="Certifications Required">
+                    <c-compare-skill-child-component infocertificationmessage={certificationData.infoCertificationMessage} skillcertdata={certificationData.requiredCertificationList}>
+                    </c-compare-skill-child-component>
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="B" label="Skill Required">
+                        <c-compare-skill-child-component infocertificationmessage={certificationData.infoSkillMessage} skillcertdata={certificationData.requiredSkillsList}>
+                        </c-compare-skill-child-component>
+                </lightning-accordion-section>
+                <template  if:true={certificationData.infoTrailblazerRankMessage}>
+                    <lightning-accordion-section name="C" label="Trailblazer Rank">
+                        <c-compare-skill-child-component infocertificationmessage={certificationData.infoTrailblazerRankMessage} >
+                        </c-compare-skill-child-component>
+                    </lightning-accordion-section>
+                </template>
+                
+            </lightning-accordion>
+        </div>
+    </lightning-card>
+</template>

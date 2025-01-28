@@ -1,0 +1,16 @@
+.THIS .selectStyle > div{
+    width: 150px;
+    padding: 0;
+    padding-right: 5%;
+    padding-bottom: 5%;
+}
+
+
+@media screen and (max-width: 768px) {
+    .THIS .selectStyle > div{
+        width: 85px;
+        padding: 0;
+        padding-right: 5%;
+        padding-bottom: 5%;
+    }
+}

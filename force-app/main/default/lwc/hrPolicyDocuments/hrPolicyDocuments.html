@@ -1,0 +1,321 @@
+<template>
+    <div class="custom-tabs">
+        <!-- Tabs and Search -->
+        <div class="header-container">
+            <!-- Tabs for regions -->
+            <div class="tab-container">
+                <template if:false={isEmp}>
+                    <button class="tab" data-tab="ALL" onclick={handleTabClick}>ALL</button>
+                </template>
+                <template if:true={India}>
+                    <button class="tab" data-tab="India" onclick={handleTabClick}>
+                        <img src={indiaImg} data-tab="India" alt="India Flag" class="flag-icon" onclick={handleTabClick}/>
+                    </button>
+                </template>
+                <template if:true={Aus}>
+                    <button class="tab" data-tab="Australia" onclick={handleTabClick}>
+                        <img src={ausImg} data-tab="Australia" alt="Australia Flag" class="flag-icon" onclick={handleTabClick} />
+                    </button>
+                </template>
+                <template if:true={Usa}>
+                    <button class="tab" data-tab="USA" onclick={handleTabClick}>
+                        <img src={usaImage}  data-tab="USA" alt="USA Flag" class="flag-icon" onclick={handleTabClick} />
+                    </button>
+                </template>
+            </div>
+
+            <div class="search-container">
+                <div class="UploadFileContainer"  onclick={handleUploadFile} if:false={isEmp}>
+                    <!-- Button to trigger file selection -->
+                    <!-- <lightning-button label="Upload File" onclick={handleUploadFile}></lightning-button> -->
+                    <img src={uploadNewImage} class="upload-icon hover-enlarge" title="Upload a New File" onclick={handleUploadFile}/>
+                    <div class="text">Upload File</div>
+                </div>
+                <div if:true={isEmp}></div>   <!-- Just to maintain the grid -->
+                <div class="searchContainer">
+                    <lightning-input
+                        type="search"
+                        label="Search"
+                        placeholder="Search files..."
+                        onchange={handleSearchChange}
+                        class="search-input">
+                    </lightning-input>
+                    <template if:true={searchResults.length}>
+                        <div class="results-dropdown">
+                            <ul class="results-list">
+                                <template for:each={searchResults}  for:item="file">
+                                    <li key={file.fileId} class="result-item dropdown" data-file-updated={file.updatedOn} data-file-url={file.fileUrl} onclick={handleFileOpen}>
+                                        <img src={pdfLogo2} alt="Pdf Image" class="flag-icon" />
+                                        {file.fileName}
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </template>
+
+                        <!-- Show "No file found" when searchResults is empty -->
+                    <template if:true={hasSearched}>
+                    <template if:false={searchResults.length}>
+                        <p class="error-message">No files match your search criteria.</p>
+                    </template>
+                    </template>
+
+                </div>
+            </div>
+        </div>
+
+        <!------ Table for displaying files and folders ------>
+        <template if:true={showTable}>
+            <div class="custom-table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th style="width:300px;">Name</th>
+                            <th style="width:150px;">Last Updated On</th>
+                            <th style="width:110px;text-align:center;">Acknowledged</th>
+                            <template if:false={isEmp}>
+                                <th style="width:110px;text-align:center;">Actions</th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={files} for:item="file">
+                            <tr key={file.fileId} class="table-row">
+                                <td  title={file.description} data-file-id={file.fileId}  data-file-updated={file.updatedOn} data-file-url={file.fileUrl} onclick={handleFileOpen} >
+                                    <template if:false={file.isFolder}>
+                                        <img src={pdfLogo2} alt="Pdf Image" class="flag-icon" />
+                                        {file.fileName}
+                                    </template>
+                                </td>
+                                <td>{file.updatedOn} </td>
+                                <td>
+                                    <div class="imageContainer" title="Acknowledgement Status">
+                                        <template if:true={file.acknowledged}>
+                                            <img title="Acknowledged" alt="Status Image" style="width:25px;" src={checkImage} />
+                                        </template>
+                                        <template if:false={file.acknowledged}>
+                                            <!-- <img title="Pending" alt="Status Image" style="width:22px;"  src={crossImage} /> -->
+                                        </template>
+                                    </div>
+                                </td>
+                                <td if:false={isEmp}>
+                                    <div class="lastCol" if:true={superAdmin}>
+                                        <!-- <div class="imageContainer"> -->
+                                            <!-- <button
+                                                class="slds-button slds-button_neutral"
+                                                data-file-url={file.fileUrl}
+                                                data-file-id={file.fileId}
+                                                data-file-updated={file.updatedOn}
+                                                onclick={handleActionClick}>View
+                                            </button> -->
+                                            <!-- <img src={viewImage} title="View File" width="30%" class="row-icon" data-file-url={file.fileUrl}
+                                                data-file-id={file.fileId}
+                                                data-file-updated={file.updatedOn}
+                                                onclick={handleActionClick}/> -->
+                                        <!-- </div> -->
+                                        <div class="imageContainer">
+                                            <!-- Button to trigger file selection -->                                            
+                                            <img src={uploadImage} class="row-icon" width="35%" title="Upload a New Version" data-file-url={file.fileUrl}
+                                                onclick={handleUploadClick}/>
+                                            <!-- <lightning-button label="Upload New Version" onclick={handleUploadClick}></lightning-button> -->
+                                            <!-- Hidden file input to select a file -->
+                                            <input type="file" accept=".pdf" style="display:none;" data-file-id={file.fileId} data-file-url={file.fileUrl} data-file-name={file.fileName}  data-id="uploadNewVersion" onchange={handleFileChange} />
+                                        </div>
+                                        <div class="imageContainer">
+                                            <img src={deleteImage} class="row-icon" title="Delete File" width="35%"
+                                            data-file-id={file.fileId} data-file-url={file.fileUrl} data-file-name={file.fileName} onclick={handleDelete}/>
+                                        <!-- Button to trigger file selection -->
+                                        <!-- <lightning-button label="Delete" data-file-id={file.fileId} data-file-url={file.fileUrl} onclick={handleDelete}></lightning-button> -->
+                                        </div>
+                                    </div>
+                                    <div class="lastCol2" if:true={isAdmin}>
+                                        <!-- <div class="imageContainer"> -->
+                                            <!-- <button
+                                                class="slds-button slds-button_neutral"
+                                                data-file-url={file.fileUrl}
+                                                data-file-id={file.fileId}
+                                                data-file-updated={file.updatedOn}
+                                                onclick={handleActionClick}>View
+                                            </button> -->
+                                            <!-- <img src={viewImage} title="View File" style="width:35%;" class="row-icon" data-file-url={file.fileUrl}
+                                                data-file-id={file.fileId}
+                                                data-file-updated={file.updatedOn}
+                                                onclick={handleActionClick}/> -->
+                                        <!-- </div> -->
+                                        <div class="imageContainer">
+                                            <!-- Button to trigger file selection -->                                            
+                                            <img src={uploadImage} class="row-icon" style="width:25%;" title="Upload a New Version" data-file-url={file.fileUrl}
+                                                onclick={handleUploadClick}/>
+                                            <!-- <lightning-button label="Upload New Version" onclick={handleUploadClick}></lightning-button> -->
+                                            <!-- Hidden file input to select a file -->
+                                            <input type="file" accept=".pdf" style="display:none;" data-file-id={file.fileId} data-file-url={file.fileUrl} data-file-name={file.fileName}  data-id="uploadNewVersion" onchange={handleFileChange} />
+                                        </div>
+                                    </div>
+                                    <!-- <div class="lastColForEmp" if:true={isEmp}>
+                                        <div class="imageContainer">
+                                            <img src={viewImage} title="View File"  style="width:12%;" class="row-icon" data-file-url={file.fileUrl}
+                                                data-file-id={file.fileId}
+                                                data-file-updated={file.updatedOn}
+                                                onclick={handleActionClick}/>
+                                        </div>
+                                    </div> -->
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+
+        <!-- Loading spinner -->
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading files..."></lightning-spinner>
+        </template>
+    </div>
+
+     <!--------Modal Section with Search---------->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open custom-modal">
+            <div class="slds-modal__container custom-modal-container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"></lightning-icon>
+                    </button>
+                    <h2 class="slds-text-heading_medium">File Details</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium childContainer">
+                   
+                        <!-- File Preview -->
+                    <iframe
+                        src={selectedFileUrl}
+                        width="640"
+                        height="480" 
+                        allow="autoplay"
+                        frameborder="0"
+                        title="File Preview">
+                        
+                    </iframe>
+                
+                </div>
+                <footer class="slds-modal__footer" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="slds-form-element" style="margin-left: 0;">
+                        <!-- Checkbox with label -->
+                        <lightning-input 
+                            type="checkbox" 
+                            label="I confirm that I have read and agree to the terms of the policy." 
+                            onchange={handleCheckboxChange}>
+                        </lightning-input>
+                    </div>
+                    <button class="slds-button slds-button_brand" onclick={handleAcknowledgeFile} disabled={isAcknowledgeDisabled}>I Acknowledge</button>
+                    <!--<button class="slds-button slds-button_neutral" onclick={closeModal}>Close</button>-->
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={uploadNewFileModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Header -->
+                <header class="slds-modal__header headerContainer">
+                    <h2 class="slds-text-heading_medium">Upload File</h2>
+                </header>
+
+                <!-- Modal/Popup Body -->
+                <div class="uploadContainer">
+                    <!-- Hidden file input to select a file -->
+
+                    <template if:false={isUploading}>
+                        <div class="uploadInput">
+                            <input type="file" accept=".pdf" onchange={handleUploadFileEvent} class="uploadNewFile" data-id="uploadNewFile"/>
+                        </div>
+
+                        <template if:true={errorMessage1}>
+                        <p class="error-message">{errorMessage1}</p>
+                        </template>
+                        <div class="commentContainer"> 
+                            <label for="fileDescription" class="headingComment">File Description</label>
+                            <textarea id="description" name="description" class="comment input-fields" placeholder="Optional Field"></textarea>
+                        </div>
+
+
+                    </template>
+                    <template if:true={isUploading}>
+                        <div class="pendingContainer">
+                            <div class="uploadMessage">
+                                {uploadMessage}
+                            </div>
+                            <div class="spinnerContainer">
+                                <lightning-spinner if:true={isUploading} size="medium" alternative-text="Uploading file..."></lightning-spinner>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Modal/Popup Footer -->
+                <footer class="slds-modal__footer footer">
+                    <div class="buttonContainer">
+                        <button class="slds-button slds-button_neutral" onclick={closeModal} disabled={isUploading}>Cancel</button>
+                        <button class="slds-button slds-button_neutral" onclick={handleNewFileChange} disabled={isUploading}>Upload</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={deleteModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Header -->
+                <header class="slds-modal__header headerContainer">
+                    <h2 class="slds-text-heading_medium">Confirmation</h2>
+                </header>
+
+                <!-- Modal/Popup Body -->
+                <div class="confirmationContainer">
+                    <p>Are you sure you want to delete the File?</p>
+                </div>
+
+                <!-- Modal/Popup Footer -->
+                <footer class="slds-modal__footer footer">
+                    <div class="buttonContainer">
+                        <button class="slds-button slds-button_neutral" onclick={closeModal}>No</button>
+                        <button class="slds-button slds-button_neutral" onclick={deleteFile}>Yes</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showConfirmationModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Confirmation Modal Header -->
+                <header class="slds-modal__header headerContainer">
+                    <h2 class="slds-text-heading_medium">Confirmation</h2>
+                </header>
+
+                <!-- Confirmation Modal Body -->
+                <div class="slds-modal__content confirmationContainer">
+                    <p style="text-align:center;">
+                        Are you sure you want to upload a new policy file?<br>
+                        If you intend to upload a new version of an existing policy, please use the "Upload New Version" option instead.<br><br>
+                        <i style="font-weight:400;">To proceed with uploading a new policy, click "Proceed" to continue.</i>
+                    </p>
+                </div>
+
+                <!-- Confirmation Modal Footer -->
+                <footer class="slds-modal__footer footer">
+                    <div class="buttonContainer">
+                        <button class="slds-button slds-button_neutral" onclick={closeConfirmationModal}>Cancel</button>
+                        <button class="slds-button slds-button_brand" onclick={handleUploadConfirm}>Proceed</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+</template>

@@ -1,0 +1,19 @@
+<apex:page controller="GoogleOAuthHandler">
+    <script>
+        var urlParams = new URLSearchParams(window.location.search);
+        var code = urlParams.get('code');
+        if (code) {
+            // Call Apex method to handle the callback
+            var action = "{!$RemoteAction.GoogleOAuthHandler.handleCallback}";
+            Visualforce.remoting.Manager.invokeAction(action, code, function(result, event) {
+                if (event.status) {
+                    alert('Google authentication successful!');
+                } else {
+                    alert('Google authentication failed: ' + event.message);
+                }
+            });
+        } else {
+            alert('No authorization code found.');
+        }
+    </script>
+</apex:page>

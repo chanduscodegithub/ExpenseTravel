@@ -1,0 +1,220 @@
+<apex:page applyHtmlTag="false" applyBodyTag="false" docType="html-5.0" showHeader="false" standardStylesheets="false" controller="Covid19DirectReport">
+    <apex:includescript value="{!urlfor($Resource.jQuery)}"/>
+    <apex:includescript value="{!urlfor($Resource.GoogleAuth)}"/>
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+        <head>
+            <title>Google SignIn</title>
+            <meta name="google-signin-scope" content="profile email"/>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+            <meta name="google-signin-client_id" content="{!clientId}"/>
+            <style>
+                .siteforceStarterBody .cCenterPanel{
+                padding:0px;
+                }
+                .slds-col--padded{
+                padding:0px; padding-left: 0px !important; padding-right: 0px !important;
+                }
+                .siteforceContentArea .comm-layout-column:not(:empty) { padding:0; }
+                body {
+                font-family: sans-serif;
+                }
+                .emailInputStyle {
+                width:30%;
+                }
+                .header{
+                margin-top:2%;
+                margin-bottom:1%;
+                }
+                .covidStyleHeader{
+                height: 30px;
+                width: 30px;
+                vertical-align: bottom;
+                margin-right: 8px;
+                
+                }
+                .emailInputHeaderFont{
+                font-size: x-large;
+                font-weight: 500;
+                color: #D03F3E;
+                line-height: 0rem;
+                } 
+                .card {
+                background-color: #ffffff;
+                border-radius: 0.5rem;
+                border: 1px solid #f1f1f1;
+                box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                transition: 0.3s;
+                width: 30%;
+                margin: auto;
+                margin-top: 4%;
+                height: auto;
+                }
+                
+                .card:hover {
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+                }
+                .footerStyle{
+                border-top: 1px solid #d4d4d4 !important;
+                background: #FFF7F6 !important;
+                }
+                .container {
+                width: 100%;
+                padding: 0px;
+                text-align: center;
+                }
+                .g-signin2 {
+                border-radius: 0.5rem;
+                width: 100%;
+                height: 52px;
+                margin-top: 4rem;
+                }
+                .abcRioButtonLightBlue {
+                background-color: #4285F4!important;
+                color: #fff!important;
+                width: 100% !important;
+                height: 56px !important;
+                line-height: 56px !important;
+                border-radius: 0.5rem !important;
+                transition: 0.3s !important;
+                width: 30% !important;
+                margin: auto !important;
+                }
+                .abcRioButtonLightBlue:hover {
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2) !important;
+                }
+                .abcRioButtonContents { vertical-align: baseline !important; font-size: 20px !important; }
+                .abcRioButtonIcon {
+                padding: 8px;
+                background: #fff !important;
+                height: 48px;
+                width: 48px;
+                margin-top: 4px;
+                margin-left: 3px;
+                border-radius: 0.2rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                }
+                
+                .signInMessage{
+                color: #AC0100; margin:0; padding: 3rem 2rem; text-align:left; line-height: 2.2rem; font-size: 1.5rem;
+                } 
+                .company-logo {text-align: center; margin-top: 4rem;margin-bottom: 4rem; width: 40%;
+                margin: auto;}
+                .company-logo img {width: 50% !important;}
+                .header-assessment{margin-top:4%; margin-bottom:4%}
+                .recordUpdate{
+                color: #4b8ccc;
+                display:none;
+                }
+                .buttonStyle{
+                margin: auto;
+                margin-top:7%;
+                margin-bottom:2%;
+                display:none;
+                }
+                
+                
+                @media screen and (max-width: 768px) {
+                .company-logo  { width: 100% }
+                .company-logo img {width: 60% !important;}
+                .card {margin-top: 14%;}
+                .emailInputHeaderFont{font-size: 1.9rem; color: #D03F3E; font-weight: bold;}
+                .card, .abcRioButtonLightBlue {width: 100% !important;}
+                .THIS .covidStyleHeader {
+                width: 30px; height: 30px;
+                }
+                .confimationMessage{
+                color: #4b8ccc;
+                display:none;
+                }
+                .conbuttonStyle{
+                margin: auto;
+                margin-top:7%;
+                margin-bottom:2%;
+                padding:2%;
+                display:none;
+                }
+                
+                }
+            </style>
+            
+            <script>
+            $(document).ready(function(){
+                $(".abcRioButtonContents span").innerHTML = "Sign In with Google"
+            });
+            </script>
+        </head>
+        <body>
+            <div class="company-logo"><img src="{!$Resource.Interface}"/></div>
+            <div class="card">
+                <div class="container">
+                    <div class="header">                        
+                        <div class="header-assessment"><img class="covidStyleHeader" src="{!$Resource.covid_19}"/><span class="slds-modal__title slds-hyphenate emailInputHeaderFont">COVID-19 Self-Assessment</span></div>
+                    </div>                    
+                    <footer class="footerStyle">
+                        <p class="signInMessage">
+                            <b>Please sign in to report.</b>
+                        </p>
+                        <p style="margin:2%;" class="recordUpdate">
+                            <b>Sorry to hear this. We will get in touch with you shortly. Take care.</b>
+                        </p>
+                        <!--<p style="margin:2%;" class="confimationMessage">
+Are you sure? Click Ok to proceed.
+</p>
+<div>
+<button onclick="confirm()" class="btn btn-danger conbuttonStyle">
+Confirm
+</button>
+<button onclick="cancel()" class="btn btn-danger conbuttonStyle">
+Cancel
+</button>
+</div>-->
+                        <button onclick="signOut()" class="btn btn-danger buttonStyle">
+                            Sign Out
+                        </button>
+                        
+                    </footer>
+                </div>
+            </div>
+            
+            <div class="g-signin2" data-onsuccess="onSignIn1"></div>
+            
+            
+            <script>
+            function onSignIn1(googleUser){
+                //alert('Inside');
+                //debugger;
+                //$(".card").css("display","none");
+                var idToken = googleUser.getAuthResponse().id_token;
+                console.log('idToken -'+ idToken);   
+                
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.Covid19DirectReport.updateCovid19PatientFields}',
+                    idToken, 
+                    function(result, event)
+                    {
+                        if(result=='success'){
+                            //alert('Successfully Reported');
+                            $(".g-signin2").css("display","none");
+                            $(".signInMessage").css("display","none");
+                            $(".recordUpdate").css("display","block");
+                            $(".buttonStyle").css("display","block");
+                        }
+                        
+                    });
+            }
+            
+            function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    $(".buttonStyle").css("display","none");
+                    //$(".g-signin2").css("display","block");
+                    console.log('User signed out.');
+                });
+            }
+            </script>
+        </body>
+    </html>
+</apex:page>

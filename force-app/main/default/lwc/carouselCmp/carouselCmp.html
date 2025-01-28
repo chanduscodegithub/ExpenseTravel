@@ -1,0 +1,9 @@
+<template>
+    <template if:true={data}>
+        <lightning-carousel scroll-duration="15">
+            <template for:each={data} for:item="msg">
+                <lightning-carousel-image description={msg.Message_body__c} key={msg.Id}></lightning-carousel-image>
+            </template>
+        </lightning-carousel>
+    </template>
+</template>

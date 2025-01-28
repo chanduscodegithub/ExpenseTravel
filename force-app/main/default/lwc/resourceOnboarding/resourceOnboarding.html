@@ -1,0 +1,493 @@
+<template>
+    <template if:true={hiringStatus}>
+        <div class="slds-page-header slds-page-header_record-home bgColorHeader">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name="standard:contract_line_item" alternative-text="Onboarding" variant="inverse"
+                                size="medium"></lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span>{cmpLabel}</span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-page-header__col-actions">
+                    <div class="slds-page-header__controls">
+                        <div class="slds-page-header__control">
+                            <ul class="slds-button-group-list">
+                                <li>
+                                    <button class="slds-button slds-button_success color-icon slds-text-title_bold" onclick={handleOpenModal} >{onboardingButtonLabel}</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <template if:true={noJobApplication}>
+            <div class="slds-backdrop" id="modalBackdrop21"></div>
+            <div class="slds-modal__container ">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClose}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="headerContainer">
+                    <h2 class="slds-text-heading_medium">Avishkaar Consultant Onboarding System</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="noJob">
+                        <div class="noJobApplication">No Job Application Found for this RR.</div>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template if:true={noApplicationSelected}>
+             <div class="slds-backdrop" id="modalBackdrop11"></div>
+            <div class="slds-modal__container ">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClose}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="headerContainer">
+                    <h2 class="slds-text-heading_medium">Avishkaar Consultant Onboarding System</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="noJob">
+                        <div class="noJobApplication"><i>No Candidate Selected for this RR. </i></div>
+                        <div class="noJobApplication"><i>Please select the candidate to process the Onboarding Process. </i></div>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template if:true={isModalOpen}>
+            <div class="slds-backdrop" id="modalBackdrop"></div>
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClose}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="headerContainer">
+                    <h2 class="slds-text-heading_medium">Avishkaar Consultant Onboarding System</h2>
+                </header>
+
+                <div class="slds-modal__content firstContent slds-p-around_medium">
+                    <div class="scrollableClass">
+                        <lightning-combobox 
+                            label="Country" 
+                            class="requiredField"
+                            placeholder="Select Country" 
+                            options={regionValues} 
+                            value={selectedRegion} 
+                            onchange={handleRegionChange} 
+                            disabled={isModalDisabled}
+                            required>
+                        </lightning-combobox>
+
+                        <lightning-combobox 
+                            label="City" 
+                            placeholder="Select City" 
+                            options={cityValues} 
+                            class="requiredField"
+                            value={selectedCity} 
+                            onchange={handleCityChange} 
+                            required 
+                            disabled={isCityDisabled}>
+                        </lightning-combobox>
+
+                        <lightning-combobox
+                            class="dropdown-content requiredField"
+                            label="Nature Of Engagement" 
+                            placeholder="Nature Of Engagement" 
+                            options={natureOfEngagementsValues} 
+                            value={selectedNatureOfEngagements} 
+                            onchange={handlenatureOfEngagementsChange} 
+                            disabled={isModalDisabled}
+                            required >
+                        </lightning-combobox>
+                    </div>
+
+                    <div if:true={isError}>
+                        <p class="slds-text-color_error">Please fill out all required fields.</p>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer fixed-footer">
+                    <lightning-button variant="neutral" label="Cancel" onclick={handleCloseModal}></lightning-button>
+                    <lightning-button variant="brand" label={firstModalNext} onclick={handleSaveAndNext}></lightning-button>
+                </footer>
+            </div>
+        </template>
+        <template if:true={showModal}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading" aria-modal="true" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header headerContainer">
+                        <h2 id="modal-heading" class="slds-text-heading_medium">Employee Contracts</h2>
+                    </header>
+                    <div class="projectContent contractContent slds-p-around_medium">
+                        <template if:true={processedContracts.length}>
+                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                <thead>
+                                    <tr>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={processedContracts} for:item="contract">
+                                        <tr key={contract.id}>
+                                            <td>{contract.startDate}</td>
+                                            <td>{contract.endDate}</td>
+                                            <td>
+                                                <template if:true={contract.isActive}>
+                                                    <span class="status-badge status-active">Active</span>
+                                                </template>
+                                                <template if:true={contract.isInactive}>
+                                                    <span class="status-badge status-inactive">Expired</span>
+                                                </template>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                            <p class={contractMessageClass}>{contractMessage}</p>
+                        </template>
+                        <template if:false={processedContracts.length}>
+                            <p class="no-contracts-message">No contracts found for the selected employee.</p>
+                        </template>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Close" onclick={closeModal}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <template if:true={isSecondModalOpen}>
+            <div class="slds-backdrop" id="modalBackdrop1"></div>
+            <div role="dialog" tabindex="-1" class="">
+                <div class="slds-modal__container">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClose}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Proceed</span>
+                </button>
+                    <header class="headerContainer">
+                        <h2 class="slds-text-heading_medium">Consultant Information</h2>
+                    </header>
+
+                    <div class="slds-modal__content slds-p-around_medium modal-content-scrollable">
+                        <div class="slds-col">
+                            <p class="candidateName">Consultant Name<span class="rowDetail"><span class="tabSpace">:</span>{contractorName}</span></p>
+                            <p class="candidateName">Consultant ID<span class="rowDetail"><span class="tabSpace">:</span>{consultantId}</span></p>
+                            <p class="candidateName">Consultant E-mail<span class="rowDetail"><span class="tabSpace">:</span>{consultantEmail}</span></p>
+                            <p class="candidateName">Personal E-mail<span class="rowDetail"><span class="tabSpace">:</span>{contractorEmail}</span></p>
+                            <p class="candidateName">Reporting Manager<span class="rowDetail"><span class="tabSpace">:</span>{reportingManager}</span></p>
+                            <p class="candidateName">Consultant Address<span class="rowDetail"><span class="tabSpace" >:</span><lightning-textarea class="addressBox" value={address} onchange={handleAddressChange} disabled={isModalDisabled}></lightning-textarea></span></p>
+                            <div class="employeeSection">
+                                <div class="slds-align_absolute-center">
+                                    <lightning-input type="toggle" class="toggleBtn" label="Contractor already exists?" checked={exisitingRecord} onchange={handleToggleExisiting} disabled={isModalDisabled}></lightning-input>
+                                </div>
+                                <template if:false={exisitingRecord}>
+                                    <template if:false={isRecordCreated} class="btnContainer slds-col slds-size_1-of-2 slds-align_absolute-center">
+                                        <lightning-button class="btnContainer slds-col" label="Create Employee Record" onclick={handleCreateEmployee} disabled={isModalDisabled}></lightning-button>
+                                    </template>
+                                    <template if:true={isRecordCreated} class="btnContainer slds-col slds-size_1-of-2 slds-align_absolute-center">
+                                        <lightning-button class="btnContainer" label="View Employee Record" onclick={handleViewEmployee}></lightning-button>
+                                    </template>
+                                </template>
+                                <template if:true={exisitingRecord} class="slds-col slds-size_1-of-2">
+                                    <lightning-record-edit-form object-api-name="Position__c" record-id={recordId}>
+                                            <lightning-input-field field-name={employeeRecordField.fieldApiName}    value={employeeRecordId}  placeholder='Search Employee' class="lookupField" onchange={handleEmployeeChange} disabled={isModalDisabled}></lightning-input-field>
+                                    </lightning-record-edit-form>
+                                </template>
+                                <template if:true={error}>
+                                    <div class="slds-box slds-theme_error">
+                                        <p>{error}</p>
+                                    </div>
+                                </template>
+                            </div>
+                            <div class="custom-accordion">
+                                <div class="accordion-section">
+                                    <button class="accordion-header" data-id="projects" onclick={handleToggle}>
+                                        Projects Worked On
+                                        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M9 18l6-6-6-6" />
+                                        </svg>
+                                    </button>
+                                    <div class="accordion-content" data-id="projects">
+                                        <template if:true={isProjectsLoaded}>
+                                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                                <thead>
+                                                    <tr class="slds-line-height_reset">
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Project Name">Project Name</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="Start Date">Start Date</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="End Date">End Date</div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template for:each={projects} for:item="project">
+                                                        <tr key={project.Id}>
+                                                            <td>
+                                                                <div class="slds-truncate" title="Project Name">
+                                                                    {project.Project__r.Name}
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="slds-truncate" title={project.StartDate__c}>{project.StartDate__c}</div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="slds-truncate" title={project.EndDate__c}>{project.EndDate__c}</div>
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </template>
+                                        <template if:false={isProjectsLoaded}>
+                                            <p>No projects available.</p>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <template if:true={showVisaType}>
+                                <lightning-combobox label="Visa Type" class="VisaType requiredField" placeholder="Select Visa Type" options={visaValues} value={selectedVisaType} onchange={handleVisaChange} required disabled={isModalDisabled}></lightning-combobox>
+                            </template>
+                            <lightning-textarea label="Technical Capabilities" class="skillsInput requiredField" value={skills} onchange={handleSkillsChange} required disabled={isModalDisabled}></lightning-textarea>
+                        </div>
+
+                        <!-- Start Date and End Date -->
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="date" label="Agreement Start Date" class="requiredField" value={agreementStartDate} onchange={handleStartDateChange} required disabled={isModalDisabled}></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="date" label="Agreement End Date" class="requiredField" value={agreementEndDate} onchange={handleEndDateChange} required disabled={isModalDisabled}></lightning-input>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="date" label="Project Start Date" class="requiredField" value={projectStartDate} onchange={handleProjectStartDateChange} required disabled={isModalDisabled}></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="date" label="Project End Date" class="requiredField" value={projectEndDate} onchange={handleProjectEndDateChange} required disabled={isModalDisabled}></lightning-input>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-gutters">
+                            <!-- Extended Days -->
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox label="Is Project Extended" placeholder="Select Yes/No" options={yesNoOptions} value={isProjectExtendedFlag} onchange={handleProjectExtendedChange} required></lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <template if:true={isProjectExtended}>
+                                    <lightning-input type="date" label="Extended Project Date" class="requiredField" value={extendedDate} onchange={handleExtendedDateChange} required></lightning-input>
+                                </template>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2" style={vendorPickerStyle}>
+                                <template if:true={isCorptoCorp}>
+                                    <template if:false={isVendorNotFound}>
+                                        <lightning-record-picker
+                                            label="Select Vendor"
+                                            placeholder="Search Accounts..."
+                                            object-api-name="Account"
+                                            onchange={handleVendorName}
+                                            disabled={isAgreementDisabled}
+                                            value={accountId}>
+                                        </lightning-record-picker>
+                                    </template>
+                                </template>
+                            </div>
+                            <template if:true={isCorptoCorp}>
+                                <div class="slds-col slds-size_1-of-2" style={inputFieldStyle}>
+                                    <template if:true={isVendorNotFound}>
+                                        <lightning-input type="text" label="Enter Vendor Name" value={vendorName} onchange={handleManualVendorNameChange}></lightning-input>
+                                    </template>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-2" style="margin: 2.2rem 0rem 0rem 2.2rem;">
+                                    <lightning-input type="checkbox" label="Vendor not found" onchange={handleVendorNotFoundChange}></lightning-input>
+                                </div>
+                            </template>
+                        </div>
+                        <template if:true={australia}>
+                                <div class="abn">
+                                    <div class="abnNumber">
+                                        <label>Do you have an ABN number?</label>
+                                        <div class="radio-group">
+                                            <input type="radio" id="abnYes" name="abnRequired" value="yes" checked={abnYesChecked} onclick={handleAbnChange}>
+                                            <label for="abnYes" disabled={isModalDisabled}>Yes</label>
+                                            <input type="radio" id="abnNo" name="abnRequired" value="no" checked={abnNoChecked} onclick={handleAbnChange}>
+                                            <label for="abnNo" disabled={isModalDisabled}>No</label>
+                                        </div>
+                                    </div>
+                                    <template if:true={abnTrue}>
+                                        <div id="abnNumberField" class="abnNumberField">
+                                            <label for="abnNumber" class="abnNumberLabel">Enter ABN Number:</label>
+                                            <input type="text" id="abnNumber" name="abnNumber" class="requiredField" value={abnNumber} onchange={handleAbnNumberChange} required>
+                                            <template if:true={isInvalidAbn}>
+                                                <div class="slds-text-color_error">Invalid ABN Number</div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>   
+                            </template> 
+                            <template if:true={Usa}>
+                                <div class="abn">
+                                    <div class="abnNumber">
+                                        <label>Do you have an SSN number?</label>
+                                        <div class="radio-group">
+                                            <input type="radio" id="esnYes" name="esnRequired" value="yes" checked={esnYesChecked} onclick={handleEsnChange}>
+                                            <label for="esnYes">Yes</label>
+                                            <input type="radio" id="esnNo" name="esnRequired" value="no" checked={esnNoChecked} onclick={handleEsnChange}>
+                                            <label for="esnNo">No</label>
+                                        </div>
+                                    </div>
+                                    <template if:true={esnTrue}>
+                                        <div id="esnNumberField" class="abnNumberField">
+                                            <label for="abnNumber" class="abnNumberLabel">Enter SSN Number:</label>
+                                            <input type="text" id="esnNumber" name="esnNumber" class="requiredField" value={esnNumber} onchange={handleEsnNumberChange} required>
+                                            <template if:true={isInvalidEsn}>
+                                                <div class="slds-text-color_error">Invalid SSN Number</div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>   
+                            </template>         
+                        <lightning-combobox label="Agreement Type" placeholder="Select Agreement Type" class="requiredField" options={agreementValues} value={selectedAgreementType} onchange={handleAgreementChange} required disabled={isAgreementDisabled} ></lightning-combobox>
+                        <div if:true={isError}>
+                            <p class="slds-text-color_error">Please select the Agreement Type.</p>
+                        </div>
+                        <div class="downloadBtn">
+                            <lightning-button variant="brand" label="Download Agreement" onclick={handleDownload}></lightning-button>
+                        </div>
+                        <template if:true={showHeading}>
+                            <div class="section-header">
+                                <h3 class="slds-text-heading_small heading">Upload Documents</h3>
+                            </div>
+                            <template for:each={documentUploadStatus} for:item="item" for:index="index">
+                                <div key={item.document} class="slds-grid slds-gutters slds-m-bottom_medium documentsRow">
+                                    <div class="slds-col">
+                                        <p>{item.document}</p>
+                                    </div>
+                                    <div class="fileUploadRow">
+                                        <template if:true={item.notStarted}>
+                                            <template if:true={item.fileName}>
+                                                <div class="file-info">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" alternative-text="Remove" data-doc-name={item.document} onclick={handleRemoveFile}>
+                                                    </svg>
+                                                    <div class="file-name" title={item.fileName}>{item.fileName}</div>
+                                                </div>
+                                            </template>
+                                            <input type="file" data-doc-name={item.document} style="display: none;" onchange={handleFileChange} />
+                                            <lightning-button-icon icon-name="utility:upload" alternative-text="Select File" data-doc-name={item.document} onclick={handleFileSelect}></lightning-button-icon>
+                                            <lightning-button label="Upload" data-doc-name={item.document} onclick={handleUpload}></lightning-button>
+                                        </template>
+                                        <template if:true={item.uploading}>
+                                            <div class="circle-progress-container">
+                                                <div class="circle-progress" style="border-color: #4CAF50;">
+                                                    <span class="circle-progress-text">{item.uploadProgress}%</span>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template if:true={item.uploaded}>
+                                            <template if:false={item.sent}>
+                                                <lightning-button label="View" onclick={handleView} data-doc-name={item.document}></lightning-button>
+                                            </template>
+                                            <template if:true={item.sent}>
+                                                <lightning-button label="Sent" disabled></lightning-button>
+                                            </template>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </template>
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox label="SOW Signed" class={sowClass} placeholder="Select Yes/No" options={yesNoOptions} value={sowSent} onchange={handleSOWSent} required></lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox label="IT Audit Completed" class="requiredField" placeholder="Select Yes/No" options={yesNoOptions} value={itAuditCompleted} onchange={handleITAuditChange} required></lightning-combobox>
+                            </div>  
+                        </div>
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox label="BGV Check" class="requiredField" placeholder="Select Yes/No" options={yesNoOptions} value={bgvCheck} onchange={handlebgvCheckChange} required></lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox class={assetsClass} label="Assets Provided" placeholder="Select Yes/No" options={yesNoOptions} value={assetsProvided} onchange={handleAssetsChange} required></lightning-combobox>
+                            </div>
+                        </div>
+                        <template if:true={showAssetSelection}>
+                            <lightning-dual-listbox
+                                name="assetSelection"
+                                label="Select Assets"
+                                source-label="Available"
+                                selected-label="Selected"
+                                field-level-help="Select the assets provided to the consultant"
+                                options={assetOptions}
+                                value={selectedAssets}
+                                onchange={handleAssetSelectionChange}
+                                >
+                                
+                            </lightning-dual-listbox>
+                        </template>
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox label="Eligible To Re-Hire" class="requiredField" placeholder="Select Yes/No" options={yesNoOptions} value={eligibleToHireYesorNo} onchange={handleEligibleSelectionChange} required></lightning-combobox>
+                            </div>
+                        </div>
+                        <template if:false={eligibleToHire}>
+                            <lightning-textarea label="Reason Not To Re-Hire" class="skillsInput" value={reasonForNotEligibleToRehire} onchange={handleReasonNotEligibleChange} required></lightning-textarea>
+                        </template>
+
+                    </div>
+                    <footer class="slds-modal__footer fixed-footer">
+                        <lightning-button variant="neutral" label="Back" onclick={handlePrevious}></lightning-button>
+                        <lightning-button variant="neutral" label="Save As Draft" onclick={handleSave} disabled={isModalDisabled}></lightning-button>
+                        <lightning-button variant="brand" label="Submit" onclick={handleSubmit} disabled={isSubmitDisabled}></lightning-button>
+                    </footer>
+                </div>
+            </div>
+        </template>
+        <template if:true={isThirdModalOpen}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- Modal/Popup Header -->
+                    <header class="slds-modal__header headerContainer">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClose}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 class="slds-text-heading_medium">Confirmation</h2>
+                    </header>
+
+                    <!-- Modal/Popup Body -->
+                    <div class="confirmationContainer">
+                        <p>Are you sure you want to submit?</p>
+                    </div>
+
+                    <!-- Modal/Popup Footer -->
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={handleNo}>No</button>
+                        <button class="slds-button slds-button_brand" onclick={handleYes}>Yes</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </template>
+</template>

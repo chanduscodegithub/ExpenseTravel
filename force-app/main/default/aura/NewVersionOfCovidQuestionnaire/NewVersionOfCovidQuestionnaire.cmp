@@ -1,0 +1,10 @@
+<aura:component implements="force:hasRecordId,force:lightningQuickActionWithOutHeader" access="global" controller="NewVersionOfQuestionnaire">
+	<h3 class="slds-section__title slds-align_absolute-center">
+        <span class="slds-truncate" title="Section Title">Do you want to Create a new Version?</span>
+    </h3>
+    <br/>
+     <footer class="slds-align_absolute-center">
+        <lightning:button variant="brand" iconPosition="left" iconName="utility:save"  type="submit" label="Yes" onclick="{!c.init}" />
+        <lightning:button variant="brand" iconPosition="left" iconName="utility:close"  type="submit" label="No"  onclick="{!c.closeWindow}" />
+    </footer> 
+</aura:component>

@@ -1,0 +1,27 @@
+<template>
+    <lightning-card title="Template Merge" icon-name="standard:document">
+        <div class="slds-m-around_medium">
+            <lightning-combobox
+                label="Select Template"
+                value={selectedTemplate}
+                options={templateOptions}
+                onchange={handleTemplateChange}>
+            </lightning-combobox>
+
+            <lightning-combobox
+                label="Select Output Format"
+                value={selectedFormat}
+                options={formatOptions}
+                onchange={handleFormatChange}>
+            </lightning-combobox>
+
+            <lightning-button
+                variant="brand"
+                label="Merge and Download"
+                onclick={handleDownload}
+                class="slds-m-top_medium">
+            </lightning-button>
+            <lightning-button label="Roll Out (Send Email)" onclick={handleRollOut}></lightning-button>
+        </div>
+    </lightning-card>
+</template>

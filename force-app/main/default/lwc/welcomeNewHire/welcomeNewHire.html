@@ -1,0 +1,19 @@
+<template>
+    <div class="slds-p-around_medium">
+        <lightning-button 
+            variant="brand" 
+            label="Capture Image" 
+            onclick={captureImage} 
+            class="slds-m-bottom_medium">
+        </lightning-button>
+        
+        <div class="capture-content">
+            <div class="welcome-card">
+                <h1>Let's Welcome</h1>
+                <img src={imageUrl} alt="Hemanjali Sood"/>
+                <h2>Hemanjali Sood</h2>
+                <p>Hemanjali has joined us as a "CX Cloud Senior Developer".</p>
+            </div>
+        </div>
+    </div>
+</template>

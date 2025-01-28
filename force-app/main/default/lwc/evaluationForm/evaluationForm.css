@@ -1,0 +1,74 @@
+.bgColorHeader{
+	background-color: white;
+	margin-top : 2%;
+}
+
+.icon-container {
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+   
+}
+
+.icon-background {
+    width: 25px; 
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.number {
+    color: white;
+    
+}
+
+.rows{
+    display:flex;
+}
+
+
+button.slds-accordion__summary-heading [slds-button][type="button"].slds-accordion__summary-action:hover{
+    color: #fff;
+}
+
+button.slds-accordion__summary-heading [slds-button][type="button"].slds-accordion__summary-action:focus{
+    color: #fff;
+}
+button.slds-accordion__summary-heading [slds-button][type="button"].slds-accordion__summary-action:active{
+    color: #fff;
+}
+
+.recDescription{
+    display: flex;
+}
+
+
+
+.slds-box_x-small{
+    /* background-color: rgb(6, 165, 154 );  */
+    /* background-color:#003566; */
+    background-color: #ed7522;
+    color:white;
+}
+
+.slds-table th, .slds-table td {
+    padding: 0px;
+}
+
+.slds-form-element__label{
+    padding: 0px;
+}
+
+.slds-border_bottom{
+    border-bottom-color:#003566;
+    border-bottom-width: 1.5px;
+}
+
+.slds-form-element__label.slds-border_bottom .slds-card{
+    color:black;
+}
+
+.slds-table thead th {
+    background-color: rgb(200, 197, 197); /* Grey background color */
+}

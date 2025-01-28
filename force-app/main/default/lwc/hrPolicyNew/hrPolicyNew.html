@@ -1,0 +1,22 @@
+<template>
+    <template if:true={showTabs}>
+        <!-- Custom Tabs -->
+        <div class="custom-tabs">
+            <div class="tab-header">
+                <button class="tab-button active" data-tab="allTab" onclick={switchTab}>
+                All
+            </button>
+                <button class="tab-button" data-tab="IndiaTab" onclick={switchTab}>
+                CRMIT-INDIA
+            </button>
+            <button class="tab-button" data-tab="AusTab" onclick={switchTab}>
+                CRMIT-AUS
+            </button>
+            <button class="tab-button" data-tab="UsaTab" onclick={switchTab}>
+                CRMIT-USA
+            </button>
+            </div>
+        </div>
+        </template>
+
+</template>

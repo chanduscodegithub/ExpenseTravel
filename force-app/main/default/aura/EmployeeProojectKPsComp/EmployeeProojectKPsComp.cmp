@@ -1,0 +1,15 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String" default="{!recordId}"/>
+    <lightning:card variant="Narrow" title="Team Allocation" >
+        <p class="slds-p-horizontal_small">
+            <lightning:accordion aura:id="accordion" activeSectionName="B">
+        <lightning:accordionSection name="B" label="Team Allocation - Without KPI's">
+            <c:EmpTAWithoutKPIs recordId="{!v.recordId}"/>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="C" label="Team Allocation - With KPI's">
+                <c:EmpTAWithKPIComp recordId="{!v.recordId}"/>
+        </lightning:accordionSection>
+    </lightning:accordion>
+        </p>
+    </lightning:card>
+</aura:component>

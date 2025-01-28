@@ -1,0 +1,580 @@
+<template>
+
+	<lightning-spinner if:true={isSpinner} alternative-text="Loading" size="large"></lightning-spinner>
+
+	<div class="custom-modal" lwc:if={showPopup}>
+		<section role="dialog" class={popUpclass}>
+			<div class="slds-modal__container">
+				<header class="slds-modal__header">
+					<span class="slds-modal__close">
+                        <lightning-icon icon-name="utility:close" onclick={handleCancel} variant="inverse" alternative-text="close"></lightning-icon>
+                    </span>
+
+					<h1 class="slds-text-heading_large slds-hyphenate">{popUpTitle}</h1>
+				</header>
+				
+				<div class="slds-modal__content slds-p-around_medium">
+					<div lwc:if={displayrating}>
+                       	<c-display-overall-performancerating  pms-data={quaterdata} total-manager-score={annualfinalrating} reviewer-rating={reviewratings} selected-quater={currentCycle}> </c-display-overall-performancerating>
+				    </div>
+					<div lwc:else>
+					<div lwc:if={popUpbodyFlage}>
+						<b if:false={drafitView} class="slds-align_absolute-center">{popUpbody}</b>
+						<c-display-pdf-managerappraisal if:true={drafitView} pms-data={pmsData}
+							total-manager-score={totalKRAScore}></c-display-pdf-managerappraisal>
+					</div>
+					<div lwc:elseif={viewFeedBack}>
+
+						<div if:true={krasWrapperData.delegateMg1Name}> <b>{krasWrapperData.delegateMg1Name}'s Feedback
+                            </b>
+							<p class="slds-box">{krasWrapperData.delegateManager1FeedBack}</p><br>
+                        </div>
+							<div if:true={krasWrapperData.delegateMg2Name}>
+								<b>{krasWrapperData.delegateMg2Name}'s Feedback
+                            </b>
+								<p class="slds-box">{krasWrapperData.delegateManager2FeedBack}</p>
+							</div>
+						</div>
+						<div lwc:else>
+							<lightning-textarea disabled={isEditable} value={deleMgComments}
+								title="Project Leaders Comments" onchange={handleChange}></lightning-textarea>
+						</div>
+
+					</div>
+				</div>
+					
+					<footer class="slds-modal__footer">
+						
+                    <lightning-button if:true={displayrating} label="Cancel" variant="brand" title="Cancel"
+							onclick={handleCancel} class="slds-m-right_small"></lightning-button>
+							<!--<lightning-button if:true={displayrating}  variant="brand" label="Submit"
+								onclick={handleSave} title="Submit"></lightning-button>-->
+
+						<lightning-button if:true={viewFeedBack} label="Cancel" variant="brand" title="Cancel"
+							onclick={handleCancel} class="slds-m-right_small "></lightning-button>
+						<div if:false={viewFeedBack} class="button-display slds-float_right">
+							<lightning-button if:false={displayrating} label="Cancel" variant="brand-outline" title="Cancel"
+								onclick={handleCancel} class="slds-m-right_small"></lightning-button>
+								<div if:false={displayrating}>
+							<lightning-button if:false={popUpbodyFlage}  disabled={isEditable} variant="brand"
+								label="Submit Feedback" onclick={updateDelegateManagerCommenets}
+								title="Submit Feedback"></lightning-button>
+								
+							<lightning-button if:true={popUpbodyFlage}  variant="brand" label="Submit"
+								onclick={handleSave} title="Submit"></lightning-button>
+								</div>
+
+						</div>
+					</footer>
+
+				</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</div>
+
+	<div lwc:if={finalAlert} class="custom-modal">
+		<section role="dialog" class="slds-modal slds-fade-in-open">
+			<div class="slds-modal__container">
+				<header class="slds-modal__header">
+					<span class="slds-modal__close">
+                        <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="close"></lightning-icon>
+                    </span>
+					<h2 class="slds-text-heading_medium slds-hyphenate">Alert</h2>
+				</header>
+				<div class="slds-modal__content slds-p-around_medium">
+					<p>Please visit the career development and Training Enablement review.
+						Also encourage you to get feedback from the other Project Manager under whom the employee has
+						worked.</p>
+				</div>
+				<footer class="slds-modal__footer">
+					<lightning-button label="Cancel" title="Cancel" class="slds-m-right_small"
+						onclick={handleFinalAlert}></lightning-button>
+					<lightning-button variant="brand" label="Proceed" title="Proceed" onclick={handleFinalAlert}>
+					</lightning-button>
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</div>
+
+	<div if:true={reject} class="custom-modal">
+		<section role="dialog" class="slds-modal slds-fade-in-open">
+			<div class="slds-modal__container">
+				<header class="slds-modal__header">
+					<span class="slds-modal__close">
+                        <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="close" onclick={handleRejectClose}></lightning-icon>
+                    </span>
+					<h2 class="slds-text-heading_medium slds-hyphenate">Reject</h2>
+				</header>
+				<div class="slds-modal__content slds-p-around_medium">
+					<lightning-textarea name="Reject Reason" label="Reject Reason" title="Reject Reason"
+						value={rejReason} onchange={handleChange} required></lightning-textarea>
+					<!-- <lightning-record-edit-form id="recordViewForm" record-id={prId} object-api-name="Performance_Rating__c" onsubmit={handleRejectSubmit} onsuccess={handleSuccess}>
+                        <lightning-messages></lightning-messages>
+                        <lightning-input-field field-name="Reject_Reason__c"></lightning-input-field>
+
+                        <lightning-input-field value="Manager Rejected" field-name="Status__c" data-field="Status__c"></lightning-input-field>
+
+
+                        <div class="slds-var-m-top_medium">
+                            <lightning-button label="Cancel" title="Cancel" class="slds-m-right_small" onclick={handleRejectClose}></lightning-button>
+                            <lightning-button type="submit" variant="brand" label="Reject" title="Reject"></lightning-button>
+                        </div>
+                    </lightning-record-edit-form> -->
+				</div>
+				<footer class="slds-modal__footer">
+					<lightning-button label="Cancel" title="Cancel" class="slds-m-right_small"
+						onclick={handleRejectClose}></lightning-button>
+					<lightning-button type="submit" variant="brand" label="Reject" title="Reject"
+						onclick={handleRejectSubmit}></lightning-button>
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</div>
+
+	<div lwc:if={entryPopUp}>
+		<div class="custom-modal">
+			<section role="dialog" class="slds-modal slds-fade-in-open">
+				<div class="slds-modal__container">
+					<header class="slds-modal__header">
+						<span class="slds-modal__close">
+							<lightning-icon icon-name="utility:close" variant="inverse" onclick={handleEntryPopUpClose} alternative-text="close"></lightning-icon>
+						</span>
+						<h2 class="slds-text-heading_medium slds-hyphenate">Select Reportee Appraisal Year and QPR Cycle
+						</h2>
+					</header>
+					<div class="slds-modal__content slds-p-around_medium">
+
+						<lightning-layout multiple-rows>
+							<lightning-layout-item size="6" flexibility="auto" padding="around-small">
+								<div class="custom-box">
+									<lightning-combobox name="Select Year" label="Select Year" value={selectedYear}
+										placeholder="Select Year" options={getyearOptions} onchange={handleYearChange}>
+									</lightning-combobox>
+								</div>
+							</lightning-layout-item>
+							<lightning-layout-item size="6" flexibility="auto" padding="around-small">
+								<div class="custom-box">
+									<lightning-combobox name="Select QPR" label="Select QPR" value={selectedQPR}
+										placeholder="Select QPR" options={ratingOptions} onchange={handleQPRChange}>
+									</lightning-combobox>
+								</div>
+							</lightning-layout-item>
+						</lightning-layout>
+					</div>
+					<footer class="slds-modal__footer">
+						<lightning-button variant="brand" label="Proceed" title="ProceedToPms"
+							onclick={handleEntryPopUp} disabled={disableProceedButton}></lightning-button>
+					</footer>
+				</div>
+			</section>
+			<div class="slds-backdrop slds-backdrop_open"></div>
+		</div>
+	</div>
+	<div lwc:else>
+		<template if:true={ismanageropen}>
+			<lightning-card variant="Narrow" icon-name="standard:opportunity">
+				<div if:true={callDelegate}>
+					<c-delegated-manager-feedback show-pop-up={showPopUpChild} pr-id={prId} rep-mg-id={mgId}
+						emp-id={empId} is-manager-submitted={krasWrapperData.isManagerSubmitted}
+						onclosepop={updatefalge} del-mgname1={deleMgname1} del-mgname2={deleMgname2}
+						feed-back1={managercomment1} feed-back2={managercomment2} current-quater={selectedQuarter} pr-status={prstatus}>
+					</c-delegated-manager-feedback>
+				</div>
+				<!-- <div class="slds-text-heading_medium" slot="title"> Avishkaar - Performance Management System </div> -->
+				<div slot="title">
+					<span class="slds-text-heading_medium ">Avishkaar - DreamDrive360 -</span><span><i class="logo">"Discover a realm where dreams unfurl and possibilities awaken"</i></span>
+				</div>
+
+				<!-- <div slot="title" class="slds-text-heading_medium">Avishkaar - DreamDrive360 </div>
+            <i style="padding-left: 222px;">"Discover a realm where dreams unfurl and possibilities awaken"</i> -->
+				<div class="slds-text-heading_small  "> <div>&nbsp; &nbsp;&nbsp;{title}</div>
+					<template lwc:if={isDeleManager}>
+						<lightning-button class="slds-p-left_medium" variant="brand" label="Give Feedback" title=""
+							onclick={handlePopUp} slot="actions"></lightning-button>
+						<lightning-button class="slds-p-left_medium" label="Back to Employees" onclick={back}
+							title="Back" slot="actions"></lightning-button>
+
+					</template>
+					<template lwc:else>
+						<template lwc:if={fromEMP}>
+							<lightning-button label="Feedback" class="slds-p-left_medium marginleft" variant="brand"
+								onclick={handlePopUp} title="Feedback1" slot="actions"></lightning-button>
+							<lightning-button label="Quarterly Ratings" class="slds-p-left_medium font" variant="brand"
+								onclick={handlePopUps} title="overallrating" slot="actions" ></lightning-button>
+
+						</template>
+						<template lwc:else>
+							<div class="slds-grid slds-wrap">
+								<div class="slds-col slds-size_1-of-4">
+
+								</div>
+								<div class="slds-col slds-size_3-of-4">
+									<lightning-button label="Feedback" class="slds-p-left_medium marginleft font" variant="brand"
+									onclick={handlePopUp} title="Feedback1" slot="actions"></lightning-button>
+								<lightning-button label="Career and Training Plan" variant="brand" if:false={isDeleManager}
+									class="slds-p-left_medium font " onclick={careerPlan} title="Career Plane" slot="actions">
+								</lightning-button>
+								<lightning-button class="slds-p-left_medium font" variant="brand" label="Reject" title="Reject"
+									onclick={handleReject} slot="actions" disabled={disableRejectButton}></lightning-button>
+								<lightning-button label="Quarterly Ratings" class="slds-p-left_medium font" variant="brand"
+									onclick={handlePopUps} title="overallrating" slot="actions " ></lightning-button>
+									
+								</div>
+
+								
+							</div>
+						</template>
+						</template>
+				</div>
+
+
+</lightning-card><br>
+
+		
+
+
+		
+
+		<article class="slds-card">
+			<div class="container">
+				<div class="slds-card__header">
+					<!-- First Row -->
+					<div class="slds-grid slds-gutters slds-text-align_center">
+						<div class="slds-col slds-size_1-of-4">
+							<p class="employee-heading">Employee Name</p>
+							<p>{krasWrapperData.empName}</p>
+						</div>
+						<div class="slds-col slds-size_1-of-4">
+							<p class="employee-heading">Current Designation</p>
+							<p>{krasWrapperData.desigination}</p>
+						</div>
+
+						<div class="slds-col slds-size_1-of-4">
+							<p class="employee-heading">Corporate Band</p>
+							<p>{krasWrapperData.band}</p>
+						</div>
+						<div class="slds-col slds-size_1-of-4">
+							<p class="employee-heading">Corporate Level</p>
+							<p>{krasWrapperData.grade}</p>
+						</div>
+
+					</div>
+
+					<!-- Second Row -->
+					<div class="slds-grid slds-gutters slds-text-align_center">
+						<div class="slds-col slds-size_1-of-4">
+							<p class="employee-heading">Employee ID</p>
+							<p>{krasWrapperData.empCode}</p>
+						</div>
+						<div class="slds-col slds-size_1-of-4">
+							<p class="employee-heading">Employee Location</p>
+							<p>{krasWrapperData.empLocation}</p>
+						</div>
+
+						<div class="slds-col slds-size_1-of-4">
+							<p class="employee-heading">Reporting Manager</p>
+							<p>{krasWrapperData.reportingMngName}</p>
+						</div>
+						<div class="slds-col slds-size_1-of-4">
+							<p class="employee-heading">Cost Center Manager</p>
+							<p>{krasWrapperData.ccm}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</article><br>
+
+
+		<article class="slds-card">
+			<div class="slds-card__header slds-grid">
+			</div>
+			<div class="slds-size_1-of-1" if:true={annualfinalrating}>
+        <div class=" slds-text-align_center slds-m-around_x-small " style="font-size: 15px;font-weight:bold;color:green;"><b>Employee Overall Annual Rating - {annualfinalrating}</b></div>
+    </div>
+			<div class="slds-card__body slds-card__body_inner">
+				<div class="slds-box">
+
+					<legend class="slds-form-element__legend slds-form-element__label">
+						<span style="font-size: 15px;font-weight:bold;color:black;">Employee Comments - Overall Summary</span>
+					</legend>
+					<legend class="slds-form-element__legend slds-form-element__label" style="padding-left: 25%;">
+						<span style="font-size: 15px;font-weight:bold;color:black;">Employee Overall Rating - {empOverallRating}</span>
+					</legend>
+					<lightning-textarea name="Employee Comments - Overall Summary" class="textareaheight"
+						value={krasWrapperData.empOverallComments} readonly disabled={isDeleManager}>
+					</lightning-textarea>
+
+					<div class="slds-form-element__legend slds-form-element__label slds-m-right_xxx-large addspace">
+						<span style="color:red">*</span>&nbsp;<span style="font-size: 15px;font-weight:bold;color:black;">Manager Comments - Overall Summary</span>
+					</div>
+					<div 
+						class="slds-form-element__legend slds-form-element__label" style="padding-left: 25%;">
+						<span style="font-size: 15px;font-weight:bold;color:black;">Manager Overall Rating : {totalKRAScore}</span>
+					</div>
+
+					<lightning-textarea name="Manager Comments - Overall Summary"
+						title="Manager Comments - Overall Summary" class="textareaheight" onchange={handleChange}
+						value={overallManagerComments} readonly={isReadonly} disabled={isDeleManager}>
+					</lightning-textarea>
+					<template if:false={annualrating}>
+					 <legend class="slds-form-element__legend slds-form-element__label">
+					    <span style="color:red">*</span>&nbsp;<span style="font-size: 15px;font-weight:bold;color:black;">Reviewer Comments - Overall Summary</span>
+					</legend>
+					<legend class="slds-form-element__legend slds-form-element__label" style="padding-left: 25%;">
+						<span style="font-size: 15px;font-weight:bold;color:black;">Reviewer Rating </span>
+					</legend>
+						<c-reviewerrating default-rating={reviewrating} onratingclicks={handleChange} title="Reviewer Rating" noedit={disablereviewer} ></c-reviewerrating>&nbsp;{reviewrating}	
+					
+					<lightning-textarea name="Reviewer Comments "
+						title="Reviewer Comments" class="textareaheight1" onchange={handleChange}
+						value={reviewercomments}   readonly={disablereviewer}>
+					</lightning-textarea>
+				     </template>
+				</div>
+
+				<template lwc:if={noKPIsFlage}>
+					<lightning-modal-body><b><i>There are No Kpis Created for this User</i></b>
+					</lightning-modal-body>
+				</template>
+				<template lwc:else>
+
+					<lightning-tabset>
+
+						<template for:each={pmsData} for:item="pms" for:index="outerindex">
+
+							<lightning-tab key={pms.id} label={pms.KRA}>
+								<div class="slds-box">
+									<b class="slds-p-horizontal_small ">KRA Weightage: </b>{pms.kraWeightage}%<br><br>
+									<!-- <b class="slds-p-horizontal_small ">KRA Description: </b>Develop and execute comprehensive brand strategies to enhance brand equity and awareness.<br> -->
+									<b class="slds-p-horizontal_small ">KRA Description: </b>{pms.kraDescription}
+								</div>
+								<div class="slds-card__body">
+									<div class="slds-scrollable_x" style="width:auto">
+										<table
+											class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout"
+											role="grid" aria-label="Example table in a Card">
+											<thead>
+												<tr class="slds-line-height_reset">
+
+													<th class="" scope="col" style="width:25%">
+														<div class="slds-truncate slds-align_absolute-center"
+															title="Name">Key Performance Indicator(KPI)</div>
+													</th>
+													<th class="" scope="col" style="width:15%">
+														<div class="slds-truncate slds-align_absolute-center"
+															title="Name">KPI Weightage(%)</div>
+													</th>
+
+													<th class="" scope="col" style="width:30%">
+														<div class="slds-truncate slds-align_absolute-center"
+															title="Title">Employee Self Rating</div>
+													</th>
+													<th scope="col" style="width:30%">
+														<div class="slds-truncate slds-align_absolute-center"
+															title="Title">Manager Rating</div>
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+												<template for:each={pms.kpiData} for:item="kpiData" for:index="index">
+													<tr key={kpiData.id} style="font-family: sans-serif;"
+														class="slds-hint-parent">
+
+														<td role="gridcell">
+															<div class="slds-truncate slds-cell-wrap">
+																<!-- readonly={kpiEdit} -->
+																<div lwc:if={fromEMP}>
+																	<lightning-textarea disabled name="KPI"
+																		value={kpiData.kpi} data-id={kpiData.Id}>
+																	</lightning-textarea>
+																</div>
+																<div lwc:else>
+																	<lightning-textarea disabled={isDeleManager}
+																		name="KPI" value={kpiData.kpi}
+																		data-id={kpiData.Id} onchange={handleChange}
+																		title="KPI" readonly={kpiEdit}
+																		data-index={index} data-gsid={kpiData.gsid}>
+																	</lightning-textarea>
+																</div>
+
+															</div>
+														</td>
+
+														<td role="gridcell" class="backgroundcolor">
+															<div
+																class="slds-truncate slds-align_absolute-center catCol">
+																<template lwc:if={fromEMP}>
+																	<b>{kpiData.weightage}%</b>
+																</template>
+																<template lwc:elseif={kpiData.isKpiEdit}>
+																	<lightning-input class="myCustomClass"
+																		onchange={handleChange} data-id={kpiData.Id}
+																		onkeyup={changeToEdit}
+																		data-kraindex={outerindex} data-kpiindex={index}
+																		value={kpiData.weightage} title="KPI Weightage"
+																		disabled={isDeleManager} data-index={index}
+																		data-gsid={kpiData.gsId}></lightning-input>
+																</template>
+																<template lwc:else>
+																	<b>{kpiData.weightage}%</b>
+																	<lightning-icon if:true={managerEmpFlage}
+																		class="slds-p-left_x-large"
+																		data-kraindex={outerindex} data-kpiindex={index}
+																		icon-name="utility:edit" onclick={changeToEdit}
+																		size="x-small" alternative-text="edit"
+																		title="edit">
+																	</lightning-icon>
+																</template>
+															</div>
+														</td>
+														<td role="gridcell">
+
+															<div class="slds-truncate catCol">
+																<div style="font-size: 13px;">
+																	<span>Self Rating : </span><span style="font-size: 15px;">{kpiData.empRating}</span>
+																</div>
+																<br><br>
+                                                                Employee Comments:<br>
+																<lightning-formatted-rich-text class="slds-cell-wrap"
+																	value={kpiData.empComments}>
+																</lightning-formatted-rich-text>
+															</div>
+
+														</td>
+														<td role="gridcell">
+															<div class="slds-truncate catCol">
+																<div class="slds-form-element">
+
+																	<div class="slds-form-element__control">
+																		<template lwc:if={isDeleManager}>
+																			<div class="slds-text-title"
+																				style="font-size: 13px;">
+																				<span>Manager Rating : </span><span style="font-size: 15px;">{kpiData.mngRating}</span>
+																			</div>
+																			<!-- <div class="slds-text-title"><span style="color:red">*</span>&nbsp;Manager Rating
+                                                                            </div>
+                                                                            <c-half-stare-ratingclone data-title={kpiData.kra} data-id={kpiData.Id} default-rating={kpiData.mngRating} outerindex={outerindex} inner-index={index} noedit='true' noedit-manager={krasWrapperData.isManagerSubmitted}></c-half-stare-ratingclone>&nbsp;{kpiData.mngRating} -->
+																			<br><br>
+                                                                        </template>
+																			<template lwc:elseif={isReadonly}>
+																				<div class="slds-text-title">
+																					<span style="color:red">*</span>&nbsp;Manager
+																					Rating
+																				</div>
+																				<c-half-stare-ratingclone
+																					data-title={kpiData.kra}
+																					data-id={kpiData.Id}
+																					default-rating={kpiData.mngRating}
+																					outerindex={outerindex}
+																					inner-index={index} noedit='true'
+																					noedit-manager={krasWrapperData.isManagerSubmitted}>
+																				</c-half-stare-ratingclone>
+																				&nbsp;{kpiData.mngRating}
+																				<br><br>
+                                                                        </template>
+																				<template
+																					lwc:elseif={isManagerSubmitted}>
+																					<div class="slds-text-title">
+																						<span style="color:red">*</span>&nbsp;Manager
+																						Rating
+																					</div>
+																					<c-half-stare-ratingclone
+																						data-title={kpiData.kra}
+																						data-id={kpiData.Id}
+																						default-rating={kpiData.mngRating}
+																						outerindex={outerindex}
+																						inner-index={index}
+																						noedit={krasWrapperData.isManagerSubmitted}
+																						noedit-manager={krasWrapperData.isManagerSubmitted}>
+																					</c-half-stare-ratingclone>
+																					&nbsp;{kpiData.mngRating}
+																					<br><br>
+                                                                        </template>
+																					<template lwc:else>
+																						<div class="slds-text-title">
+																							<span style="color:red">*</span>&nbsp;Manager
+																							Rating
+																						</div>
+																						<c-half-stare-ratingclone
+																							title="Manager Rating"
+																							data-kraindex={outerindex}
+																							data-kpiindex={index}
+																							data-title={kpiData.kra}
+																							data-id={kpiData.Id}
+																							default-rating={kpiData.mngRating}
+																							outerindex={outerindex}
+																							inner-index={index}
+																							noedit={krasWrapperData.isManagerSubmitted}
+																							noedit-manager={krasWrapperData.isManagerSubmitted}
+																							onratingclicking={handleChange}>
+																						</c-half-stare-ratingclone>
+																						&nbsp;{kpiData.mngRating}
+																					</template>
+																	</div>
+																</div>
+																<div lwc:if={isDeleManager}>
+																	Manager Comments:<br>
+																	<lightning-formatted-rich-text
+																		value={kpiData.mngComments}>
+																	</lightning-formatted-rich-text>
+																</div>
+																<div lwc:else>
+																	<lightning-textarea label="Manager Comments"
+																		title={kpiData.mngComments}
+																		data-kraindex={outerindex} data-kpiindex={index}
+																		placeholder="Enter Your Comments here..."
+																		data-id={kpiData.Id} value={kpiData.mngComments}
+																		onchange={handleChange} disabled={isDeleManager}
+																		readonly={isReadonly} required>
+																	</lightning-textarea>
+																</div>
+															</div>
+														</td>
+													</tr>
+												</template>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</lightning-tab>
+						</template>
+					</lightning-tabset>
+				</template>
+			</div>
+			<footer style="height: 80px;" class="slds-card__footer">
+
+				<div>
+
+					<div if:true={fromEMP}>
+
+						<lightning-button label="Cancel" variant="brand" if:false={isDeleManager}
+							class="slds-p-left_medium" title="" onclick={back}></lightning-button>
+					</div>
+					<div if:false={fromEMP}>
+						<lightning-button label="Cancel" variant="brand" if:false={isDeleManager}
+							class="slds-p-left_medium" title="" onclick={back}></lightning-button>
+						<lightning-button label="Save As Draft" if:false={isDeleManager} class="slds-p-left_medium"
+							disabled={disableSaveAsDraftButton} variant="brand" title="" onclick={handleSave}>
+						</lightning-button>
+						<lightning-button label="Submit" if:false={isDeleManager} class="slds-p-left_medium"
+							disabled={disableButton} variant="brand" title="" onclick={handlePopUp}>
+						</lightning-button>
+						
+					</div>
+
+				</div>
+
+			</footer>
+		</article>
+</template>
+</div>
+<template if:true={displayCareerPlan}>
+	<c-career-development-and-enablement emp-id={empId} from="MGR" is-editable={flageTocr}
+		onselfrating={handlecareerDevelop}></c-career-development-and-enablement>
+</template>
+
+
+
+</template>

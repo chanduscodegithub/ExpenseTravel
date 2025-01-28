@@ -1,0 +1,131 @@
+.THIS h2
+{
+    color:#a41f34 !important;
+}
+.THIS .slds-button_neutral
+{
+    border:1px solid;
+}
+.THIS .slds-button_neutral .slds-icon-text-default {
+    fill:#a41f34;
+}
+.THIS .slds-button_brand .slds-icon-text-default {
+    fill:#fff;
+}
+.THIS .slds-button_icon-bare
+{
+    color:#a41f34;
+}
+.THIS .slds-button_icon-bare:hover
+{
+    color:rgb(19, 95, 144);
+}
+.THIS .brand-btn
+{
+    background:#a41f34;
+    border-color:#a41f34;
+    color:white;
+    font-weight: bold;
+    text-transform:uppercase;    
+}
+.THIS .slds-card__header{
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16);
+  /*  padding: .1rem 1rem;
+    margin-bottom: .5rem; */
+}
+.THIS .footer
+{
+    border-top:1px solid rgb(221, 219, 218);
+    color:black;
+    box-shadow:0px -3px 3px rgba(0, 0, 0, 0.16);
+    margin-top:0;
+    padding:0;
+}
+.THIS th
+{ 
+    background:lightgray;
+    color:black;
+    font-size: 10px;
+    padding:5px 6px;    
+}
+.THIS .slds-gray th
+{
+    background:gray;
+    color:white;
+    padding:5px 6px;
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 4;
+}
+.THIS td
+{
+    background:white;
+    padding: 1px 6px;
+}
+.THIS .slds-card__body
+{
+   height: calc(40vh - 40px);
+    overflow-y:scroll;
+    border:2px solid gray;
+   margin:.5rem;   
+}
+.THIS .slds-card__body1
+{
+   height: calc(10vh - 10px);
+    overflow-y:scroll;
+    border:2px solid gray;
+   margin:.5rem;   
+}
+.THIS table
+{
+    font-size: 10px;
+}
+.THIS .slds-table:not(.slds-no-row-hover) tbody tr:hover>th
+{
+    background:lightgray !important;
+}
+.THIS .slds-icon-standard-user
+{
+    background-color:rgb(164, 31, 52);
+}
+.THIS .title
+{
+    font-weight:bold;
+    color:rgb(164, 31, 52);
+}
+.THIS .slds-badge
+{
+    color:white;
+    display:block;
+    width:75%;
+    text-align:center;
+    font-size: 10px;
+    padding: 3px;
+    margin:auto;
+}
+.THIS .slds-badge_success{
+    background:#20ae83;
+}
+.THIS .slds-badge_warning{
+    background:#fea200;
+}
+.THIS .slds-badge_danger{
+    background:red;
+}
+.THIS .slds-badge_transparent{
+    background:white;
+    color:black;
+    border:1px solid black;
+}
+.THIS .table-scroll thead th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+.THIS .slds-button__icon
+{
+    width:18px !important;
+    height:18px !important;
+}
+.THIS .slds-table1,.THIS.slds-table1{width:100%;}
+.THIS .slds-table2,.THIS.slds-table2{width:100%;}

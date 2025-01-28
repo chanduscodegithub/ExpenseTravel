@@ -1,0 +1,33 @@
+.message__area {
+    min-height: 100px;
+  }
+  
+  th[scope="col"] .slds-truncate,
+  td[scope="row"] .slds-truncate {
+    width: max-content;
+  }
+  
+  td[scope="row"] .slds-truncate.message__area {
+    width: 100%;
+  }
+  
+  td.message[scope="row"] {
+    width: 100%;
+  }
+  
+  @media (min-width: 48em) {
+    .slds-modal__container.specificity {
+      max-width: 76rem;
+    }
+    .combolength{
+    display: grid;
+    grid-template-columns: 4fr 4fr 0fr;
+    grid-gap: 1em;
+    }
+  }
+  .custom-asterisk {
+    /* Define your custom styling for the asterisk */
+    color: red; /* Change the color */
+    font-size: 1em; /* Change the size */
+    /* Add any other styles you want */
+}

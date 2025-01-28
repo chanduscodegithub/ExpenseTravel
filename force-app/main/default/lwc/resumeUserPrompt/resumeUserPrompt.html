@@ -1,0 +1,44 @@
+<template>
+
+    <div role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse">
+                <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                </svg>
+                <span class="slds-assistive-text">Cancel and close</span>
+            </button>
+            <div class="slds-modal__header">
+                <h1 class="slds-modal__title slds-hyphenate">Ask a question</h1>
+            </div>
+            <div class="slds-modal__content slds-p-around_medium">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_3-of-4">
+                        <lightning-input label="Prompt" variant="label-hidden" placeholder="Has the candidate worked on lwc..." onchange={handleChange} value={prompt}></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-4">
+                        <button class="slds-button slds-button_brand" onclick={handleAsk}>Ask</button>
+                    </div>
+                </div>
+
+                <div if:true={spinnerStatus} class="demo-only demo-only_viewport slds-text-align_center" style="height:6rem;position:relative">
+                    <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                        <span class="slds-assistive-text">Loading</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div> 
+                <div if:true={displayResponse}>
+                    <textarea class="slds-textarea slds-m-top_large slds-m-right_small" disabled>{promptResponse}</textarea>
+                </div>    
+            </div>
+            <div class="slds-modal__footer">
+                <lightning-button variant="neutral" label="Close" title="Close" onclick={handleClose}></lightning-button>  
+            </div>
+        </div>
+    </div>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    
+   <!--  <lightning-button variant="brand" label="Ask" title="Ask" onclick={handleAsk}></lightning-button> -->    
+
+</template>
