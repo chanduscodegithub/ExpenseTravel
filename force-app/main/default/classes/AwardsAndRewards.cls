@@ -2,7 +2,7 @@ public without sharing class AwardsAndRewards {
     @AuraEnabled(cacheable=true) 
     public static List<Award> getAwardDetailsOfEmp(){ 
         	User userObj = [Select Id,contactid,Name from User where Id = : Userinfo.getUserId() limit 1];
-        	system.debug('userObj'+ userObj);
+        	//system.debug('userObj'+ userObj);
         	List<Award> awardCycle = [Select Id, Name, AwardDate, AwardedBy, Status, OwnerId, VerifiedDate from Award];
         	system.debug('AwardCycle'+ awardCycle);
         //where Contact__c = : userObj.contactid
